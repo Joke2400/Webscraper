@@ -1,7 +1,7 @@
 import os
-from .foodie_webscraper.spiders.fpaths import FilePaths
+from .data.fpaths import FilePaths
 from scrapy.crawler import CrawlerProcess
-from .foodie_webscraper.spiders.foodie_spider import FoodieSpider
+from .webscraper_package.spiders.foodie_spider import FoodieSpider
 from scrapy.utils.project import get_project_settings
 
 class SearchManager:

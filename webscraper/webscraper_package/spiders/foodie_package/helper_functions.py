@@ -1,5 +1,5 @@
 import json
-from ..fpaths import FilePaths
+from ....data.fpaths import FilePaths
 
 def prepare_search_string(base_url, string):
     return (base_url + string.lower())

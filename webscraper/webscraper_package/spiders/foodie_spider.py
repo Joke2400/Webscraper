@@ -4,7 +4,7 @@ from .foodie_package.locators import ProductListSearchLocators as PLSL
 from .foodie_package.locators import StoreListSearchLocators as SLSL
 from .foodie_package.urls import FoodieURLS as URLS
 from .foodie_package.helper_functions import *
-from .fpaths import FilePaths
+from ...data.fpaths import FilePaths
 from ..items import FoodieStoreItem, FoodieProductItem
 from datetime import datetime
 

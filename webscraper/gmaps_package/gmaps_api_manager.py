@@ -1,5 +1,5 @@
-from ..foodie_webscraper.spiders.fpaths import FilePaths
-from ..foodie_webscraper.spiders.foodie_package.helper_functions import fetch_local_data2
+from ..data.fpaths import FilePaths
+from ..webscraper_package.spiders.foodie_package.helper_functions import fetch_local_data2
 
 class GMapsAPIManager:
 

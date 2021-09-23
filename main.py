@@ -1,7 +1,7 @@
 from webscraper.scraper_manager import SearchManager
 from webscraper.gmaps_package.gmaps_api_manager import GMapsAPIManager
 
-settings_path = 'foodie_webscraper.settings' 
+settings_path = 'webscraper.webscraper_package.settings' 
 
 if __name__ == "__main__":
     

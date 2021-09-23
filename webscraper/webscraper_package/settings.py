@@ -7,10 +7,10 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'foodie_webscraper'
+BOT_NAME = 'product_data_scraper'
 
-SPIDER_MODULES = ['foodie_webscraper.spiders']
-NEWSPIDER_MODULE = 'foodie_webscraper.spiders'
+SPIDER_MODULES = ['webscraper.webscraper_package.spiders']
+NEWSPIDER_MODULE = 'webscraper.webscraper_package.spiders'
 
 LOG_LEVEL = 'DEBUG'
 LOG_FORMAT = '%(levelname)s: %(message)s'
