@@ -11,9 +11,9 @@ class FoodieWebscraperPath:
     #This path is going to be hardcoded for now, remember to change if file is moved.
 
 class FilePaths:
-    stores_path = WorkingDirFilePath.path / "webscraper" / "webscraper_package" / "spiders" / "foodie_package" / "stores.json"
-    response_path = WorkingDirFilePath.path / "webscraper" / "webscraper_package" / "spiders" / "foodie_package" / "response.html"
+    stores_path = WorkingDirFilePath.path / "webscraper" / "data" / "stores.json"
+    response_path = WorkingDirFilePath.path / "webscraper" / "data" / "response.html"
     log_path = WorkingDirFilePath.path / "log.txt"
-    #These will also have to be changed later to more robust paths...
+    settings_path = 'webscraper.webscraper_package.settings' 
 
-#print(Path(__file__).parent.resolve()) #magic line to be used later
+    #print(Path(__file__).parent.resolve()) #I've no clue why i put this here but it must be important then

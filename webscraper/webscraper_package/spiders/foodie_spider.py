@@ -3,10 +3,11 @@ from .foodie_package.locators import SearchResultsPageLocators as SRPL
 from .foodie_package.locators import ProductListSearchLocators as PLSL
 from .foodie_package.locators import StoreListSearchLocators as SLSL
 from .foodie_package.urls import FoodieURLS as URLS
-from .foodie_package.helper_functions import *
+from ...data.helper_functions import fetch_local_data2, prepare_search_string, unpack_nested_strings, check_consistency, lower_iterable
 from ...data.fpaths import FilePaths
 from ..items import FoodieStoreItem, FoodieProductItem
 from datetime import datetime
+import json
 
 class FoodieSpider(scrapy.Spider):
     '''
@@ -86,9 +87,10 @@ class FoodieSpider(scrapy.Spider):
 
     def create_store_item(self, store_dict):
         item = FoodieStoreItem()
-        for store in store_dict.items():
-            if isinstance(store[1], str):
-                store_dict[store[0]] = store[1].lower()
+
+        for key, value in store_dict.items():
+            if isinstance(value, str):
+                store_dict[key] = value.lower()
 
         item["NAME"] = store_dict["NAME"]
         item["HREF"] = store_dict["HREF"]

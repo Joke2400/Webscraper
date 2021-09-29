@@ -1,23 +1,117 @@
 from ..data.fpaths import FilePaths
-from ..webscraper_package.spiders.foodie_package.helper_functions import fetch_local_data2
+from ..data.helper_functions import fetch_local_data2, filter_duplicates_and_append
+from ..data.descriptors import StringAttribute
+from .urls import GMapsAPIUrls as GMAPS_URLS
+import requests
 
 class GMapsAPIManager:
 
-    def __init__(self):
-        pass
+    address = StringAttribute()
 
-    def gather_locally_stored_coords(self):
-        pass
+    def __init__(self, address):
+        self.address = address
 
-    def send_api_request(self):
-        pass
-
-    def parse_api_request(self):
-        pass
-
-    def parser_function(self):
-        pass
 '''
+        @StringAttribute
+        def key_path(self, value):
+            pass
+
+        @AddressAttribute
+        def address(self, value):
+            pass
+
+        @StringAttribute
+        def language(self, value):
+            pass
+
+        @NumberAttribute
+        def radius(self, value):
+            pass
+
+        self._key = None
+
+        self._nearby_search_type = "store"
+        self._nearby_search_keyword = "s-market"
+        self._location = None
+        self._stores = None
+
+
+    def perform_api_request(self, url, payload, callback=None):
+        #payload = {'key1': 'value1', 'key2': ['value2', 'value3']}
+        #TODO:
+        #Cases for error status codes
+        response = requests.get(url, params=payload)
+        if callback is not None:
+            callback(response)
+        return response
+
+    @property
+    def address(self):
+        return self._address.title()
+
+    @address.setter
+    def address(self, value):
+        if isinstance(value, str):
+            self._address = value.lower()
+            payload = {
+                "address" : self.address,
+                "key" : self.key,
+                "language" : self.language
+             }
+            self.location = self.perform_api_request(GMAPS_URLS.GEOCODE, payload)
+        else:
+            raise TypeError("Address can only be a string")
+
+    @address.deleter
+    def address(self):
+        self._address = None
+
+    @property
+    def location(self):
+        #Named tuple for this shit
+        pass
+
+    @location.setter
+    def location(self):
+        pass
+
+    @location.deleter
+    def location(self):
+        pass
+
+
+
+
+    @property
+    def stores(self):
+        if self._stores is None or not isinstance(self._stores, list):
+            stores_json = fetch_local_data2(FilePaths.stores_path, "stores")
+            
+            if len(stores_json["stores"]) > 0:
+                for store_dict in stores_json["stores"]:
+                    for key, value in store_dict.items():
+                        if isinstance(value, str):
+                            store_dict[key] = value.lower()
+                    
+                    self._stores = filter_duplicates_and_append(self._stores, store_dict)
+
+
+        return self._stores
+
+    @stores.setter
+    def stores(self, lst):
+        if isinstance(lst, (list, tuple)):
+            self._stores = lst
+
+    @stores.deleter
+    def stores(self):
+        self._stores = None
+
+
+
+
+
+
 Step 1:
     -User inputs location
 Step 2:

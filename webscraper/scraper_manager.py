@@ -6,8 +6,11 @@ from scrapy.utils.project import get_project_settings
 
 class SearchManager:
     def __init__(self, **kwargs):
-        self.settings_path = kwargs.get("settings", False)
-        os.environ.setdefault('SCRAPY_SETTINGS_MODULE', self.settings_path)
+        self.settings_path = kwargs.get("settings", None)
+        if self.settings_path is not None:
+            os.environ.setdefault('SCRAPY_SETTINGS_MODULE', self.settings_path)
+        else:
+            os.environ.setdefault('SCRAPY_SETTINGS_MODULE', FilePaths.settings_path)
         try:
             os.remove(FilePaths.log_path) #Remove scrapy log file from previous run
         except:

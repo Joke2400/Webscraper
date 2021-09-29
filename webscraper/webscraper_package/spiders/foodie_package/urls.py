@@ -1,4 +1,4 @@
-class FoodieURLS():
+class FoodieURLS:
 
     PAGE_BASE_URL               =   "https://www.foodie.fi/"
     PRODUCT_SEARH_BASE_URL      =   "https://www.foodie.fi/products/search2?term="
