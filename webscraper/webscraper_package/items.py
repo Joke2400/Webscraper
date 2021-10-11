@@ -10,13 +10,18 @@ class FoodieStoreItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     NAME = scrapy.Field()
-    HREF = scrapy.Field()
+    CHAIN = scrapy.Field()
+    OPEN_TIMES = scrapy.Field()
+
     ADDRESS = scrapy.Field()
+    LOCATION = scrapy.Field()
+
     DATE_ADDED = scrapy.Field()
     LAST_UPDATED = scrapy.Field()
-    OPEN_TIMES = scrapy.Field()
-    SELECT = scrapy.Field()
 
+    HREF = scrapy.Field()
+    SELECT = scrapy.Field()
+    
 class FoodieProductItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()

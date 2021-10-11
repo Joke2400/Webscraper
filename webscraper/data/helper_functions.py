@@ -1,4 +1,5 @@
 import json
+from math import radians, cos, sin, asin, sqrt
 from .fpaths import FilePaths
 
 def prepare_search_string(base_url, string):
@@ -110,20 +111,66 @@ def fetch_local_data2(path, key):
 
         return {f"{key}" : []}
 
-def filter_duplicates_and_append(lst, provided_item):
+def haversine(coords_1, coords_2):
+    """
+    Courtesy of some guy on stack overflow, so not my invention (I'm bad at math)
+
+    Calculate the great circle distance between two points 
+    on the earth (specified in decimal degrees)
+    """
+    lat1, lon1 = coords_1
+    lat2, lon2 = coords_2
+
+    # convert decimal degrees to radians 
+    lon1, lat1, lon2, lat2 = map(radians, [lon1, lat1, lon2, lat2])
+
+    # haversine formula 
+    dlon = lon2 - lon1 
+    dlat = lat2 - lat1 
+    a = sin(dlat/2)**2 + cos(lat1) * cos(lat2) * sin(dlon/2)**2
+    c = 2 * asin(sqrt(a)) 
+    r = 6371 # Radius of earth in kilometers. Use 3956 for miles
+    return c * r
+
+def check_duplicates_and_append(lst, provided_item):
+    from .custom_data_classes import LocationTuple, StoreItem
     prevent_append = False
-    if lst is None:
-        lst = []
 
     for item in lst:
-        if isinstance(item["NAME"], str) and isinstance(provided_item["NAME"], str):
+        if isinstance(item, StoreItem) and isinstance(provided_item["NAME"], str):
+            if item.name == provided_item["NAME"].lower():
+                prevent_append == True
+                break
+                
+        elif isinstance(item["NAME"], str) and isinstance(provided_item["NAME"], str):
             if item["NAME"].lower() == provided_item["NAME"].lower():
                 prevent_append = True
                 break
         else:
             prevent_append = True
             break       
-    if not prevent_append:
-        lst.append(provided_item)
     
+    if not prevent_append:
+        store_location = None
+        if isinstance(provided_item["LOCATION"], (list, tuple)):
+            store_location = LocationTuple(
+                provided_item["LOCATION"][0],
+                provided_item["LOCATION"][1],
+                provided_item["LOCATION"][2],
+                provided_item["LOCATION"][3],
+                provided_item["LOCATION"][4]      
+            )
+        store_item = StoreItem(
+            name=provided_item["NAME"],
+            chain=provided_item["CHAIN"],
+            open_times=provided_item["OPEN_TIMES"],
+            address=provided_item["ADDRESS"],
+            location=store_location,
+            date_added=provided_item["DATE_ADDED"],
+            last_updated=provided_item["LAST_UPDATED"],
+            href=provided_item["HREF"],
+            select=provided_item["SELECT"]
+        )
+        lst.append(store_item)
+                
     return lst

@@ -99,6 +99,7 @@ class FoodieSpider(scrapy.Spider):
         item["LAST_UPDATED"] = store_dict["LAST_UPDATED"]
         item["OPEN_TIMES"] = store_dict["OPEN_TIMES"]
         item["SELECT"] = store_dict["SELECT"]
+        item["LOCATION"] = store_dict["LOCATION"]
         return item
 
     def start_requests(self):
@@ -256,7 +257,8 @@ class FoodieSpider(scrapy.Spider):
             if search_type == "NAME":
                 if self.store_href is None:
                     if self.local_store_object is not None:
-                        search_url = {"URL" : prepare_search_string(URLS.STORE_SELECT_BASE_URL, self.local_store_object["HREF"]), "CALLBACK" : self.schedule_requests}
+                        if self.local_store_object["HREF"] is not None:
+                            search_url = {"URL" : prepare_search_string(URLS.STORE_SELECT_BASE_URL, self.local_store_object["HREF"]), "CALLBACK" : self.schedule_requests}
 
             if search_url is not None:
                 self.yield_local_data = True
@@ -336,6 +338,7 @@ class FoodieSpider(scrapy.Spider):
                     store_dict["ADDRESS"]       = response.xpath(unpack_nested_strings(SRPL.STORE_ADDRESS)).get()
                     store_dict["OPEN_TIMES"]    = response.xpath(unpack_nested_strings(SRPL.STORE_OPEN_TIMES)).get()
                     store_dict["SELECT"]        = f"/store/select_store/{store_dict['HREF']}"
+                    store_dict["LOCATION"] = None
 
                     store = self.create_store_item(store_dict)
                     
@@ -393,6 +396,7 @@ class FoodieSpider(scrapy.Spider):
     def scrape_store_list(self, response):
         search_list = [SLSL.STORE_NAME, SLSL.STORE_HREF, SLSL.STORE_ADDRESS, SLSL.STORE_SELECT_BUTTON]
         store_dict = {}
+        found_stores = []
 
         for search_term in search_list:
             search_list[search_list.index(search_term)] = unpack_nested_strings(search_term)
@@ -419,26 +423,55 @@ class FoodieSpider(scrapy.Spider):
                 item_dict["LAST_UPDATED"] = now.strftime("%d/%m/%Y %H:%M:%S")
                 item_dict["OPEN_TIMES"] = None
                 item_dict["SELECT"] = select
+                item_dict["LOCATION"] = None
                 
                 item = self.create_store_item(item_dict)
                 self.delete_store_data(item)
-                self.stores.append(item)
-                    
+                found_stores.append(item)
         else:
             raise Exception("[ERROR]: List lengths were inconsistent after the scraping of store data, please ensure that the page selectors are correct...")
+        
+        for item in found_stores:
+            prevent_append = False
+            for store in self.stores:
+                if store["NAME"].lower() == item["NAME"].lower():
+                    prevent_append = True
+                    store["HREF"] = item["HREF"]
+                    store["ADDRESS"] = item["ADDRESS"]
+                    store["DATE_ADDED"] = item["DATE_ADDED"]
+                    store["LAST_UPDATED"] = item["LAST_UPDATED"]
+                    store["SELECT"] = item["SELECT"]
+                    break
+            if not prevent_append:
+                self.stores.append(item)
 
     def save_store_data(self):
         print("[INTERNAL]: Saving store data...")
         self.process_local_store_data()
         stores_dict = {"stores" : []}
+        valid_store_chains = [
+            "s-market",
+            "sale",
+            "prisma",
+            "alepa",
+            "abc",
+        ]
         for item in self.stores:
+            for x in valid_store_chains:
+                if x in item["NAME"].lower():
+                    chain = x
             stores_dict["stores"].append({
                 "NAME" : item["NAME"].title(),
-                "HREF" : item["HREF"],
+                "CHAIN" : chain,
+                "OPEN_TIMES" : item["OPEN_TIMES"].title() if isinstance(item["OPEN_TIMES"], str) else item["OPEN_TIMES"],
+                
+                "LOCATION" : item["LOCATION"],
                 "ADDRESS" : item["ADDRESS"].title() if isinstance(item["ADDRESS"], str) else item["ADDRESS"],
+                
                 "DATE_ADDED" : item["DATE_ADDED"],
                 "LAST_UPDATED" : item["LAST_UPDATED"],
-                "OPEN_TIMES" : item["OPEN_TIMES"].title() if isinstance(item["OPEN_TIMES"], str) else item["OPEN_TIMES"],
+                
+                "HREF" : item["HREF"],
                 "SELECT" : item["SELECT"]
                 })    
         with open(FilePaths.stores_path, "w") as f:                                     
