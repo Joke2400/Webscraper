@@ -26,7 +26,7 @@ class StringAttribute(BaseAttribute):
             if value is None:
                 value = "" 
             else:
-                raise TypeError("String Attribute only accepts input of type: str")
+                raise TypeError(f"Attribute: '{self.private_name}' only accepts input of type: str")
         return value
 
 class LowercaseStringAttribute(BaseAttribute):
@@ -36,7 +36,7 @@ class LowercaseStringAttribute(BaseAttribute):
             if value is None:
                 value = ""
             else:
-                raise TypeError("String Attribute only accepts input of type: str")
+                raise TypeError(f"Attribute: '{self.private_name}' only accepts input of type: str")
         value = value.lower()
         return value
 
@@ -45,7 +45,7 @@ class DataStringAttribute(BaseAttribute):
     def validate(self, value):
         if not isinstance(value, str):
             if value is not None:
-                raise TypeError("Data String Attribute can only be 'str' or 'None'")    
+                raise TypeError(f"Attribute: '{self.private_name}' can only be 'str' or 'None'")    
         else:
             value = value.lower()
         return value
@@ -54,14 +54,14 @@ class NumberAttribute(BaseAttribute):
 
     def validate(self, value):
         if not isinstance(value, (int, float)):
-            raise TypeError("Number Attribute only accepts input of type(s): int/float")
+            raise TypeError(f"Attribute: '{self.private_name}' only accepts input of type(s): int/float")
         return value
 
 class ListAttribute(BaseAttribute):
 
     def validate(self, value):
         if not isinstance(value, (list, tuple)):
-            raise TypeError("Iterable Attribute only accepts input of type(s): list/tuple")
+            raise TypeError(f"Attribute: '{self.private_name}' only accepts input of type(s): list/tuple")
         return value
 
 class LocationAttribute(BaseAttribute):
@@ -69,5 +69,15 @@ class LocationAttribute(BaseAttribute):
     def validate(self, value):
         from .custom_data_classes import LocationTuple #yep
         if not isinstance(value, LocationTuple):
-            raise TypeError("Location Attribute only accepts input of type: LocationTuple")
+            if value is None:
+                return value
+            else:
+                raise TypeError(f"Attribute: '{self.private_name}' only accepts input of type: LocationTuple")
+        return value
+
+class BooleanAttribute(BaseAttribute):
+
+    def validate(self, value):
+        if not isinstance(value, bool):
+            raise TypeError("Attribute: '{self.private_name}' only accepts input of type: bool")
         return value

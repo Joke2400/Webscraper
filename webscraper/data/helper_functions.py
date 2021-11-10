@@ -152,14 +152,15 @@ def check_duplicates_and_append(lst, provided_item):
     
     if not prevent_append:
         store_location = None
-        if isinstance(provided_item["LOCATION"], (list, tuple)):
-            store_location = LocationTuple(
-                provided_item["LOCATION"][0],
-                provided_item["LOCATION"][1],
-                provided_item["LOCATION"][2],
-                provided_item["LOCATION"][3],
-                provided_item["LOCATION"][4]      
-            )
+        if provided_item["LOCATION"] is not None and isinstance(provided_item["LOCATION"], (list, tuple)):
+            if len(provided_item) >= 5:
+                store_location = LocationTuple(
+                    provided_item["LOCATION"][0],
+                    provided_item["LOCATION"][1],
+                    provided_item["LOCATION"][2],
+                    provided_item["LOCATION"][3],
+                    provided_item["LOCATION"][4]      
+                )
         store_item = StoreItem(
             name=provided_item["NAME"],
             chain=provided_item["CHAIN"],

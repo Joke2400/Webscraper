@@ -6,8 +6,13 @@
 
 # useful for handling different item types with a single interface
 from itemadapter import ItemAdapter
-
-
 class FoodieWebscraperPipeline:
+
+    product_list = []
+
     def process_item(self, item, spider):
-        return item
+        self.update_list(item)
+
+    @classmethod
+    def update_list(cls, item):
+        cls.product_list.append(item)

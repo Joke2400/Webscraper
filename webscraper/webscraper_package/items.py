@@ -25,6 +25,7 @@ class FoodieStoreItem(scrapy.Item):
 class FoodieProductItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
+    STORE_NAME = scrapy.Field()
     NAME = scrapy.Field()
     SUBNAME = scrapy.Field()
     IMG = scrapy.Field()

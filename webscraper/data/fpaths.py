@@ -10,6 +10,9 @@ class FoodieWebscraperPath:
     scraper_path = r"C:\Users\Joke\Desktop\Webscraper(completed spider)"
     #This path is going to be hardcoded for now, remember to change if file is moved.
 
+class GMapsAPIKeyPath:
+    keypath = r"C:\Users\Joke\Desktop\google_cloud_api.txt"
+
 class FilePaths:
     stores_path = WorkingDirFilePath.path / "webscraper" / "data" / "stores.json"
     response_path = WorkingDirFilePath.path / "webscraper" / "data" / "response.html"

@@ -1,7 +1,8 @@
-import time
 import json
 import requests
-from webscraper.data.fpaths import FilePaths
+import time
+from datetime import datetime
+from webscraper.data.fpaths import FilePaths, GMapsAPIKeyPath
 from webscraper.data.helper_functions import fetch_local_data2, check_duplicates_and_append
 from webscraper.data.descriptors import StringAttribute, LowercaseStringAttribute, NumberAttribute, ListAttribute
 from webscraper.data.custom_data_classes import LocationAttribute, LocationTuple, StoreItem
@@ -19,14 +20,14 @@ class GMapsAPIManager:
     missing_locations       =   ListAttribute()
     valid_store_chains      =   ListAttribute()
 
-    def __init__(self, address, radius, language, keypath=None):
+    def __init__(self, address=None, radius=5, language="fi", keypath=None, location=None):
         self.address = address
         self.radius = radius
         self.language = language
         self.keypath = keypath
         self.key = self.get_key()
         self.stores = self.get_stores()
-        self.location = self.get_location()
+        self.location = location
         self.valid_stores = []
         self.missing_locations = []
         self.valid_store_chains = [
@@ -39,8 +40,6 @@ class GMapsAPIManager:
         
     def perform_api_request(self, url, payload, callback=None):
         #payload = {'key1': 'value1', 'key2': ['value2', 'value3']}
-        #TODO:
-        #Cases for error status codes
         response = requests.get(url, params=payload)
         if response.status_code == 403:
             print("Response received was 403")
@@ -57,7 +56,12 @@ class GMapsAPIManager:
                 key = str(file.readline())
                 return key
         except:
-            raise Exception("Error occurred while attempting to read api-key")
+            try:
+                with open(GMapsAPIKeyPath.keypath, 'r') as file:
+                    key = str(file.readline())
+                    return key
+            except:
+                raise Exception("Error occurred while attempting to read api-key")
 
     def get_stores(self):
         stores = []
@@ -124,30 +128,30 @@ class GMapsAPIManager:
                     place_id = store["place_id"]
                     plus_code = store["plus_code"]["global_code"]
                     
-                    store_location = LocationTuple(vicinity, lat, lon, place_id, plus_code)        
+                    store_location = LocationTuple(vicinity, lat, lon, place_id, plus_code)
+                    now = datetime.now()        
                     found_store = StoreItem(
                         name=store["name"],
                         chain=valid_name,
-                        location=store_location
+                        location=store_location,
+                        date_added= now.strftime("%d/%m/%Y %H:%M:%S"),
+                        last_updated= now.strftime("%d/%m/%Y %H:%M:%S")
                     )
                     found_stores.append(found_store)
 
         return self.filter_nearby_search(found_stores)
-        #TODO
-        '''
-        This entire function is a bit shitty. There might be a problem with ensuring the users store is
-        always found... If this function gets called it should always find the correct store
-        (as long as google can find it). At this point the code should ignore trying to limit the amount of 
-        api requests sent.
-        '''
 
     def filter_nearby_search(self, found_stores):
         for item in found_stores:
             prevent_append = False
-            for store in self.stores:
-                if item.name == store.name:
-                    prevent_append = True
-                    break
+            if len(item.name.split(" ")) == 1:
+                prevent_append = True
+
+            if not prevent_append:
+                for store in self.stores:
+                    if item.name == store.name:
+                        prevent_append = True
+                        break
             if not prevent_append:
                 self.stores.append(item)
                 distance = item.location.get_distance((self.location.lat, self.location.lon))
@@ -166,33 +170,31 @@ class GMapsAPIManager:
                 distance = item.location.get_distance((self.location.lat, self.location.lon))
                
                 #print(f"Address Coords: {address_coords} | Store Coords: {store_coords}")
-                #print(f"Measured distance: {distance:.4f}km | Max Radial Distance: {self.radius}km")
+                #print(f"Measured distance: {distance:.4f}km | Valid Radius: {self.radius}km")
                 #print("\n")
 
                 if distance <= self.radius:
                     self.valid_stores.append((item, distance))
             else:
                 self.missing_locations.append(item)
-                if len(self.missing_locations > 0):
-                    print("Found local store items without a known location. ")
+        
+        if len(self.missing_locations) > 0:
+            print("Found local store items without a known location. ")
 
     def get_store_location_data(self):
-        for store_name in self.missing_locations:
+        for missing_store in self.missing_locations:
             payload = {
-                "input"         : store_name, 
+                "input"         : missing_store.name, 
                 "inputtype"     : "textquery",
                 "locationbias"  : f"circle:{self.radius*1000}@{self.location.lat},{self.location.lon}",
                 "fields"        : "formatted_address,name,geometry,place_id,plus_code",
                 "key"           : self.key
                 }
             location = self.find_place(payload)
-            self.insert_location(store_name, location)
-
-    def insert_location(self, store_name, location):
-        for store in self.stores:
-            if store.name == store_name:
-                store.location = location
-                break
+            for store in self.stores:
+                if store.name == missing_store.name:
+                    store.location = location
+                    break
 
     def save_store_data(self):
         stores_dict = {"stores" : []}
@@ -212,11 +214,9 @@ class GMapsAPIManager:
         with open(FilePaths.stores_path, "w") as f:                                     
             json.dump(stores_dict, f, indent=2)
     
-    def get_local_stores(self):
-        self.compare_local_items()
-        return self.valid_stores
-
-    def add_locally_missing_locations(self):
+    def fetch_eligible_stores(self):
+        if self.location is None:
+            self.location = self.get_location()
         if self.valid_stores is None:
             self.compare_local_items()
         elif isinstance(self.valid_stores, list):

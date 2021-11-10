@@ -66,9 +66,9 @@ HTTPERROR_ALLOWED_CODES = [404, 500] #The spider only does a few narrow operatio
 
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'foodie_webscraper.pipelines.FoodieWebscraperPipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'webscraper.webscraper_package.pipelines.FoodieWebscraperPipeline': 300,
+}
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See https://docs.scrapy.org/en/latest/topics/autothrottle.html

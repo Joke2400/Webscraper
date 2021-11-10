@@ -446,7 +446,6 @@ class FoodieSpider(scrapy.Spider):
                 self.stores.append(item)
 
     def save_store_data(self):
-        print("[INTERNAL]: Saving store data...")
         self.process_local_store_data()
         stores_dict = {"stores" : []}
         valid_store_chains = [
@@ -474,6 +473,8 @@ class FoodieSpider(scrapy.Spider):
                 "HREF" : item["HREF"],
                 "SELECT" : item["SELECT"]
                 })    
+
+        print("[INTERNAL]: Saving store data...")
         with open(FilePaths.stores_path, "w") as f:                                     
             json.dump(stores_dict, f, indent=2)
 
@@ -532,12 +533,13 @@ class FoodieSpider(scrapy.Spider):
         #This is where a scrapy item exporter or similar would be called, 
         #it's not implemented yet so it's just printing all the stuff out for now
         for item in self.scraped_products:  
-            print(f"NAME: {item['NAME'].title():<60} STORE_NAME: {self.store_data['NAME'].title()}\n")
-            print(f"{'':<5}PRICE: {item['PRICE']}€\n")
-            for x in item.keys():
-                if x != "NAME" and x != "PRICE":
-                    print(f"{'':<20}{x:<15}:  {item[x]}")
-            print("\n")
+            #print(f"NAME: {item['NAME'].title():<60} STORE_NAME: {self.store_data['NAME'].title()}\n")
+            #print(f"{'':<5}PRICE: {item['PRICE']}€\n")
+            #for x in item.keys():
+                #if x != "NAME" and x != "PRICE":
+                    #print(f"{'':<20}{x:<15}:  {item[x]}")
+            #print("\n")
+            yield item
 
     def process_data_dict(self, data):
         for name, subname, img, href, quantity, price_whole, price_decimal, unit, unit_price, shelf_name, shelf_href in zip(
@@ -547,8 +549,9 @@ class FoodieSpider(scrapy.Spider):
             
             #(in identifier list)
             item_dict = {}
+            item_dict["STORE_NAME"] = self.store_data['NAME']
             item_dict["NAME"]       = name
-            item_dict["SUBNAME"]    = subname
+            item_dict["SUBNAME"]    = subname   
             item_dict["IMG"]        = img
             item_dict["HREF"]       = href
             
@@ -571,6 +574,7 @@ class FoodieSpider(scrapy.Spider):
             if isinstance(product[1], str):
                 product_dict[product[0]] = product[1].lower()
 
+        item["STORE_NAME"]  = product_dict["STORE_NAME"]
         item["NAME"]        = product_dict["NAME"]
         item["SUBNAME"]     = product_dict["SUBNAME"]
         item["IMG"]         = product_dict["IMG"]
