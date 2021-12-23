@@ -8,21 +8,49 @@ class ProcessManager:
     terminal_only = BooleanAttribute()
 
     def __init__(self):
-        self.gmaps_manager = GMapsAPIManager(address="Siestankuja 16D", radius=5, language="sv", keypath=r"C:\Users\Joke\Desktop\google_cloud_api.txt")
+        self.gmaps_manager = GMapsAPIManager(radius=5, language="sv", keypath=r"C:\Users\Joke\Desktop\API_KEYS\google_cloud_api.txt")
         #self.search_manager = SearchManager()
     
-    def start(self, terminal_only=False):
-        self.terminal_only = terminal_only
+    def start(self, **kwargs):
+        self.terminal_only = kwargs.get("terminal", False)
+        
+        #TEMPORARY:
+        del kwargs["terminal"]
 
         if self.terminal_only:
-            self._start_terminal_only()
+            result = self.start_terminal_only()
         else:
-            self.start_default()    
+            result = self.start_default(**kwargs) 
 
-    def _start_default(self):
-        pass
+        tmp_list = []
+        for x in result:
+            tmp_list.append(x)
+        return tmp_list
 
-    def _start_terminal_only(self):
+    def start_default(self, **kwargs):
+        #WILL CURRENTLY ONLY WORK WITH A SINGLE STORE AS A FIRST ITERATION
+        #ALSO SKIPPING GMAPS API FOR NOW
+
+        address = kwargs.get("address", None)
+        stores= kwargs.get("stores", None)
+        search_query = kwargs.get("search_query", None)
+        
+        if search_query is None:
+            raise TypeError("start_default() requires a store_query to be passed as a string")
+        if stores is None:
+            raise TypeError("start_default() requires a store_name to be passed as a string")
+        if address is not None:
+            self.gmaps_manager.address = address
+
+        #valid_stores = self.gmaps_manager.fetch_eligible_stores()                   
+        
+        scraper_manager = SearchManager(stores=stores, product_search=search_query, spider_type="Foodie")
+        scraper_manager.start_process()
+
+        for item in pipeline.product_list:
+            yield item
+
+    def start_terminal_only(self):
         print("Process started...")
         commands = '''\nCommands:\n
         '''
