@@ -22,11 +22,6 @@ class ProcessManager:
         else:
             result = self.start_default(**kwargs) 
 
-        tmp_list = []
-        for x in result:
-            tmp_list.append(x)
-        return tmp_list
-
     def start_default(self, **kwargs):
         #WILL CURRENTLY ONLY WORK WITH A SINGLE STORE AS A FIRST ITERATION
         #ALSO SKIPPING GMAPS API FOR NOW
@@ -57,6 +52,7 @@ class ProcessManager:
         print(commands)
 
         #------TEMP-----
+        '''
         valid_stores = self.gmaps_manager.fetch_eligible_stores()
 
         print("\n")
@@ -89,6 +85,8 @@ class ProcessManager:
             stores = select_store(valid_stores)
 
         print("A product query can be a single item or several separated by commas")
+        '''
+        stores = ["prisma olari", "s-market nihtisilta", "s-market grani"]
         search_query = input("Please enter a product query: ").split(",")
         scraper_manager = SearchManager(stores=stores, product_search=search_query, spider_type="Foodie")
         scraper_manager.start_process()
