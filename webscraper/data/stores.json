@@ -13,7 +13,7 @@
       ],
       "ADDRESS": "Kauniaistentie 7, 02700 Kauniainen",
       "DATE_ADDED": "05/10/2021 16:38:21",
-      "LAST_UPDATED": "05/12/2021 13:31:11",
+      "LAST_UPDATED": "04/03/2022 11:07:04",
       "HREF": "6c6a1d4de1a6454f30a3a5c185e51c08",
       "SELECT": "/store/select_store/6c6a1d4de1a6454f30a3a5c185e51c08"
     },
@@ -23,8 +23,8 @@
       "OPEN_TIMES": "Avoinna T\u00e4n\u00e4\u00e4n: 07 - 22",
       "LOCATION": null,
       "ADDRESS": "Kutojantie 1, 02630 Espoo",
-      "DATE_ADDED": "16/11/2021 17:12:47",
-      "LAST_UPDATED": "16/11/2021 17:12:48",
+      "DATE_ADDED": "16/11/2021 17:12:46",
+      "LAST_UPDATED": "04/03/2022 19:31:51",
       "HREF": "bcbf2aab931eea1a168f6d048ad3ed2a",
       "SELECT": "/store/select_store/bcbf2aab931eea1a168f6d048ad3ed2a"
     },
@@ -299,7 +299,7 @@
       "LOCATION": null,
       "ADDRESS": "Komeetankatu 2, 02210 Espoo",
       "DATE_ADDED": "16/11/2021 17:12:47",
-      "LAST_UPDATED": "16/11/2021 20:34:39",
+      "LAST_UPDATED": "04/03/2022 13:55:27",
       "HREF": "0563cf74f373b2250360e756060fdb59",
       "SELECT": "/store/select_store/0563cf74f373b2250360e756060fdb59"
     },

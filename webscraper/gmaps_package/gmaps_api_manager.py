@@ -2,11 +2,11 @@ import json
 import requests
 import time
 from datetime import datetime
-from webscraper.data.fpaths import FilePaths, GMapsAPIKeyPath
-from webscraper.data.helper_functions import fetch_local_data2, check_duplicates_and_append
-from webscraper.data.descriptors import StringAttribute, LowercaseStringAttribute, NumberAttribute, ListAttribute
-from webscraper.data.custom_data_classes import LocationAttribute, LocationTuple, StoreItem
-from .urls import GMapsAPIUrls as GMAPS_URLS
+from webscraper.data.filepaths import FilePaths, GMapsAPIKeyPath
+from webscraper.utils.helper_functions import fetch_local_data2, check_duplicates_and_append
+from webscraper.utils.descriptors import StringAttribute, LowercaseStringAttribute, NumberAttribute, ListAttribute
+from webscraper.utils.custom_data_classes import LocationAttribute, LocationTuple, StoreItem
+from webscraper.data.urls import GMapsAPIUrls as GMAPS_URLS
 
 class GMapsAPIManager:
     address                 =   StringAttribute()

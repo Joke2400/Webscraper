@@ -6,7 +6,7 @@
 import scrapy
 
 
-class FoodieStoreItem(scrapy.Item):
+class StoreItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     NAME = scrapy.Field()
@@ -22,7 +22,7 @@ class FoodieStoreItem(scrapy.Item):
     HREF = scrapy.Field()
     SELECT = scrapy.Field()
     
-class FoodieProductItem(scrapy.Item):
+class ProductItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
     STORE_NAME = scrapy.Field()
