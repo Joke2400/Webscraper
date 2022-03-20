@@ -1,6 +1,9 @@
 from abc import ABC, abstractmethod
 
-class BaseAttribute(ABC):
+class BaseValidator(ABC):
+
+    def __init__(self, check):
+        self.check = check
 
     def __set_name__(self, owner, name):
         self.public_name = name
@@ -22,66 +25,41 @@ class BaseAttribute(ABC):
     @abstractmethod
     def validate(self, value):
         pass
-
-class StringAttribute(BaseAttribute):
-
-    def validate(self, value):
-        if not isinstance(value, str):
-            if value is None:
-                value = "" 
-            else:
-                raise TypeError(f"Attribute: '{self.private_name}' only accepts input of type: str")
-        return value
-
-class LowercaseStringAttribute(BaseAttribute):
+class SpecifiedOrNoneValidator(BaseValidator):
 
     def validate(self, value):
-        if not isinstance(value, str):
-            if value is None:
-                value = ""
-            else:
-                raise TypeError(f"Attribute: '{self.private_name}' only accepts input of type: str")
-        value = value.lower()
+        if not isinstance(value, self.check):
+            if value is not None:
+                raise TypeError(f"Validation failed on attribute: '{self.public_name}'.")
         return value
 
-class DataStringAttribute(BaseAttribute):
+class SpecifiedOnlyValidator(BaseValidator):
+
+    def validate(self, value):
+        if not isinstance(value, self.check):
+            raise TypeError(f"Validation failed on attribute: '{self.public_name}'.")
+        return value
+
+class ListContentValidator:
+
+    def validate(self, value):
+        if not all(isinstance(item, self.check) for item in value):
+            raise TypeError(f"Validation failed on list: '{self.public_name}'.")
+        return value
+
+class StringValidator(BaseValidator):
 
     def validate(self, value):
         if not isinstance(value, str):
             if value is not None:
-                raise TypeError(f"Attribute: '{self.private_name}' can only be 'str' or 'None'")    
-        else:
-            value = value.lower()
+                raise TypeError(f"Attribute: '{self.public_name}' only accepts input of type: str")
         return value
 
-class NumberAttribute(BaseAttribute):
+class LowercaseStringValidator(BaseValidator):
 
     def validate(self, value):
-        if not isinstance(value, (int, float)):
-            raise TypeError(f"Attribute: '{self.private_name}' only accepts input of type(s): int/float")
-        return value
-
-class ListAttribute(BaseAttribute):
-
-    def validate(self, value):
-        if not isinstance(value, (list, tuple)):
-            raise TypeError(f"Attribute: '{self.private_name}' only accepts input of type(s): list/tuple")
-        return value
-
-class LocationAttribute(BaseAttribute):
-
-    def validate(self, value):
-        from .custom_data_classes import LocationTuple #yep
-        if not isinstance(value, LocationTuple):
-            if value is None:
-                return value
-            else:
-                raise TypeError(f"Attribute: '{self.private_name}' only accepts input of type: LocationTuple")
-        return value
-
-class BooleanAttribute(BaseAttribute):
-
-    def validate(self, value):
-        if not isinstance(value, bool):
-            raise TypeError("Attribute: '{self.private_name}' only accepts input of type: bool")
+        if not isinstance(value, str):
+            if value is not None:
+                raise TypeError(f"Attribute: '{self.public_name}' only accepts input of type: str")
+        value = value.lower()
         return value

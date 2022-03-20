@@ -12,5 +12,5 @@ def start():
         pass
     process = CrawlerProcess(get_project_settings())
 
-    process.crawl(Webber, start_urls=["https://www.foodie.fi"], requested_products=["Maito"])
+    process.crawl(Webber, start_urls=["https://s-kaupat.fi/kauppa"], requested_products=["Maito"])
     process.start()

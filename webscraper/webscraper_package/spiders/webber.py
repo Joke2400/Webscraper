@@ -1,25 +1,17 @@
-from scrapy import Spider, Request
-from datetime import datetime
-from .webber_package.classes import BaseSpider
-from ...utils.descriptors import BooleanAttribute, ListAttribute, BooleanAttribute
-from ...data.urls import FoodieURLs as F_URLS, SkaupatURLs as S_URLS
-from ...data.filepaths import FilePaths
-
+from .webber_package.base_classes import BaseSpider
+from ...utils.descriptors import SpecifiedOnlyValidator
 
 #Site-specific scraper, will initially be built specifially for s-kaupat.fi/foodie.fi.
 class Webber(BaseSpider):
 
     name = "Webber"
-    requested_products = ListAttribute()
-    requested_stores = ListAttribute()
-
-    scraped_products = ListAttribute()
-    scraped_stores = ListAttribute()
-
-    ignore_store_data = BooleanAttribute()
+    
+    requested_products  = SpecifiedOnlyValidator(list)
+    requested_stores    = SpecifiedOnlyValidator(list)
+    ignore_store_data   = SpecifiedOnlyValidator(bool)
 
     def __init__(self, *args, **kwargs):
-        super(BaseSpider, self).__init__(*args, **kwargs)
+        super(Webber, self).__init__(*args, **kwargs)
         self.requested_products = kwargs.get(
                 "requested_products", [])
         self.requested_stores = kwargs.get(
@@ -28,7 +20,6 @@ class Webber(BaseSpider):
             raise Exception("Webber needs to be provided a product for a query.")
         if len(self.requested_stores) == 0:
             self.ignore_store_data = True
-
 '''
 
 Lets make some assumptions:
