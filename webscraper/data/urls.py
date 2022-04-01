@@ -1,6 +1,3 @@
-from ast import Store
-
-
 class GMapsAPIUrls:
 
     PLACE_FROM_TEXT = "https://maps.googleapis.com/maps/api/place/findplacefromtext/json"
