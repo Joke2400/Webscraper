@@ -7,4 +7,4 @@ def discord_start(*args):
 
 
 if __name__ == "__main__":
-    start()
+    start(urls=["https://s-kaupat.fi/kauppa"], products=["Maito"], stores=["Prisma Olari", "S-Market Grani"])

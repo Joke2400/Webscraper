@@ -9,30 +9,33 @@ import scrapy
 class StoreItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    NAME = scrapy.Field()
-    CHAIN = scrapy.Field()
-    OPEN_TIMES = scrapy.Field()
+    name = scrapy.Field()
+    chain = scrapy.Field()
+    open_times = scrapy.Field()
 
-    ADDRESS = scrapy.Field()
-    LOCATION = scrapy.Field()
+    address = scrapy.Field()
+    location = scrapy.Field()
 
-    DATE_ADDED = scrapy.Field()
-    LAST_UPDATED = scrapy.Field()
+    date_added = scrapy.Field()
+    last_updated = scrapy.Field()
 
-    HREF = scrapy.Field()
-    SELECT = scrapy.Field()
+    href = scrapy.Field()
+    select = scrapy.Field()
     
 class ProductItem(scrapy.Item):
     # define the fields for your item here like:
     # name = scrapy.Field()
-    STORE_NAME = scrapy.Field()
-    NAME = scrapy.Field()
-    SUBNAME = scrapy.Field()
-    IMG = scrapy.Field()
-    HREF = scrapy.Field()
-    QUANTITY = scrapy.Field()
-    PRICE = scrapy.Field()
-    UNIT = scrapy.Field()
-    UNIT_PRICE = scrapy.Field()
-    SHELF_NAME = scrapy.Field()
-    SHELF_HREF = scrapy.Field()
+    store_name = scrapy.Field()
+    name = scrapy.Field()
+    subname = scrapy.Field()
+    img = scrapy.Field()
+    href = scrapy.Field()
+    quantity = scrapy.Field()
+    price = scrapy.Field()
+    unit = scrapy.Field()
+    unit_price = scrapy.Field()
+    shelf_name = scrapy.Field()
+    shelf_href = scrapy.Field()
+    
+    date_added = scrapy.Field()
+    last_updated = scrapy.Field()

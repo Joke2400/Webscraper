@@ -2,8 +2,9 @@ from abc import ABC, abstractmethod
 
 class BaseValidator(ABC):
 
-    def __init__(self, check):
+    def __init__(self, check, set_public=None):
         self.check = check
+        self.set_public = set_public
 
     def __set_name__(self, owner, name):
         self.public_name = name
@@ -12,9 +13,9 @@ class BaseValidator(ABC):
     def __get__(self, obj, objtype=None):
         return getattr(obj, self.private_name)
 
-    def __set__(self, obj, value, set_public=False):
+    def __set__(self, obj, value):
         value = self.validate(value)
-        if not set_public:
+        if not self.set_public:
             setattr(obj, self.private_name, value)
         else:
             setattr(obj, self.public_name, value)
@@ -40,7 +41,7 @@ class SpecifiedOnlyValidator(BaseValidator):
             raise TypeError(f"Validation failed on attribute: '{self.public_name}'.")
         return value
 
-class ListContentValidator:
+class ListContentValidator(BaseValidator):
 
     def validate(self, value):
         if not all(isinstance(item, self.check) for item in value):
@@ -49,17 +50,11 @@ class ListContentValidator:
 
 class StringValidator(BaseValidator):
 
-    def validate(self, value):
-        if not isinstance(value, str):
-            if value is not None:
-                raise TypeError(f"Attribute: '{self.public_name}' only accepts input of type: str")
-        return value
-
-class LowercaseStringValidator(BaseValidator):
+    def __init__(self, set_public=None):
+        self.set_public = set_public
 
     def validate(self, value):
         if not isinstance(value, str):
             if value is not None:
                 raise TypeError(f"Attribute: '{self.public_name}' only accepts input of type: str")
-        value = value.lower()
         return value
