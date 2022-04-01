@@ -7,7 +7,7 @@
 #     https://docs.scrapy.org/en/latest/topics/downloader-middleware.html
 #     https://docs.scrapy.org/en/latest/topics/spider-middleware.html
 
-BOT_NAME = 'product_data_scraper'
+BOT_NAME = 'webber'
 
 SPIDER_MODULES = ['webscraper.webscraper_package.spiders']
 NEWSPIDER_MODULE = 'webscraper.webscraper_package.spiders'
@@ -67,7 +67,7 @@ HTTPERROR_ALLOWED_CODES = [404, 500] #The spider only does a few narrow operatio
 # Configure item pipelines
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'webscraper.webscraper_package.pipelines.FoodieWebscraperPipeline': 300,
+    'webscraper.webscraper_package.pipelines.WebberPipeline': 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
