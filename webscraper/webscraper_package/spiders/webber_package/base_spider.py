@@ -34,15 +34,15 @@ class BaseSpider(Spider):
 
     def scrape_page(self, url, callback=None, **kwargs):
         wrap_callback = self.print_response(callback=callback)
-        self.searches_performed.append(url)
+        self.performed_searches.append(url)
         request = Request(url=url, callback=wrap_callback, cb_kwargs=kwargs, dont_filter=True)
         return request
 
     def print_response(self, callback):
         def wrapper(response, **kwargs):
             if response is not None:
-                print(f"\nReceived response: {response.status}, from IP: {response.ip_address}\
-                    \n\tusing {response.url}")
+                print(f"\n[Received response: {response.status}, from IP: {response.ip_address}]\
+                    \n\t(using {response.url})")
             callback(response, **kwargs)
         return wrapper
 

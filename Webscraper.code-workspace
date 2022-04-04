@@ -15,6 +15,10 @@
 		"editor.cursorStyle": "line",
 		"files.exclude": {
 			"**/__pycache__": true
+		},
+		"workbench.colorTheme": "Mayukai Alucard",
+		"workbench.colorCustomizations": {
+		
 		}
 	}
 }

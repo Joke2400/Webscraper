@@ -1,5 +1,5 @@
 INFO: Scrapy 2.6.1 started (bot: webber)
-INFO: Versions: lxml 4.8.0.0, libxml2 2.9.12, cssselect 1.1.0, parsel 1.6.0, w3lib 1.22.0, Twisted 22.2.0, Python 3.10.4 (tags/v3.10.4:9d38120, Mar 23 2022, 23:13:41) [MSC v.1929 64 bit (AMD64)], pyOpenSSL 22.0.0 (OpenSSL 1.1.1n  15 Mar 2022), cryptography 36.0.2, Platform Windows-10-10.0.19044-SP0
+INFO: Versions: lxml 4.8.0.0, libxml2 2.9.12, cssselect 1.1.0, parsel 1.6.0, w3lib 1.22.0, Twisted 22.2.0, Python 3.10.0 (tags/v3.10.0:b494f59, Oct  4 2021, 19:00:18) [MSC v.1929 64 bit (AMD64)], pyOpenSSL 22.0.0 (OpenSSL 1.1.1n  15 Mar 2022), cryptography 36.0.2, Platform Windows-10-10.0.19044-SP0
 INFO: Overridden settings:
 {'BOT_NAME': 'webber',
  'LOG_FILE': 'log.txt',
@@ -9,7 +9,7 @@ INFO: Overridden settings:
  'USER_AGENT': ('Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) '
                 'Gecko/20100101 Firefox/88.0',)}
 DEBUG: Using reactor: twisted.internet.selectreactor.SelectReactor
-INFO: Telnet Password: 753d2a59ecbee8fd
+INFO: Telnet Password: 7a9fc5c88be7e36c
 INFO: Enabled extensions:
 ['scrapy.extensions.corestats.CoreStats',
  'scrapy.extensions.telnet.TelnetConsole',
@@ -37,22 +37,13 @@ INFO: Enabled item pipelines:
 INFO: Spider opened
 INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
 INFO: Telnet console listening on 127.0.0.1:6023
-ERROR: Error while obtaining start requests
-Traceback (most recent call last):
-  File "c:\Users\Joke\Desktop\Webscraper\webscraper-new-env\lib\site-packages\scrapy\core\engine.py", line 150, in _next_request
-    request = next(self.slot.start_requests)
-  File "c:\Users\Joke\Desktop\Webscraper\webscraper\webscraper_package\spiders\webber.py", line 57, in start_requests
-    result = self.store_search(store_name=store_str, callback=self.scrape_store)
-  File "c:\Users\Joke\Desktop\Webscraper\webscraper\webscraper_package\spiders\webber.py", line 95, in store_search
-    request = self.scrape_page(url, callback, kwargs)
-TypeError: BaseSpider.scrape_page() takes from 2 to 3 positional arguments but 4 were given
-INFO: Closing spider (finished)
-INFO: Dumping Scrapy stats:
-{'elapsed_time_seconds': 43.612433,
- 'finish_reason': 'finished',
- 'finish_time': datetime.datetime(2022, 3, 29, 11, 30, 58, 921157),
- 'log_count/DEBUG': 1,
- 'log_count/ERROR': 1,
- 'log_count/INFO': 10,
- 'start_time': datetime.datetime(2022, 3, 29, 11, 30, 15, 308724)}
-INFO: Spider closed (finished)
+DEBUG: Attempting to acquire lock 3043936545536 on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
+DEBUG: Lock 3043936545536 acquired on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
+DEBUG: Attempting to acquire lock 3043936547024 on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
+DEBUG: Lock 3043936547024 acquired on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
+DEBUG: Attempting to release lock 3043936547024 on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
+DEBUG: Lock 3043936547024 released on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
+DEBUG: Attempting to release lock 3043936545536 on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
+DEBUG: Lock 3043936545536 released on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
+DEBUG: Crawled (200) <GET https://www.foodie.fi/stores/?query=Prisma%20Olari> (referer: None)
+DEBUG: Redirecting (302) to <GET https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08> from <GET https://www.foodie.fi/store/select_store/6c6a1d4de1a6454f30a3a5c185e51c08>

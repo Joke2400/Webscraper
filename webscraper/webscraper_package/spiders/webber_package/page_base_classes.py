@@ -17,12 +17,18 @@ class Page:
 
         self.next_page = next_page
         self.prev_page = prev_page
-  
-    def fetch_head(self):
-        self.head = PageElement(page=self, xpath=BPS.HEAD, name="HEAD" )
+        self.head = None
+        self.body = None
 
-    def fetch_body(self):
-        self.body = PageElement(page=self, xpath=BPS.BODY, name="BODY")
+    def get_head(self):
+        if not isinstance(self.head, PageElement):
+            self.head = PageElement(page=self, xpath=BPS.HEAD, name="HEAD" )
+        return self.head
+
+    def get_body(self):
+        if not isinstance(self.body, PageElement):
+            self.body = PageElement(page=self, xpath=BPS.BODY, name="BODY")
+        return self.body
 
 class PageElement:
 
@@ -34,21 +40,23 @@ class PageElement:
     def __init__(self, page, xpath, name=None):
         self.page = page
         self.xpath = xpath
-        self.name = f"{name.strip().upper()}_ELEMENT"
-        self.get_response_content()
+        if name is not None: 
+            self.name = f"{name.strip().upper()}_ELEMENT"
+        self.selector, self.content = self.get_element(xpath=self.xpath)
+            
+    def get_element(self, xpath):
+        selector = self.page.response.xpath(xpath)
+        content = selector.getall()
+        return selector, content
 
-    def fetch_response_content(self):
-        response = self.page.response
-        self.selector = response.xpath(self.xpath)
-        self.content = self.selector.getall()
+class NestedPageElement:
 
-class NestedPageElement(PageElement):
-
-    def __init__(self, page, xpath, selector):
+    def __init__(self, page, outer_selector):
         self.page = page
-        self.xpath = xpath
-        self.selector = selector
+        self.outer_selector = outer_selector
+        self.nested_selector = None
 
-    def fetch_element(self, selector, xpath_str):
-        selector = selector.xpath(xpath_str)
-        return selector
+    def get_nested_selector(self, xpath):
+        if not isinstance(self.nested_selector, SelectorList):
+            self.nested_selector = self.outer_selector.xpath(xpath)
+        return self.nested_selector

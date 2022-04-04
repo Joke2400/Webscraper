@@ -3,7 +3,7 @@ from webscraper.data.urls import FoodieURLs as F_URLS, SkaupatURLs as S_URLS
 from webscraper.data_manager_package.data_manager import DataManager
 from webscraper.data_manager_package.commands import DBStoreChainRequest, DBStoreRequest, DBStoreProductRequest
 
-from .webber_package.page_classes import ProductPage, StorePage, StoreSearchPage
+from .webber_package.page_classes import StoreSearchPage
 from .webber_package.foodie_selectors import ProductListSearchLocators as PLSL
 from .webber_package.foodie_selectors import SearchResultsPageLocators as SRPL
 from .webber_package.foodie_selectors import StoreListSearchLocators as SLSL
@@ -55,6 +55,7 @@ class Webber(BaseSpider):
                     yield result
                 else:
                     result = self.store_search(store_name=store_str, callback=self.scrape_store)
+                    yield result
         else:
             pass
             #Call GMapsAPI -> GMaps contains user address -> makes query
@@ -82,7 +83,7 @@ class Webber(BaseSpider):
             url = self.url_source.base_url + store_select
             if callback is None:
                 callback = self.product_search
-            request = self.scrape_page(url, callback, kwargs)
+            request = self.scrape_page(url, callback, **kwargs)
             return request
         else:
             raise Exception("select_store() needs to be provided a search parameter")
@@ -92,19 +93,20 @@ class Webber(BaseSpider):
             url = self.url_source.store_search_url + store_name
             if callback is None:
                 callback = self.scrape_store
-            request = self.scrape_page(url, callback, kwargs)
+            request = self.scrape_page(url, callback, **kwargs)
             return request
         else:
             raise Exception("store_search() needs to be provided a search parameter")
 
     def scrape_store(self, response, **kwargs):
         page = self.create_page(response, StoreSearchPage)
+        page.get_store_list()
         print(page.url)
         print("\n")
-        print(page.product_list.products)
+        print(page.store_list.stores)
         print("\n")
-        for item in page.product_list.products:
-            print(item.product_details)
+        for item in page.store_list.stores:
+            print(item.store_details)
             print("\n")
         validation = self.validate_store(page)
         #This function is called if a search by name is necessary

@@ -20,17 +20,17 @@ class DataManager:
         return None
 
     def start_session(self):
-        print("Database session started.")
+        print("\n[Database session started]")
         self.sessionmaker = sessionmaker(bind=self.database_engine)
         self.session = self.sessionmaker()
         self.initializer = DatabaseInitializer(self.session)
 
     def close_session(self):
-        print("Database session ended.")
+        print("\n[Database session ended]")
         self.session.close()
 
     def reset_database(self):
-        print("Removing and resetting database because reset_database() method was called...")
+        print("\nRemoving and resetting database because reset_database() method was called...")
         if self.session is not None:
             self.session.close()
         removed = False
