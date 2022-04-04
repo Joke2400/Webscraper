@@ -23,6 +23,7 @@ class DataManager:
         print("\n[Database session started]")
         self.sessionmaker = sessionmaker(bind=self.database_engine)
         self.session = self.sessionmaker()
+        #Initializer will be removed in final version
         self.initializer = DatabaseInitializer(self.session)
 
     def close_session(self):
