@@ -4,21 +4,5 @@
 			"path": "."
 		}
 	],
-	"settings": {
-		"material-icon-theme.files.associations": {
-		
-		},
-		"python.defaultInterpreterPath": "C:\\Users\\Joke\\Desktop\\Webscraper\\webscraper_env\\Scripts\\python.exe",
-		"files.autoSave": "onWindowChange",
-		"editor.fontSize": 13,
-		"editor.renderWhitespace": "selection",
-		"editor.cursorStyle": "line",
-		"files.exclude": {
-			"**/__pycache__": true
-		},
-		"workbench.colorTheme": "Mayukai Alucard",
-		"workbench.colorCustomizations": {
-		
-		}
-	}
+	"settings": {}
 }

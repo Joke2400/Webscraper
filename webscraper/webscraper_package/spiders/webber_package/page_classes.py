@@ -20,6 +20,7 @@ class StoreSearchPage(Page):
         return self.store_list
 
     def get_stores(self):
+        self.get_store_list()
         stores = self.store_list.get_stores()
         return stores
 
@@ -41,7 +42,7 @@ class StoreList(PageElement):
     def get_stores(self):
         if not isinstance(self.stores, list):
             self.stores = []
-            selector_list = self.get_element(xpath=SLSL.STORE_LIST_ELEMENTS)[0]
+            selector_list = self.get_element(xpath=SLSL.STORE_LIST_ELEMENTS)[1]
             for selector in selector_list:
                 self.stores.append(StoreElement(
                                 page=self.page, 
@@ -58,17 +59,12 @@ class StoreElement(NestedPageElement):
         self.store_details = {}
 
     def get_store_details(self):
-        selector = self.get_nested_selector(xpath=SLSL.STORE_NAME)
-        self.store_details["NAME"] = selector.getall()
-        
-        selector = self.get_nested_selector(xpath=SLSL.STORE_ADDRESS)
-        self.store_details["ADDRESS"] = selector.getall()
+        self.store_details["NAME"]    = self.get_selector_content(xpath=SLSL.STORE_NAME)
+        self.store_details["ADDRESS"] = self.get_selector_content(xpath=SLSL.STORE_ADDRESS)
+        self.store_details["HREF"]    = self.get_selector_content(xpath=SLSL.STORE_HREF)
+        self.store_details["SELECT"]  = self.get_selector_content(xpath=SLSL.STORE_SELECT_BUTTON)
 
-        selector = self.get_nested_selector(xpath=SLSL.STORE_HREF)
-        self.store_details["HREF"] = selector.getall()
-
-        selector = self.get_nested_selector(xpath=SLSL.STORE_SELECT_BUTTON)
-        self.store_details["SELECT"] =  selector.getall()
+        return self.store_details
 
 
 

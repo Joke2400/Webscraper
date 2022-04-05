@@ -2,6 +2,7 @@ from webscraper.utils.descriptors import SpecifiedOnlyValidator, SpecifiedOrNone
 from .basic_selectors import BasicPageSelectors as BPS
 from scrapy.selector.unified import SelectorList
 from scrapy.http.response.html import HtmlResponse
+from scrapy.selector import Selector
 
 
 class Page:
@@ -51,12 +52,11 @@ class PageElement:
 
 class NestedPageElement:
 
-    def __init__(self, page, outer_selector):
+    def __init__(self, page, element_content):
         self.page = page
-        self.outer_selector = outer_selector
-        self.nested_selector = None
+        self.element_content = element_content
+        self.selector_content = None
 
-    def get_nested_selector(self, xpath):
-        if not isinstance(self.nested_selector, SelectorList):
-            self.nested_selector = self.outer_selector.xpath(xpath)
-        return self.nested_selector
+    def get_selector_content(self, xpath):
+        self.selector_content = Selector(text=self.element_content).xpath(xpath).getall()
+        return self.selector_content

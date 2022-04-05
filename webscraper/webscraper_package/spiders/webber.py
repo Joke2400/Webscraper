@@ -100,14 +100,13 @@ class Webber(BaseSpider):
 
     def scrape_store(self, response, **kwargs):
         page = self.create_page(response, StoreSearchPage)
-        page.get_store_list()
+        stores = page.get_stores()
         print(page.url)
         print("\n")
-        print(page.store_list.stores)
+        print(stores)
         print("\n")
-        for item in page.store_list.stores:
-            print(item.store_details)
-            print("\n")
+        for store in stores:
+            print(store.get_store_details())
         validation = self.validate_store(page)
         #This function is called if a search by name is necessary
 
