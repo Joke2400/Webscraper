@@ -9,7 +9,7 @@ class StoreSearchPage(Page):
     def __init__(self, response, next_page=None, prev_page=None):
         super(StoreSearchPage, self).__init__(response, next_page, prev_page)
         self.store_list = None
-        self.navigation = None
+        self.next = None
 
     #Forcing the need for a function to be called for the rest of the objects to
     #be created is meant to speed up the request phase. get_store_list() should 
@@ -24,10 +24,10 @@ class StoreSearchPage(Page):
         stores = self.store_list.get_stores()
         return stores
 
-    def get_navigation(self):
-        if not isinstance(self.navigation, PageElement):
-            self.navigation= PageElement(page=self, xpath=SLSL.NAVIGATION_BUTTONS, name="NAVIGATION" )
-        return self.navigation
+    def get_next_button(self):
+        if not isinstance(self.next, PageElement):
+            self.next = PageElement(page=self, xpath=SLSL.STORE_LIST_NEXT_BUTTON, name="NEXT" )
+        return self.next
 
     def reset_store_list(self):
         self.store_list = None
@@ -42,11 +42,11 @@ class StoreList(PageElement):
     def get_stores(self):
         if not isinstance(self.stores, list):
             self.stores = []
-            selector_list = self.get_element(xpath=SLSL.STORE_LIST_ELEMENTS)[1]
-            for selector in selector_list:
+            content_list = self.get_element(xpath=SLSL.STORE_LIST_ELEMENTS)[1]
+            for selector_content in content_list:
                 self.stores.append(StoreElement(
                                 page=self.page, 
-                                store_selector=selector))
+                                selector_content=selector_content))
         return self.stores
     
     def reset_stores(self):
@@ -54,17 +54,24 @@ class StoreList(PageElement):
 
 class StoreElement(NestedPageElement):
 
-    def __init__(self, page, store_selector):
-        super(StoreElement, self).__init__(page, store_selector)   
+    def __init__(self, page, selector_content):
+        super(StoreElement, self).__init__(page, selector_content)   
         self.store_details = {}
 
     def get_store_details(self):
-        self.store_details["NAME"]    = self.get_selector_content(xpath=SLSL.STORE_NAME)
-        self.store_details["ADDRESS"] = self.get_selector_content(xpath=SLSL.STORE_ADDRESS)
-        self.store_details["HREF"]    = self.get_selector_content(xpath=SLSL.STORE_HREF)
-        self.store_details["SELECT"]  = self.get_selector_content(xpath=SLSL.STORE_SELECT_BUTTON)
-
+        self.store_details["NAME"]      = self.get_name()
+        self.store_details["ADDRESS"]   = self.get_address()
+        self.store_details["SELECT"]    = self.get_select()
         return self.store_details
+
+    def get_name(self):
+        return self.get_element(xpath=SLSL.STORE_NAME)[1]
+
+    def get_address(self):
+        return self.get_element(xpath=SLSL.STORE_ADDRESS)[1]
+
+    def get_select(self):
+        return self.get_element(xpath=SLSL.STORE_SELECT_BUTTON )[1]
 
 
 

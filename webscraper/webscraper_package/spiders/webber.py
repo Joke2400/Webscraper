@@ -3,7 +3,7 @@ from webscraper.data.urls import FoodieURLs as F_URLS, SkaupatURLs as S_URLS
 from webscraper.data_manager_package.data_manager import DataManager
 from webscraper.data_manager_package.commands import DBStoreChainRequest, DBStoreRequest, DBStoreProductRequest
 
-from .webber_package.page_classes import StoreSearchPage
+from .webber_package.foodie_page_classes import StoreSearchPage
 from .webber_package.foodie_selectors import ProductListSearchLocators as PLSL
 from .webber_package.foodie_selectors import SearchResultsPageLocators as SRPL
 from .webber_package.foodie_selectors import StoreListSearchLocators as SLSL
@@ -50,27 +50,32 @@ class Webber(BaseSpider):
     def start_requests(self):
         if not self.store_unspecified:
             for store_str in self.requested_stores:
-                result = self.get_local_store_data(store_name=store_str, callback=self.product_search)
+                result = self.db_search_store(
+                        store_name=store_str, 
+                        callback=self.search_products
+                        )
                 if result is not None:
                     yield result
                 else:
-                    result = self.store_search(store_name=store_str, callback=self.scrape_store)
+                    result = self.search_store(
+                        store_name=store_str, 
+                        callback=self.process_store_search
+                        )
                     yield result
         else:
             pass
             #Call GMapsAPI -> GMaps contains user address -> makes query
             
-    def get_local_store_data(self, store_name, callback=None):
+    def db_search_store(self, store_name, callback=None):
         query_result = self.database_query(DBStoreRequest, name=store_name)
         if 0 < len(query_result) < 2:
             if callback is None:
-                callback = self.product_search
+                callback = self.search_products
             store = query_result[0]
             request = self.select_store(
-                store_name=store.name, 
                 store_select=store.select,
                 callback=callback,
-                store_object=store
+                store_obj=store
                 )
             return request
         elif len(query_result) > 1:
@@ -82,66 +87,66 @@ class Webber(BaseSpider):
         if store_select is not None:
             url = self.url_source.base_url + store_select
             if callback is None:
-                callback = self.product_search
+                callback = self.search_products
             request = self.scrape_page(url, callback, **kwargs)
             return request
         else:
             raise Exception("select_store() needs to be provided a search parameter")
 
-    def store_search(self, store_name, callback=None, **kwargs):
+    def search_store(self, store_name, callback=None, **kwargs):
         if store_name is not None:
             url = self.url_source.store_search_url + store_name
             if callback is None:
-                callback = self.scrape_store
+                callback = self.process_store_search
+            kwargs["store_name"] = store_name
             request = self.scrape_page(url, callback, **kwargs)
             return request
         else:
             raise Exception("store_search() needs to be provided a search parameter")
 
-    def scrape_store(self, response, **kwargs):
+    def process_store_search(self, response, **kwargs):
         page = self.create_page(response, StoreSearchPage)
+        requested_store = kwargs.get("store_name")
         stores = page.get_stores()
-        print(page.url)
-        print("\n")
-        print(stores)
-        print("\n")
+        store_obj = None
         for store in stores:
-            print(store.get_store_details())
-        validation = self.validate_store(page)
-        #This function is called if a search by name is necessary
+            if store.get_name() == requested_store:
+                store_obj = store
+                break
 
-    def validate_store(self):
+        if store_obj is None:
+            next_button = page.get_next_button()
+            url = self.url_source.base_url + next_button.replace("/stores?", "/stores/?")
+            callback = self.process_store_search
+            request = self.scrape_page(url, callback, **kwargs)
+        else:
+            request = self.select_store(
+                store_select=store_obj.select,
+                callback=self.search_product,
+                store_object=store_obj
+                )
+
+        self.export_store_data(stores)
+        return request
+
+    def validate_store(self, page, store_obj):
         pass
 
-
-
-
-
-
-
-
-
-
-
-
-
-    def product_search(self, response, **kwargs):
+    def search_products(self, response, **kwargs):
         page = self.create_page(response, StorePage)
-        validation = self.validate_store(page)
+        store_obj = kwargs.get("store_obj")
+        validation = self.validate_store(page, store_obj)
         if validation:
             for product in self.requested_products:
                 url = f"{self.URL_SOURCE.product_search_url}{product.name}"
-                callback = self.scrape_products
+                callback = self.process_product_search
                 request = self.scrape_page(url, callback, kwargs)
                 yield request
         else:
             raise NotImplementedError("get_products() validation failed")
             #Check if saved_pages has a page with the correct url
 
-
-
-
-    def scrape_products(self, response, **kwargs):
+    def process_product_search(self, response, **kwargs):
         page = self.create_page(response, ProductPage)
         validation = self.validate_store(page)
 

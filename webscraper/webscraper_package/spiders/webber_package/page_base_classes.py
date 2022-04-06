@@ -52,11 +52,13 @@ class PageElement:
 
 class NestedPageElement:
 
-    def __init__(self, page, element_content):
+    def __init__(self, page, element_content, name=None):
         self.page = page
-        self.element_content = element_content
-        self.selector_content = None
+        self.element_content = element_content        
+        if name is not None: 
+            self.name = f"{name.strip().upper()}_ELEMENT"
 
-    def get_selector_content(self, xpath):
-        self.selector_content = Selector(text=self.element_content).xpath(xpath).getall()
-        return self.selector_content
+    def get_element(self, xpath):
+        selector = Selector(text=self.element_content).xpath(xpath)
+        content = selector.getall()
+        return selector, content
