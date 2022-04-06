@@ -75,7 +75,7 @@ class Webber(BaseSpider):
             request = self.select_store(
                 store_select=store.select,
                 callback=callback,
-                store_obj=store
+                store_name=store_name
                 )
             return request
         elif len(query_result) > 1:
@@ -123,20 +123,23 @@ class Webber(BaseSpider):
             request = self.select_store(
                 store_select=store_obj.select,
                 callback=self.search_product,
-                store_object=store_obj
+                store_name=store_obj.get_name()
                 )
 
         self.export_store_data(stores)
         return request
 
-    def validate_store(self, page, store_obj):
-        pass
+    def validate_store(self, page, store_name):
+        store = page.get_store()
+        if store.get_name().strip().lower() == store_name.strip().lower():
+            return True
+        else:
+            return False
 
     def search_products(self, response, **kwargs):
         page = self.create_page(response, StorePage)
-        store_obj = kwargs.get("store_obj")
-        validation = self.validate_store(page, store_obj)
-        if validation:
+        store_name = kwargs.get("store_name")
+        if self.validate_store(page, store_name):
             for product in self.requested_products:
                 url = f"{self.URL_SOURCE.product_search_url}{product.name}"
                 callback = self.process_product_search

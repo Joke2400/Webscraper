@@ -73,6 +73,44 @@ class StoreElement(NestedPageElement):
     def get_select(self):
         return self.get_element(xpath=SLSL.STORE_SELECT_BUTTON )[1]
 
+class StorePage(Page):
+
+    def __init__(self, response, next_page=None, prev_page=None):
+        super(StorePage, self).__init__(response, next_page, prev_page)
+
+    def get_store(self):
+        pass
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 '''
@@ -116,7 +154,4 @@ class Product(NestedPageElement):
         
     def fetch_product_details(self):
         self.product_details = self.fetch_element(page=self.page, xpath=SRPL.PRODUCT_DETAILS)
-
-class StorePage(Page):
-    pass
 '''
