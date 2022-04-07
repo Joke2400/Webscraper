@@ -1,9 +1,9 @@
 from webscraper.utils.descriptors import ListContentValidator, SpecifiedOnlyValidator, SpecifiedOrNoneValidator
 from webscraper.data.urls import FoodieURLs as F_URLS, SkaupatURLs as S_URLS
 from webscraper.data_manager_package.data_manager import DataManager
-from webscraper.data_manager_package.commands import DBStoreChainRequest, DBStoreRequest, DBStoreProductRequest
+from webscraper.data_manager_package.commands import DBStoreRequest
 
-from .webber_package.foodie_page_classes import StoreSearchPage
+from .webber_package.foodie_page_classes import StoreSearchPage, StorePage
 from .webber_package.foodie_selectors import ProductListSearchLocators as PLSL
 from .webber_package.foodie_selectors import SearchResultsPageLocators as SRPL
 from .webber_package.foodie_selectors import StoreListSearchLocators as SLSL
@@ -47,6 +47,17 @@ class Webber(BaseSpider):
             self.url_source= S_URLS
             self.selector_source = None
 
+    def print_response(self, callback):
+        def wrapper(response, **kwargs):
+            store_name = kwargs.get("store_name", "Unspecified")
+            tag = kwargs.get("tag", "")
+            del kwargs["tag"]
+            if response is not None:
+                print(f"\n[Received response: {response.status}] (IP: {response.ip_address})\
+                    \n[{tag}]: {store_name}\t(using {response.url})")
+            return callback(response, **kwargs)
+        return wrapper
+
     def start_requests(self):
         if not self.store_unspecified:
             for store_str in self.requested_stores:
@@ -55,12 +66,14 @@ class Webber(BaseSpider):
                         callback=self.search_products
                         )
                 if result is not None:
+                    print(f"(Found store {result.cb_kwargs['store_name']} locally)")
                     yield result
                 else:
                     result = self.search_store(
                         store_name=store_str, 
                         callback=self.process_store_search
                         )
+                    print(f"(Searching for store {result.cb_kwargs['store_name']} on foodie.fi)")
                     yield result
         else:
             pass
@@ -88,6 +101,7 @@ class Webber(BaseSpider):
             url = self.url_source.base_url + store_select
             if callback is None:
                 callback = self.search_products
+            kwargs["tag"] = "STORE_SELECT"
             request = self.scrape_page(url, callback, **kwargs)
             return request
         else:
@@ -99,6 +113,7 @@ class Webber(BaseSpider):
             if callback is None:
                 callback = self.process_store_search
             kwargs["store_name"] = store_name
+            kwargs["tag"] = "STORE_SEARCH"
             request = self.scrape_page(url, callback, **kwargs)
             return request
         else:
@@ -109,20 +124,21 @@ class Webber(BaseSpider):
         requested_store = kwargs.get("store_name")
         stores = page.get_stores()
         store_obj = None
-        for store in stores:
-            if store.get_name() == requested_store:
+        for store in stores:            
+            if store.get_name().strip().lower() == requested_store.strip().lower():
                 store_obj = store
                 break
 
         if store_obj is None:
             next_button = page.get_next_button()
-            url = self.url_source.base_url + next_button.replace("/stores?", "/stores/?")
+            url = self.url_source.base_url + next_button.content[0].replace("/stores?", "/stores/?")
             callback = self.process_store_search
+            kwargs["tag"] = "NEXT_PAGE"
             request = self.scrape_page(url, callback, **kwargs)
         else:
             request = self.select_store(
-                store_select=store_obj.select,
-                callback=self.search_product,
+                store_select=store_obj.get_select(),
+                callback=self.search_products,
                 store_name=store_obj.get_name()
                 )
 
@@ -131,7 +147,7 @@ class Webber(BaseSpider):
 
     def validate_store(self, page, store_name):
         store = page.get_store()
-        if store.get_name().strip().lower() == store_name.strip().lower():
+        if store.name[0].strip().lower() == store_name.strip().lower():
             return True
         else:
             return False
@@ -141,23 +157,22 @@ class Webber(BaseSpider):
         store_name = kwargs.get("store_name")
         if self.validate_store(page, store_name):
             for product in self.requested_products:
-                url = f"{self.URL_SOURCE.product_search_url}{product.name}"
+                url = f"{self.url_source.product_search_url}{product}"
                 callback = self.process_product_search
-                request = self.scrape_page(url, callback, kwargs)
+                kwargs["tag"] = "PRODUCT_SEARCH"
+                request = self.scrape_page(url, callback, **kwargs)
                 yield request
         else:
-            raise NotImplementedError("get_products() validation failed")
+            raise NotImplementedError("validate_store() returned False")
             #Check if saved_pages has a page with the correct url
 
     def process_product_search(self, response, **kwargs):
-        page = self.create_page(response, ProductPage)
-        validation = self.validate_store(page)
-
+        print("Process product search")
 
     def export_product_data(self):
         pass
 
-    def export_store_data(self):
+    def export_store_data(self, stores):
         pass
 
 '''

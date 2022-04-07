@@ -2,10 +2,10 @@ class SearchResultsPageLocators:
     ''' A class that contains XPATH selectors for key elements on the search results page.'''
 
     STORES_TOPMENU          =   "//div[@id='topmenu-stores']"                        
-    STORE_NAME              =   "//div[@id='topmenu-stores']/a//div[@class='store-name']//b/text()"
-    STORE_HREF              =   "//div[@id='topmenu-stores']/a/@href"
-    STORE_ADDRESS           =   "//div[@id='topmenu-stores']/div//div[@class='store-row row']/div/div[2]/text()"
-    STORE_OPEN_TIMES        =   "//div[@id='topmenu-stores']/div//div[@class='store-row row']/div/div[3]/text()"
+    STORE_NAME              =   "//div[@class='store-name']//b/text()"
+    STORE_HREF              =   "//a[@class='dd-item custom-link clearfix']/@href"
+    STORE_ADDRESS           =   "//div[@class='store-row row']/div/div[2]/text()"
+    STORE_OPEN_TIMES        =   "//div[@class='store-row row']/div/div[3]/text()"
 
     PRODUCT_LIST            =   "//ul[@class='shelf js-shelf products-shelf clear clearfix']"
     PRODUCT_LIST_ELEMENTS   =   "//li[@class='relative item effect fade-shadow js-shelf-item js-entrylist-item']"

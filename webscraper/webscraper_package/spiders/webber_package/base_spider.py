@@ -41,7 +41,7 @@ class BaseSpider(Spider):
     def print_response(self, callback):
         def wrapper(response, **kwargs):
             if response is not None:
-                print(f"\n[Received response: {response.status}, from IP: {response.ip_address}]\
+                print(f"[Received response: {response.status}, from IP: {response.ip_address}]\
                     \n\t(using {response.url})")
             callback(response, **kwargs)
         return wrapper

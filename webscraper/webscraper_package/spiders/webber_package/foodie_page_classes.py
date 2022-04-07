@@ -3,6 +3,7 @@ from .foodie_selectors import ProductListSearchLocators as PLSL
 from .foodie_selectors import SearchResultsPageLocators as SRPL
 from .foodie_selectors import StoreListSearchLocators as SLSL
 from .page_base_classes import NestedPageElement, Page, PageElement
+from webscraper.data.filepaths import FilePaths
 
 class StoreSearchPage(Page):
 
@@ -16,7 +17,7 @@ class StoreSearchPage(Page):
     #therefore only be called once items are to be sent to the pipeline
     def get_store_list(self):
         if not isinstance(self.store_list, StoreList):
-            self.store_list = StoreList(self, SLSL.STORE_LIST)
+            self.store_list = StoreList(page=self, xpath=SLSL.STORE_LIST)
         return self.store_list
 
     def get_stores(self):
@@ -26,7 +27,7 @@ class StoreSearchPage(Page):
 
     def get_next_button(self):
         if not isinstance(self.next, PageElement):
-            self.next = PageElement(page=self, xpath=SLSL.STORE_LIST_NEXT_BUTTON, name="NEXT" )
+            self.next = PageElement(page=self, xpath=SLSL.STORE_LIST_NEXT_BUTTON)
         return self.next
 
     def reset_store_list(self):
@@ -65,34 +66,46 @@ class StoreElement(NestedPageElement):
         return self.store_details
 
     def get_name(self):
-        return self.get_element(xpath=SLSL.STORE_NAME)[1]
+        value = self.get_element(xpath=SLSL.STORE_NAME)[1]
+        if len(value) > 1:
+            raise Exception("Selector returned multiple values when only one was expected.")
+        return value[0]
 
     def get_address(self):
-        return self.get_element(xpath=SLSL.STORE_ADDRESS)[1]
+        value = self.get_element(xpath=SLSL.STORE_ADDRESS)[1]
+        if len(value) > 1:
+            raise Exception("Selector returned multiple values when only one was expected.")
+        return value[0]
 
     def get_select(self):
-        return self.get_element(xpath=SLSL.STORE_SELECT_BUTTON )[1]
-
+        value = self.get_element(xpath=SLSL.STORE_SELECT_BUTTON )[1]
+        if len(value) > 1:
+            raise Exception("Selector returned multiple values when only one was expected.")
+        return value[0]
 class StorePage(Page):
 
     def __init__(self, response, next_page=None, prev_page=None):
         super(StorePage, self).__init__(response, next_page, prev_page)
+        self.topmenu = None
 
     def get_store(self):
-        pass
+        if not isinstance(self.topmenu, StoreTopmenu):
+            content = self.response.xpath(SRPL.STORES_TOPMENU).getall()[0]
+            with open(FilePaths.response_path, 'w') as file:
+                file.write(content)
+            self.topmenu = StoreTopmenu(page=self, xpath=SRPL.STORES_TOPMENU)
+        return self.topmenu
+
+class StoreTopmenu(PageElement):
+
+    def __init__(self, page, xpath):
+        super(StoreTopmenu, self).__init__(page, xpath) 
 
 
-
-
-
-
-
-
-
-
-
-
-
+        self.name =     NestedPageElement(self.page, self.content[0]).get_element(xpath=SRPL.STORE_NAME)[1]
+        self.href =     NestedPageElement(self.page, self.content[0]).get_element(xpath=SRPL.STORE_HREF)[1]  
+        self.address =  NestedPageElement(self.page, self.content[0]).get_element(xpath=SRPL.STORE_ADDRESS)[1]
+        self.open_times = NestedPageElement(self.page, self.content[0]).get_element(xpath=SRPL.STORE_OPEN_TIMES )[1]
 
 
 

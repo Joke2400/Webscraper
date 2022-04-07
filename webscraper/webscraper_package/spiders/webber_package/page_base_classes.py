@@ -1,64 +1,50 @@
-from webscraper.utils.descriptors import SpecifiedOnlyValidator, SpecifiedOrNoneValidator
+from webscraper.utils.descriptors import SpecifiedOnlyValidator
 from .basic_selectors import BasicPageSelectors as BPS
 from scrapy.selector.unified import SelectorList
-from scrapy.http.response.html import HtmlResponse
 from scrapy.selector import Selector
 
-
 class Page:
-
-    response    = SpecifiedOnlyValidator(HtmlResponse)
-    url         = SpecifiedOnlyValidator(str)
-    next_page   = SpecifiedOrNoneValidator(bool)
-    prev_page   = SpecifiedOrNoneValidator(bool)
     
     def __init__(self, response, next_page=None, prev_page=None):
         self.response = response
-        self.url = response.url
-
         self.next_page = next_page
         self.prev_page = prev_page
-        self.head = None
-        self.body = None
 
-    def get_head(self):
-        if not isinstance(self.head, PageElement):
-            self.head = PageElement(page=self, xpath=BPS.HEAD, name="HEAD" )
-        return self.head
-
-    def get_body(self):
-        if not isinstance(self.body, PageElement):
-            self.body = PageElement(page=self, xpath=BPS.BODY, name="BODY")
-        return self.body
+        self.head = PageElement(page=self, xpath=BPS.HEAD)
+        self.body = PageElement(page=self, xpath=BPS.BODY)
+        self.url = response.url
 
 class PageElement:
+    
+    selector = SpecifiedOnlyValidator(SelectorList)
 
-    page            = SpecifiedOnlyValidator(Page)
-    xpath           = SpecifiedOnlyValidator(str)
-    selector        = SpecifiedOnlyValidator(SelectorList)
-    content         = SpecifiedOnlyValidator((list, str))
-
-    def __init__(self, page, xpath, name=None):
+    def __init__(self, page, xpath, selector=None, other_xpath=None):
         self.page = page
         self.xpath = xpath
-        if name is not None: 
-            self.name = f"{name.strip().upper()}_ELEMENT"
-        self.selector, self.content = self.get_element(xpath=self.xpath)
-            
-    def get_element(self, xpath):
-        selector = self.page.response.xpath(xpath)
-        content = selector.getall()
-        return selector, content
+        
+        if selector is not None and other_xpath is not None:
+            self.outer_selector, self.other_xpath = selector, other_xpath
+            self.selector = self.get_nested_selector(
+                            selector=self.outer_selector, 
+                            xpath=self.xpath )
+            self.content = self.get_content(xpath=self.other_xpath)
 
-class NestedPageElement:
+        else:
+            self.selector = self.get_selector()
+            self.content = self.get_content(xpath=self.xpath)
 
-    def __init__(self, page, element_content, name=None):
-        self.page = page
-        self.element_content = element_content        
-        if name is not None: 
-            self.name = f"{name.strip().upper()}_ELEMENT"
+    def get_selector(self):
+        selector = self.page.response.xpath(self.xpath)
+        return selector
 
-    def get_element(self, xpath):
-        selector = Selector(text=self.element_content).xpath(xpath)
-        content = selector.getall()
-        return selector, content
+    def get_content(self, xpath, selector=None):
+        if selector is None:
+            selector = self.get_selector(xpath)
+            self.selector = selector
+        content = selector.getall()[0]
+        return content
+
+    def get_nested_selector(self, selector, xpath):
+        selector = selector.xpath(xpath)
+        #selector = Selector(text=self.element_content).xpath(xpath)
+        return selector
