@@ -1,4 +1,4 @@
-from webscraper.utils.descriptors import SpecifiedOnlyValidator
+from webscraper.utils.descriptors import SpecifiedOrNoneValidator
 from .basic_selectors import BasicPageSelectors as BPS
 from scrapy.selector.unified import SelectorList
 from scrapy.selector import Selector
@@ -9,42 +9,40 @@ class Page:
         self.response = response
         self.next_page = next_page
         self.prev_page = prev_page
-
-        self.head = PageElement(page=self, xpath=BPS.HEAD)
-        self.body = PageElement(page=self, xpath=BPS.BODY)
         self.url = response.url
 
-class PageElement:
+        self.head = Element(page=self, xpath=BPS.HEAD)
+        self.body = Element(page=self, xpath=BPS.BODY)
     
-    selector = SpecifiedOnlyValidator(SelectorList)
+class Element:
+    
+    selector = SpecifiedOrNoneValidator(SelectorList)
 
-    def __init__(self, page, xpath, selector=None, other_xpath=None):
+    def __init__(self, page, xpath):
         self.page = page
         self.xpath = xpath
-        
-        if selector is not None and other_xpath is not None:
-            self.outer_selector, self.other_xpath = selector, other_xpath
-            self.selector = self.get_nested_selector(
-                            selector=self.outer_selector, 
-                            xpath=self.xpath )
-            self.content = self.get_content(xpath=self.other_xpath)
 
-        else:
-            self.selector = self.get_selector()
-            self.content = self.get_content(xpath=self.xpath)
+        self.selector = self.get_selector(source=self.page.response, xpath=self.xpath)
+        self.content = self.get_selector_content(selector=self.selector)
 
-    def get_selector(self):
-        selector = self.page.response.xpath(self.xpath)
+    def get_selector(self, source, xpath):
+        selector = source.xpath(xpath)
         return selector
 
-    def get_content(self, xpath, selector=None):
-        if selector is None:
-            selector = self.get_selector(xpath)
-            self.selector = selector
-        content = selector.getall()[0]
+    def get_selector_content(self, selector):
+        content = selector.getall()
         return content
 
-    def get_nested_selector(self, selector, xpath):
-        selector = selector.xpath(xpath)
-        #selector = Selector(text=self.element_content).xpath(xpath)
+    def get_selector_from_text(self, text, xpath):
+        selector = Selector(text=text).xpath(xpath)
         return selector
+
+class NestedElement(Element):
+
+    def __init__(self, page, xpath, base_selector):
+        self.page = page
+        self.xpath = xpath
+        self.base_selector = base_selector
+
+        self.selector = self.get_selector(source=self.base_selector, xpath=self.xpath)
+        self.content = self.get_selector_content(selector=self.selector)
