@@ -2,38 +2,46 @@ from .basic_selectors import BasicPageSelectors as BPS
 from .foodie_selectors import ProductListSearchLocators as PLSL
 from .foodie_selectors import SearchResultsPageLocators as SRPL
 from .foodie_selectors import StoreListSearchLocators as SLSL
-from .page_base_classes import NestedPageElement, Page, PageElement
+from .page_base_classes import Page, Element, NestedElement
 from webscraper.data.filepaths import FilePaths
 
-class StoreSearchPage(Page):
+class StoreList(Element):
 
-    def __init__(self, response, next_page=None, prev_page=None):
-        super(StoreSearchPage, self).__init__(response, next_page, prev_page)
-        self.store_list = None
-        self.next = None
+    def __init__(self):
+        self.store_list = []
 
-    #Forcing the need for a function to be called for the rest of the objects to
-    #be created is meant to speed up the request phase. get_store_list() should 
-    #therefore only be called once items are to be sent to the pipeline
-    def get_store_list(self):
-        if not isinstance(self.store_list, StoreList):
-            self.store_list = StoreList(page=self, xpath=SLSL.STORE_LIST)
-        return self.store_list
+    def add_fields(self, page, xpath):
+        super(StoreList, self).__init__(page, xpath)
+
+    def __get__(self, obj, objtype=None):
+        store_list = getattr(obj, self.store_list)
+        if len(store_list) == 0:
+           store_list = obj.get_stores()
+        return store_list
 
     def get_stores(self):
-        self.get_store_list()
-        stores = self.store_list.get_stores()
-        return stores
+        store_elements_selector = self.get_selector(
+            source=self.selector, 
+            xpath=SLSL.STORE_LIST_ELEMENTS 
+            )
+
+class StoreListPage(Page):
+
+    stores = StoreList()
+
+    def __init__(self, response, prev_page=None, next_page=None):
+        super(StoreListPage, self).__init__(response, prev_page, next_page)
+        self.stores = StoreList().add_fields(self, xpath=SLSL.STORE_LIST)
 
     def get_next_button(self):
-        if not isinstance(self.next, PageElement):
-            self.next = PageElement(page=self, xpath=SLSL.STORE_LIST_NEXT_BUTTON)
+        pass
+        if not isinstance(self.next, Element):
+            self.next = Element(page=self, xpath=SLSL.STORE_LIST_NEXT_BUTTON)
         return self.next
 
-    def reset_store_list(self):
-        self.store_list = None
-
-class StoreList(PageElement):
+        
+'''
+class StoreList(Element):
 
     def __init__(self, page, xpath):
         super(StoreList, self).__init__(page, xpath)
@@ -126,7 +134,6 @@ class StoreTopmenu(PageElement):
 
 
 
-'''
 class ProductPage(Page):
     
     def __init__(self, response, next_page=None, prev_page=None):

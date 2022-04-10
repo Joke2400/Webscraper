@@ -5,10 +5,10 @@ from scrapy.selector import Selector
 
 class Page:
     
-    def __init__(self, response, next_page=None, prev_page=None):
+    def __init__(self, response, prev_page=None, next_page=None):
         self.response = response
-        self.next_page = next_page
         self.prev_page = prev_page
+        self.next_page = next_page
         self.url = response.url
 
         self.head = Element(page=self, xpath=BPS.HEAD)

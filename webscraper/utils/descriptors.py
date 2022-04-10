@@ -26,6 +26,7 @@ class BaseValidator(ABC):
     @abstractmethod
     def validate(self, value):
         pass
+    
 class SpecifiedOrNoneValidator(BaseValidator):
 
     def validate(self, value):

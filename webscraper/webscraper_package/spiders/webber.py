@@ -3,7 +3,7 @@ from webscraper.data.urls import FoodieURLs as F_URLS, SkaupatURLs as S_URLS
 from webscraper.data_manager_package.data_manager import DataManager
 from webscraper.data_manager_package.commands import DBStoreRequest
 
-from .webber_package.foodie_page_classes import StoreSearchPage, StorePage
+from .webber_package.foodie_page_classes import StoreListPage
 from .webber_package.foodie_selectors import ProductListSearchLocators as PLSL
 from .webber_package.foodie_selectors import SearchResultsPageLocators as SRPL
 from .webber_package.foodie_selectors import StoreListSearchLocators as SLSL
@@ -62,9 +62,9 @@ class Webber(BaseSpider):
         if not self.store_unspecified:
             for store_str in self.requested_stores:
                 result = self.db_search_store(
-                        store_name=store_str, 
-                        callback=self.search_products
-                        )
+                    store_name=store_str, 
+                    callback=self.search_products
+                    )
                 if result is not None:
                     print(f"(Found store {result.cb_kwargs['store_name']} locally)")
                     yield result
@@ -120,7 +120,8 @@ class Webber(BaseSpider):
             raise Exception("store_search() needs to be provided a search parameter")
 
     def process_store_search(self, response, **kwargs):
-        page = self.create_page(response, StoreSearchPage)
+        page = self.create_page(response, StoreListPage)
+        print(page.stores)
         requested_store = kwargs.get("store_name")
         stores = page.get_stores()
         store_obj = None
