@@ -10,14 +10,18 @@ class StoreList(Element):
     def __init__(self):
         self.store_list = []
 
-    def add_fields(self, page, xpath):
-        super(StoreList, self).__init__(page, xpath)
+    @classmethod
+    def add_fields(cls, page, xpath):
+        super(StoreList, cls.).__init__(page, xpath)
 
     def __get__(self, obj, objtype=None):
-        store_list = getattr(obj, self.store_list)
-        if len(store_list) == 0:
-           store_list = obj.get_stores()
-        return store_list
+        if len(self.store_list) == 0:
+            print("get stores")
+           #self.store_list = obj.get_stores()
+        return self.store_list
+
+    def __set__(self, obj, value):
+        self.store_list = value
 
     def get_stores(self):
         store_elements_selector = self.get_selector(
@@ -31,7 +35,8 @@ class StoreListPage(Page):
 
     def __init__(self, response, prev_page=None, next_page=None):
         super(StoreListPage, self).__init__(response, prev_page, next_page)
-        self.stores = StoreList().add_fields(self, xpath=SLSL.STORE_LIST)
+        self.stores = []
+        StoreList.add_fields(self, xpath=SLSL.STORE_LIST)
 
     def get_next_button(self):
         pass

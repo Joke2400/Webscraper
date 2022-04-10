@@ -9,7 +9,7 @@ INFO: Overridden settings:
  'USER_AGENT': ('Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) '
                 'Gecko/20100101 Firefox/88.0',)}
 DEBUG: Using reactor: twisted.internet.selectreactor.SelectReactor
-INFO: Telnet Password: 3a47aad622ba38de
+INFO: Telnet Password: bbbf99f13a23cdf0
 INFO: Enabled extensions:
 ['scrapy.extensions.corestats.CoreStats',
  'scrapy.extensions.telnet.TelnetConsole',
@@ -37,14 +37,13 @@ INFO: Enabled item pipelines:
 INFO: Spider opened
 INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
 INFO: Telnet console listening on 127.0.0.1:6023
-DEBUG: Attempting to acquire lock 2820821806976 on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
-DEBUG: Lock 2820821806976 acquired on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
-DEBUG: Attempting to acquire lock 2820821808272 on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
-DEBUG: Lock 2820821808272 acquired on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
-DEBUG: Attempting to release lock 2820821808272 on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
-DEBUG: Lock 2820821808272 released on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
-DEBUG: Attempting to release lock 2820821806976 on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
-DEBUG: Lock 2820821806976 released on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
+DEBUG: Attempting to acquire lock 2359097175504 on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
+DEBUG: Lock 2359097175504 acquired on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
+DEBUG: Attempting to acquire lock 2359097176800 on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
+DEBUG: Lock 2359097176800 acquired on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
+DEBUG: Attempting to release lock 2359097176800 on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
+DEBUG: Lock 2359097176800 released on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
+DEBUG: Attempting to release lock 2359097175504 on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
+DEBUG: Lock 2359097175504 released on c:\Users\Joke\Desktop\Webscraper\webscraper_env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
 DEBUG: Redirecting (302) to <GET https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08> from <GET https://www.foodie.fi/store/select_store/6c6a1d4de1a6454f30a3a5c185e51c08>
 DEBUG: Crawled (200) <GET https://www.foodie.fi/stores/?query=Prisma%20Olari> (referer: None)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08> (referer: None)
