@@ -1,6 +1,6 @@
 from scrapy import Spider, Request
 
-from .foodie_page_classes import Page
+from .foodie_pageclasses import Page
 from ....data.filepaths import FilePaths
 from webscraper.utils.descriptors import SpecifiedOnlyValidator
 

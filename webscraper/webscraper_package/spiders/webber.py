@@ -3,7 +3,7 @@ from webscraper.data.urls import FoodieURLs as F_URLS, SkaupatURLs as S_URLS
 from webscraper.data_manager_package.data_manager import DataManager
 from webscraper.data_manager_package.commands import DBStoreRequest
 
-from .webber_package.foodie_page_classes import StoreListPage
+from .webber_package.foodie_pageclasses import StoreListPage
 from .webber_package.foodie_selectors import ProductListSearchLocators as PLSL
 from .webber_package.foodie_selectors import SearchResultsPageLocators as SRPL
 from .webber_package.foodie_selectors import StoreListSearchLocators as SLSL
