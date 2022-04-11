@@ -9,16 +9,18 @@ class StoreList(Element):
 
     def __init__(self):
         self.store_list = []
-
-    @classmethod
-    def add_fields(cls, page, xpath):
-        super(StoreList, cls.).__init__(page, xpath)
+        self.fields_added = False
 
     def __get__(self, obj, objtype=None):
+        if not self.fields_added or objtype == None:
+            self.fields_added = True
+            return self
         if len(self.store_list) == 0:
-            print("get stores")
-           #self.store_list = obj.get_stores()
+            self.get_stores()
         return self.store_list
+
+    def __getitem__(self, fields):
+        super(StoreList, self).__init__(fields["page"], fields["xpath"])
 
     def __set__(self, obj, value):
         self.store_list = value
@@ -35,8 +37,12 @@ class StoreListPage(Page):
 
     def __init__(self, response, prev_page=None, next_page=None):
         super(StoreListPage, self).__init__(response, prev_page, next_page)
-        self.stores = []
-        StoreList.add_fields(self, xpath=SLSL.STORE_LIST)
+        fields = {"page" : self, "xpath" : SLSL.STORE_LIST}
+        self.stores[fields] #<-- Had some fun with descriptors, pointless way of doing it really
+        print(self.stores)
+        self.stores.append("Bruh")
+        print(self.stores)
+        print("")
 
     def get_next_button(self):
         pass
