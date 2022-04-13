@@ -25,3 +25,4 @@ def start(products, stores):
             )
     
     process.start()
+    

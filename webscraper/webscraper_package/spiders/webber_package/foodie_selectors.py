@@ -48,4 +48,5 @@ class StoreListSearchLocators:
     STORE_HREF              = "//a[@class='no-underline inline-block']/@href"
     STORE_SELECT            = "//div[@class='inline-block']/div[@class='row']/div[@class='item-actions js-item-actions']/div[@class='btn-group btn-group-sm']/a/@href"
     NAVIGATION_BUTTONS      = "//ul[@class='pagination pagination-lg']"
-    STORE_LIST_NEXT_BUTTON  = "//a[@rel='next']/@href"
+    NAV_NEXT                = "//a[@rel='next']/@href"
+    NAV_PREV                = "//a[@rel='prev']/@href"

@@ -3,6 +3,7 @@ from scrapy import Spider, Request
 from .foodie_pageclasses import Page
 from ....data.filepaths import FilePaths
 from webscraper.utils.descriptors import SpecifiedOnlyValidator
+import datetime
 
 class BaseSpider(Spider):
 
@@ -15,6 +16,7 @@ class BaseSpider(Spider):
         super(BaseSpider, self).__init__(*args, **kwargs)
         self.performed_searches = []
         self.saved_pages = []
+        self.response_times = []
 
     def start_requests(self):
         if self.start_urls is not None:
@@ -35,14 +37,19 @@ class BaseSpider(Spider):
     def scrape_page(self, url, callback=None, **kwargs):
         wrap_callback = self.print_response(callback=callback)
         self.performed_searches.append(url)
+        kwargs["start_time"] = datetime.datetime.now()
         request = Request(url=url, callback=wrap_callback, cb_kwargs=kwargs, dont_filter=True)
         return request
 
     def print_response(self, callback):
         def wrapper(response, **kwargs):
+            end_time = datetime.datetime.now()
+            start_time = kwargs.get("start_time")
+            duration = end_time - start_time
+            self.response_times.append(duration)
             if response is not None:
-                print(f"[Received response: {response.status}, from IP: {response.ip_address}]\
-                    \n\t(using {response.url})")
+                print(f"[Received response]: '{response.status}', from IP: '{response.ip_address}'  (Took: {duration}).\
+                    \n\tusing '{response.url}'")
             callback(response, **kwargs)
         return wrapper
 

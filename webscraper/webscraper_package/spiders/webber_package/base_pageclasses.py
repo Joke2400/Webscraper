@@ -16,8 +16,6 @@ class Page:
     
 class Element:
     
-    selector = SpecifiedOrNoneValidator((SelectorList, Selector))
-
     def __init__(self, page, xpath):
         self.page = page
         self.xpath = xpath
@@ -25,16 +23,24 @@ class Element:
         self.selector = self.get_selector(source=self.page.response, xpath=self.xpath)
         self.content = self.get_selector_content(selector=self.selector)
 
+    def get_element(self, xpath):
+        element = NestedElement(
+            page=self.page,
+            selector=self.selector, 
+            xpath=xpath
+            )
+        return element
+
     def get_selector(self, source, xpath):
         selector = source.xpath(xpath)
         return selector
 
     def get_selector_content(self, selector):
-        content = selector.getall()
+        content = selector.get()
         return content
 
-    def get_selector_from_text(self, text, xpath):
-        selector = Selector(text=text).xpath(xpath)
+    def get_content_from_text(self, text, xpath):
+        selector = Selector(text=text).xpath(xpath).get()
         return selector
 
 class NestedElement(Element):
@@ -45,5 +51,5 @@ class NestedElement(Element):
         self.xpath = xpath
 
         if xpath is not None:
-            self.inner_selector = self.get_selector(source=self.selector, xpath=self.xpath)
-            self.content = self.get_selector_content(selector=self.inner_selector)
+            selector_content = self.get_selector_content(selector=self.selector)
+            self.content = self.get_content_from_text(text=selector_content, xpath=self.xpath)
