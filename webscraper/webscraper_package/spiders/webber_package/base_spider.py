@@ -20,7 +20,7 @@ class BaseSpider(Spider):
     def start_requests(self):
         if self.start_urls is not None:
             for url in self.start_urls:
-                request = self.scrape_page(url, self.parse)
+                request = self.scrape(url, self.parse)
                 yield request
 
     def database_query(self, command, **kwargs):
@@ -33,23 +33,28 @@ class BaseSpider(Spider):
         self.saved_pages.append(page)
         return page
 
-    def scrape_page(self, url, callback=None, **kwargs):
-        wrap_callback = self.print_response(callback=callback)
+    def calc_duration(self, start_time, end_time):
+        timedelta = end_time - start_time
+        duration = f"{timedelta.seconds}s {int(str(timedelta.microseconds)[:3])}ms"
+        return timedelta, duration
+
+    def scrape(self, url, callback, store_name, tag, **kwargs):
+        wrapped_callback = self.print_response(callback=callback, tag=tag, obj_str=store_name)
         self.performed_searches.append(url)
+
         kwargs["start_time"] = datetime.datetime.now()
-        request = Request(url=url, callback=wrap_callback, cb_kwargs=kwargs, dont_filter=True)
+        request = Request(url=url, callback=wrapped_callback, cb_kwargs=kwargs, dont_filter=True)
         return request
 
-    def print_response(self, callback):
+    def print_response(self, callback, tag, obj_str):
         def wrapper(response, **kwargs):
             end_time = datetime.datetime.now()
-            start_time = kwargs.get("start_time")
-            duration = end_time - start_time
-            self.response_times.append(duration)
-            if response is not None:
-                print(f"[Received response]: '{response.status}', from IP: '{response.ip_address}'  (Took: {duration}).\
-                    \n\tusing '{response.url}'")
-            callback(response, **kwargs)
+            timedelta, duration = self.calc_duration(kwargs.get("start_time"), end_time)
+            self.response_times.append(timedelta)
+
+            print(f"\n[RESPONSE]: '{response.status}' from IP: '{response.ip_address}' (Took: {duration}).")
+            print(f"[{tag}]: Searched for '{obj_str}', using '{response.url}'.")        
+            return callback(response, **kwargs)
         return wrapper
 
     def parse(self, response, **kwargs):

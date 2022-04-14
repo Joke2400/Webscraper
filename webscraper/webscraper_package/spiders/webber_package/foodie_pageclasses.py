@@ -48,27 +48,24 @@ class StoreList(Element):
         self.elements_selector = elements_xpath
 
     def get_stores(self):
-        self.store_list = []
+        store_list = []
         element_selectors = self.get_selector(
             source=self.selector, 
             xpath=self.elements_selector
             )
         for selector in element_selectors:
-            self.store_list.append(StoreElement(
+            store_list.append(StoreElement(
                 page=self.page,
                 selector=selector))
-        return self.store_list
+        return store_list
 
 class StoreListPage(FoodiePage):
 
     def __init__(self, response, prev_page=None, next_page=None):
         super(StoreListPage, self).__init__(response, prev_page, next_page)
         self.navigation = Navigation(page=self, xpath=SLSL.NAVIGATION_BUTTONS)
-        self.stores = []
-       
-    def get_store_list(self):
-        store_list = StoreList(page=self, xpath=SLSL.STORE_LIST, elements_xpath=SLSL.STORE_LIST_ELEMENTS)
-        self.stores = store_list.get_stores()
+        self.store_list = StoreList(page=self, xpath=SLSL.STORE_LIST, elements_xpath=SLSL.STORE_LIST_ELEMENTS)
+        self.stores = self.store_list.get_stores()
 
 class ProductPage:
     pass
