@@ -1,6 +1,4 @@
-from webscraper.utils.descriptors import SpecifiedOrNoneValidator
 from .basic_selectors import BasicPageSelectors as BPS
-from scrapy.selector.unified import SelectorList
 from scrapy.selector import Selector
 
 class Page:

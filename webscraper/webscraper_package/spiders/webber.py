@@ -1,14 +1,11 @@
-from re import S
 from webscraper.utils.descriptors import ListContentValidator, SpecifiedOnlyValidator, SpecifiedOrNoneValidator
-from webscraper.data.urls import FoodieURLs as F_URLS, SkaupatURLs as S_URLS
+from .webber_package.foodie_pageclasses import StoreListPage, FoodiePage
 from webscraper.data_manager_package.data_manager import DataManager
 from webscraper.data_manager_package.commands import DBStoreRequest
-
-from .webber_package.foodie_pageclasses import StoreListPage, FoodiePage
+from webscraper.data.urls import FoodieURLs as F_URLS
 from .webber_package.base_spider import BaseSpider
 import datetime
 
-#Site-specific scraper, will initially be built specifially for s-kaupat.fi/foodie.fi.
 class Webber(BaseSpider):
 
     name = "Webber"

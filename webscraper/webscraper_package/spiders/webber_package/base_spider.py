@@ -1,8 +1,7 @@
-from scrapy import Spider, Request
-
-from .foodie_pageclasses import Page
-from ....data.filepaths import FilePaths
 from webscraper.utils.descriptors import SpecifiedOnlyValidator
+from ....data.filepaths import FilePaths
+from .foodie_pageclasses import Page
+from scrapy import Spider, Request
 import datetime
 
 class BaseSpider(Spider):
