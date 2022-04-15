@@ -85,34 +85,29 @@ class Webber(BaseSpider):
             url = self.url_source.store_search_url + store_name
             tag = "store_search"
         
-        request = self.scrape(url=url, callback=callback, store_name=store_name,
-                                tag=tag, kwargs=kwargs)
+        request = self.scrape(url=url, callback=callback, tag=tag, **kwargs)
         return request
 
     def next_page(self, callback, next_button, **kwargs):
         if next_button is None:
             print("[next_page]: Couldn't navigate to the next page, ending search...")
             return None
-        store_name = kwargs.get("store_name")
         
         url = self.url_source.base_url + next_button.replace("/stores?", "/stores/?")
         tag = "next_page"
         
-        request = self.scrape(url=url, callback=callback, store_name=store_name,
-                                tag=tag, kwargs=kwargs)
+        request = self.scrape(url=url, callback=callback, tag=tag, **kwargs)
         return request
 
     def search_products(self, callback, product, **kwargs):
         if not isinstance(product, str):
             print("[search_products]: Couldn't navigate to the next page, ending search...")
             return None
-        store_name = kwargs.get("store_name")
 
         url = f"{self.url_source.product_search_url}{product}"
         tag = "search_products"
         
-        request = self.scrape(url=url, callback=callback, store_name=store_name,
-                                tag=tag, kwargs=kwargs)
+        request = self.scrape(url=url, callback=callback, tag=tag, **kwargs)
 
         return request
 
@@ -136,9 +131,8 @@ class Webber(BaseSpider):
             print(f"[process_store_search]: Found store '{store_name}'.")
             request = self.search_store(
                 callback=self.process_store_select,
-                store_name=store.name.content,
                 store_select=store.select.content,
-                kwargs=kwargs
+                **kwargs
                 )
             print(f"[process_store_search]: Selecting store '{store_name}'...")
         else:
@@ -146,7 +140,7 @@ class Webber(BaseSpider):
             request = self.next_page(
                 callback=self.process_store_search,
                 next_button=page.next_page, 
-                kwargs=kwargs
+                **kwargs
                 )
             print(f"[process_store_search]: Navigating to next page...")
 
@@ -164,7 +158,7 @@ class Webber(BaseSpider):
                 request = self.search_products(
                     callback=self.process_product_search,
                     product=product,
-                    kwargs=kwargs
+                    **kwargs
                     )
                 print(f"[process_store_select]: Searching for product: '{product}'.")
                 yield request
