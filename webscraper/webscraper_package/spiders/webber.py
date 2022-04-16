@@ -1,7 +1,7 @@
 from webscraper.utils.descriptors import ListContentValidator, SpecifiedOnlyValidator, SpecifiedOrNoneValidator
 from .webber_package.foodie_pageclasses import StoreListPage, FoodiePage, ProductPage
 from webscraper.data_manager_package.data_manager import DataManager
-from webscraper.data_manager_package.commands import DBStoreRequest
+from webscraper.data_manager_package.commands import DBCommit, DBStoreRequest
 from webscraper.data.urls import FoodieURLs as F_URLS
 from .webber_package.spider import BaseSpider
 
@@ -155,7 +155,7 @@ class Webber(BaseSpider):
                 )
             print(f"[process_store_search]: Navigating to next page...")
 
-        self.export_store_data(page.stores)
+        self.export_data(page.stores)
         return request
 
     def process_store_select(self, response, **kwargs):
@@ -185,12 +185,12 @@ class Webber(BaseSpider):
         if self.validate_store(selected_name=page.topmenu.name_str, 
                         store_name=store_name):
             page.print_products(limit=self.limit)
+            self.export_data(page.products)
         else:
             print(f"[process_store_select]: '{store_name}' is not selected on current page.")
             raise NotImplementedError("get_store_from_page() returned None")
-
-    def export_product_data(self):
-        print("-EXPORT PRODUCT DATA-")
-
-    def export_store_data(self, stores):
-        print("-EXPORT STORE DATA-")
+    
+    def export_data(self, data):
+        for item in data:
+            payload = item.get_details()
+            self.database_query(DBCommit, payload=payload)

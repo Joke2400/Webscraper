@@ -64,6 +64,7 @@ class ProductElement(NestedElement):
         self.name_match_str = self.name_str.lower()
         
         self.quantity       = self.get_element(xpath=PLSL.PRODUCT_QUANTITY)
+        self.quantity_str   = self.quantity.content.replace(",", "")
         self.subname        = self.get_element(xpath=PLSL.PRODUCT_SUBNAME)
         
         self.price_whole    = self.get_element(xpath=PLSL.PRODUCT_PRICE_WHOLE)
@@ -73,21 +74,33 @@ class ProductElement(NestedElement):
 
         self.unit           = self.get_element(xpath=PLSL.PRODUCT_UNIT)
         self.unit_price     = self.get_element(xpath=PLSL.PRODUCT_UNIT_PRICE)
+        self.unit_price_str = self.unit_price.content.strip()
 
         self.img            = self.get_element(xpath=PLSL.PRODUCT_IMG)
         self.shelf_name     = self.get_element(xpath=PLSL.PRODUCT_SHELF_NAME)
         self.shelf_href     = self.get_element(xpath=PLSL.PRODUCT_SHELF_HREF)
 
     def get_details(self):
-        return [self.name_str, self.name_match_str, self.quantity.content, self.subname.content, 
-            self.price, self.price_str, self.unit.content, self.unit_price.content, 
-            self.img.content, self.shelf_name.content, self.shelf_href.content]
+        return {
+            "name" :            self.name_str,
+            "price" :           self.price,
+            "quantity" :        self.quantity_str,
+            "subname" :         self.subname.content,
+            "price_whole" :     self.price_whole.content,
+            "price_decimal" :   self.price_decimal.content,
+            "unit" :            self.unit.content,
+            "unit_price" :      self.unit_price_str,
+            "img" :             self.img.content,
+            "shelf_name" :      self.shelf_name.content,
+            "shelf_href" :      self.shelf_href.content
+        }
 
     def get_simple_details(self):
         return {
             "name"  : self.name_str, 
             "price" : self.price_str, 
-            "quantity": self.quantity.content}
+            "quantity": self.quantity.content
+            }
 
 class ProductPage(FoodiePage):
 

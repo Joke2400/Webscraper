@@ -88,12 +88,12 @@ class StoreProduct(Base):
 
     __tablename__ = "store_products"
 
-    store_id = Column(ForeignKey("stores.id"), primary_key=True)
-    product_id = Column(ForeignKey("products.id"), primary_key=True)
-    price = Column(Numeric)
-    price_quantity = Column(String)
-    shelf_name = Column(String)
-    shelf_href = Column(String)
+    store_id    = Column(ForeignKey("stores.id"), primary_key=True)
+    product_id  = Column(ForeignKey("products.id"), primary_key=True)
+    price       = Column(Numeric)
+    price_quantity  = Column(String)
+    shelf_name      = Column(String)
+    shelf_href      = Column(String)
 
     store = relationship("Store", back_populates="products")
     product = relationship("Product", back_populates="stores")

@@ -22,8 +22,6 @@ class DataManager:
     def start_session(self):
         self.sessionmaker = sessionmaker(bind=self.database_engine)
         self.session = self.sessionmaker()
-        #Initializer will be removed in final version
-        self.initializer = DatabaseInitializer(self.session)
         print("\n[Database session started]\n")
 
     def close_session(self):
@@ -45,6 +43,9 @@ class DataManager:
                 self.database_engine = create_engine(f"sqlite:///{FilePaths.database_path}", echo=False)
                 Base.metadata.create_all(bind=self.database_engine)
                 print(f"Created new database at: {FilePaths.database_path}")
+                #Initializer will be removed in final version
+                self.initializer = DatabaseInitializer(self.session)       
+
         except Exception("Error creating database file"):
             self.database_engine = None
 
@@ -54,28 +55,5 @@ class DataManager:
         
     def insert_into(self, payload):
         obj = self.object_converter.convert_to_database(payload) #Either Store, Product or StoreLocation
-        self.session.add(obj)
-        self.session.commit()
-
-'''
-Data Manager
-
-* Event driven pattern
-* Initially synchronous, later maybe async
-
-        Data management ->
-            Asking Data manager for store data
-            Sending store and product data Data manager
-
-
-
-Data manager ->
-    Standalone manager for database queries and commits
-    Receiving and sending data to spider
-
-    Centralised storage for all store/product/location data
-
-    ALL DATA FLOWS THROUGH THIS NEW CLASS AT LEAST ONCE BEFORE
-    ITS DISPLAYED TO THE USER
-
-'''
+        #self.session.add(obj)
+        #self.session.commit()
