@@ -7,4 +7,4 @@ def discord_start(*args):
 
 
 if __name__ == "__main__":
-    start(products=["Maito"], stores=["Prisma Olari", "S-Market Grani", "Prisma Sello"])
+    start(products=["Maito"], stores=["Prisma Olari", "S-Market Grani", "Prisma Sello"], limit=5)

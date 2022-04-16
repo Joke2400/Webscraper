@@ -19,7 +19,7 @@ class ProductListSearchLocators:
     """
 
     #Selectors for the product data contained within PRODUCT_DETAILS
-    PRODUCT_NAME            =   "/div[@class='name']/text()"
+    PRODUCT_NAME            =   "//div[@class='name']/text()"
     PRODUCT_QUANTITY        =   "//span[@class='quantity']/text()"
     PRODUCT_SUBNAME         =   "//span[@class='subname']/text()"
     PRODUCT_SHELF_NAME      =   "//span[@class='indoor-location-name']/text()"
@@ -32,8 +32,8 @@ class ProductListSearchLocators:
     PRODUCT_UNIT_PRICE      =   "//div[@class='price-and-quantity']//div[@class='unit-price clear js-comp-price ']/text()"
 
     #Selectors for the product data contained within PRODUCT_HREF_ELEMENT
-    PRODUCT_IMG             =   "//li[@class='relative item effect fade-shadow js-shelf-item js-entrylist-item']//a[@class='js-link-item']//img[@class='img-responsive']/@src"
-    PRODUCT_HREF            =   "//li[@class='relative item effect fade-shadow js-shelf-item js-entrylist-item']//a[@class='js-link-item']/@href"
+    PRODUCT_IMG             =   "//a[@class='js-link-item']//img[@class='img-responsive']/@src"
+    PRODUCT_HREF            =   "//a[@class='js-link-item']/@href"
 
     IDENTIFIER_LIST         =   [PRODUCT_NAME, PRODUCT_SUBNAME, PRODUCT_IMG, PRODUCT_HREF]
     DATA_LIST               =   [PRODUCT_QUANTITY, PRODUCT_PRICE_WHOLE, PRODUCT_PRICE_DECIMAL, PRODUCT_UNIT, PRODUCT_UNIT_PRICE]

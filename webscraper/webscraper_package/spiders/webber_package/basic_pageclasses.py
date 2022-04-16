@@ -51,3 +51,26 @@ class NestedElement(Element):
         if xpath is not None:
             selector_content = self.get_selector_content(selector=self.selector)
             self.content = self.get_content_from_text(text=selector_content, xpath=self.xpath)
+
+class ListElement(Element):
+
+    def __init__(self, page, xpath, elements_xpath, element_type):
+        super(ListElement, self).__init__(page, xpath)
+        self.elements_selector = elements_xpath
+        self.element_type = element_type
+
+    def get_list_elements(self):
+        element_selectors = self.get_selector(
+            source=self.selector, 
+            xpath=self.elements_selector
+            )
+        return element_selectors
+
+    def get_list(self):
+        store_list = []
+        element_selectors = self.get_list_elements()
+        for selector in element_selectors:
+            store_list.append(self.element_type(
+                page=self.page,
+                selector=selector))
+        return store_list

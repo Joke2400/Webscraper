@@ -1,5 +1,5 @@
 from webscraper.utils.descriptors import ListContentValidator, SpecifiedOnlyValidator, SpecifiedOrNoneValidator
-from .webber_package.foodie_pageclasses import StoreListPage, FoodiePage
+from .webber_package.foodie_pageclasses import StoreListPage, FoodiePage, ProductPage
 from webscraper.data_manager_package.data_manager import DataManager
 from webscraper.data_manager_package.commands import DBStoreRequest
 from webscraper.data.urls import FoodieURLs as F_URLS
@@ -11,6 +11,7 @@ class Webber(BaseSpider):
     
     requested_products  = ListContentValidator(str)
     requested_stores    = ListContentValidator(str)
+    limit               = SpecifiedOnlyValidator(int)
     data_manager        = SpecifiedOrNoneValidator(DataManager)
     requesting_old_site = SpecifiedOnlyValidator(bool)
     store_unspecified   = SpecifiedOnlyValidator(bool)
@@ -21,8 +22,10 @@ class Webber(BaseSpider):
                 "requested_products", [])
         self.requested_stores = kwargs.get(
                 "requested_stores", [])
+        self.limit = kwargs.get(
+                "limit")
         self.data_manager = kwargs.get(
-                "data_manager", None)
+                "data_manager")
         self.requesting_old_site = kwargs.get(
                 "requesting_old_site", False)
         
@@ -112,8 +115,8 @@ class Webber(BaseSpider):
         request = self.scrape(url=url, callback=callback, meta=meta, tag=tag, **kwargs)
 
         return request
-
-    def get_store_from_page(self, stores, name_str):
+    
+    def get_store_from_list(self, stores, name_str):
         name_str = name_str.strip().lower()  
         store = None
         for store_obj in stores:
@@ -123,10 +126,14 @@ class Webber(BaseSpider):
         
         return store
 
+    def validate_store(self, selected_name, store_name):
+        equal = True if selected_name == store_name.strip().lower() else False
+        return equal
+
     def process_store_search(self, response, **kwargs):
         store_name = kwargs.get("store_name")
         page = self.create_page(response, StoreListPage)
-        store = self.get_store_from_page(stores=page.stores, name_str=store_name)
+        store = self.get_store_from_list(stores=page.stores, name_str=store_name)
         print(f"[process_store_search]: Found {len(page.stores)} stores in page store list.")
 
         if store is not None:
@@ -154,9 +161,9 @@ class Webber(BaseSpider):
     def process_store_select(self, response, **kwargs):
         store_name = kwargs.get("store_name")
         page = self.create_page(response, FoodiePage)
-        equal = True if page.topmenu.name_str == store_name.strip().lower() else False
 
-        if equal:
+        if self.validate_store(selected_name=page.topmenu.name_str, 
+                                store_name=store_name):
             print(f"[process_store_select]: '{store_name}' is selected on current page.")
             for product in self.requested_products:
                 request = self.search_products(
@@ -172,7 +179,15 @@ class Webber(BaseSpider):
             raise NotImplementedError("get_store_from_page() returned None")
 
     def process_product_search(self, response, **kwargs):
-        print("-PROCESS PRODUCT SEARCH-")
+        store_name = kwargs.get("store_name")
+        page = self.create_page(response, ProductPage)
+        
+        if self.validate_store(selected_name=page.topmenu.name_str, 
+                        store_name=store_name):
+            page.print_products(limit=self.limit)
+        else:
+            print(f"[process_store_select]: '{store_name}' is not selected on current page.")
+            raise NotImplementedError("get_store_from_page() returned None")
 
     def export_product_data(self):
         print("-EXPORT PRODUCT DATA-")
