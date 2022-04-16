@@ -38,12 +38,12 @@ class BaseSpider(Spider):
         duration = f"{timedelta.seconds}s {int(str(timedelta.microseconds)[:3])}ms"
         return timedelta, duration
 
-    def scrape(self, url, callback, tag, **kwargs):
+    def scrape(self, url, callback, meta, tag, **kwargs):
         wrapped_callback = self.print_response(callback=callback, tag=tag, obj_str=kwargs.get("store_name"))
         self.performed_searches.append(url)
 
         kwargs["start_time"] = datetime.datetime.now()
-        request = Request(url=url, callback=wrapped_callback, cb_kwargs=kwargs, dont_filter=True)
+        request = Request(url=url, callback=wrapped_callback, meta=meta, cb_kwargs=kwargs, dont_filter=True)
         return request
 
     def print_response(self, callback, tag, obj_str):

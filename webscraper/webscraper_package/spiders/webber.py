@@ -3,7 +3,7 @@ from .webber_package.foodie_pageclasses import StoreListPage, FoodiePage
 from webscraper.data_manager_package.data_manager import DataManager
 from webscraper.data_manager_package.commands import DBStoreRequest
 from webscraper.data.urls import FoodieURLs as F_URLS
-from .webber_package.base_spider import BaseSpider
+from .webber_package.spider import BaseSpider
 
 class Webber(BaseSpider):
 
@@ -36,25 +36,27 @@ class Webber(BaseSpider):
 
     def start_requests(self):
         if not self.store_unspecified:
-            for store_name in self.requested_stores:
-                result = self.db_search_store(store_name=store_name)
+            for i, name in enumerate(self.requested_stores):
+                result = self.db_search_store(store_name=name)
                 
                 if result is not None:
                     result = self.search_store(
                             callback=self.process_store_select,
-                            store_name=store_name,
+                            meta={"cookiejar" : i},
+                            store_name=name,
                             store_select=result.select
                             )
                     
-                    print(f"[start_requests]: Found store {store_name} locally...")
+                    print(f"[start_requests]: Found store {name} locally...")
                     yield result
                 else:
                     result = self.search_store(
                         callback=self.process_store_search,
-                        store_name=store_name
+                        meta={"cookiejar" : i},
+                        store_name=name
                         )
 
-                    print(f"[start_requests]: Searching for store {store_name} on (foodie.fi)...")
+                    print(f"[start_requests]: Searching for store {name} on (foodie.fi)...")
                     yield result
        
         
@@ -72,7 +74,7 @@ class Webber(BaseSpider):
         else:
             return None
   
-    def search_store(self, callback, store_name, store_select=None, **kwargs):
+    def search_store(self, callback, meta, store_name, store_select=None, **kwargs):
         if not isinstance(store_name, str):
             raise ValueError("store_name parameter needs to be of type: (str).")
         kwargs["store_name"] = store_name
@@ -85,10 +87,10 @@ class Webber(BaseSpider):
             url = self.url_source.store_search_url + store_name
             tag = "store_search"
         
-        request = self.scrape(url=url, callback=callback, tag=tag, **kwargs)
+        request = self.scrape(url=url, callback=callback, meta=meta, tag=tag, **kwargs)
         return request
 
-    def next_page(self, callback, next_button, **kwargs):
+    def next_page(self, callback, meta, next_button, **kwargs):
         if next_button is None:
             print("[next_page]: Couldn't navigate to the next page, ending search...")
             return None
@@ -96,10 +98,10 @@ class Webber(BaseSpider):
         url = self.url_source.base_url + next_button.replace("/stores?", "/stores/?")
         tag = "next_page"
         
-        request = self.scrape(url=url, callback=callback, tag=tag, **kwargs)
+        request = self.scrape(url=url, callback=callback, meta=meta, tag=tag, **kwargs)
         return request
 
-    def search_products(self, callback, product, **kwargs):
+    def search_products(self, callback, meta, product, **kwargs):
         if not isinstance(product, str):
             print("[search_products]: Couldn't navigate to the next page, ending search...")
             return None
@@ -107,7 +109,7 @@ class Webber(BaseSpider):
         url = f"{self.url_source.product_search_url}{product}"
         tag = "search_products"
         
-        request = self.scrape(url=url, callback=callback, tag=tag, **kwargs)
+        request = self.scrape(url=url, callback=callback, meta=meta, tag=tag, **kwargs)
 
         return request
 
@@ -131,6 +133,7 @@ class Webber(BaseSpider):
             print(f"[process_store_search]: Found store '{store_name}'.")
             request = self.search_store(
                 callback=self.process_store_select,
+                meta={"cookiejar" : response.meta["cookiejar"]},
                 store_select=store.select.content,
                 **kwargs
                 )
@@ -139,6 +142,7 @@ class Webber(BaseSpider):
             print(f"[process_store_search]: Store '{store_name}' is missing.")
             request = self.next_page(
                 callback=self.process_store_search,
+                meta={"cookiejar" : response.meta["cookiejar"]},
                 next_button=page.next_page, 
                 **kwargs
                 )
@@ -157,6 +161,7 @@ class Webber(BaseSpider):
             for product in self.requested_products:
                 request = self.search_products(
                     callback=self.process_product_search,
+                    meta={"cookiejar" : response.meta["cookiejar"]},
                     product=product,
                     **kwargs
                     )

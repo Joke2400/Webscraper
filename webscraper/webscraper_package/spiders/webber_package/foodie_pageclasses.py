@@ -1,6 +1,6 @@
 from .foodie_selectors import SearchResultsPageLocators as SRPL
 from .foodie_selectors import StoreListSearchLocators as SLSL
-from .base_pageclasses import Page, Element, NestedElement
+from .basic_pageclasses import Page, Element, NestedElement
 
 class Topmenu(Element):
     
