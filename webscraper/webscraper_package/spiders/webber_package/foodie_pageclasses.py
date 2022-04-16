@@ -51,7 +51,8 @@ class StoreListPage(FoodiePage):
             page=self, 
             xpath=SLSL.STORE_LIST, 
             elements_xpath=SLSL.STORE_LIST_ELEMENTS,
-            element_type=StoreElement)
+            element_type=StoreElement
+            )
         self.stores = self.store_list.get_list()
 
 class ProductElement(NestedElement):
@@ -83,7 +84,10 @@ class ProductElement(NestedElement):
             self.img.content, self.shelf_name.content, self.shelf_href.content]
 
     def get_simple_details(self):
-        return self.name_str, self.price_str, self.quantity.content
+        return {
+            "name"  : self.name_str, 
+            "price" : self.price_str, 
+            "quantity": self.quantity.content}
 
 class ProductPage(FoodiePage):
 
@@ -93,7 +97,8 @@ class ProductPage(FoodiePage):
             page=self, 
             xpath=SRPL.PRODUCT_LIST, 
             elements_xpath=SRPL.PRODUCT_LIST_ELEMENTS,
-            element_type=ProductElement)
+            element_type=ProductElement
+            )
         self.products = self.product_list.get_list()
 
     def print_products(self, limit):
@@ -104,4 +109,6 @@ class ProductPage(FoodiePage):
                 if i > limit:
                     break
                 values = product.get_simple_details()
-                print(values)
+                print(f"\n{'':<5}Product: {values['name']}")
+                print(f"{'':<10}Price: {values['price']}")
+                print(f"{'':<10}Quantity: {values['quantity']}")
