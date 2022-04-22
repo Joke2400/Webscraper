@@ -41,7 +41,12 @@ class DBStoreProductRequest(Command):
         result = self.receiver.fetch_request(query_func)
         return result
 
-class DBCommit(Command):
+class DBAddStore(Command):
 
     def execute(self):
-        self.receiver.insert_into(self.payload)
+        self.receiver.add_store(**self.payload)
+
+class DBAddProduct(Command):
+
+    def execute(self):
+        self.receiver.add_product(**self.payload)

@@ -20,6 +20,7 @@ class ProductListSearchLocators:
 
     #Selectors for the product data contained within PRODUCT_DETAILS
     PRODUCT_NAME            =   "//div[@class='name']/text()"
+    PRODUCT_EAN             =   "//li/@data-ean"
     PRODUCT_QUANTITY        =   "//span[@class='quantity']/text()"
     PRODUCT_SUBNAME         =   "//span[@class='subname']/text()"
     PRODUCT_SHELF_NAME      =   "//span[@class='indoor-location-name']/text()"
@@ -35,10 +36,6 @@ class ProductListSearchLocators:
     PRODUCT_IMG             =   "//a[@class='js-link-item']//img[@class='img-responsive']/@src"
     PRODUCT_HREF            =   "//a[@class='js-link-item']/@href"
 
-    IDENTIFIER_LIST         =   [PRODUCT_NAME, PRODUCT_SUBNAME, PRODUCT_IMG, PRODUCT_HREF]
-    DATA_LIST               =   [PRODUCT_QUANTITY, PRODUCT_PRICE_WHOLE, PRODUCT_PRICE_DECIMAL, PRODUCT_UNIT, PRODUCT_UNIT_PRICE]
-    DETAIL_LIST             =   [PRODUCT_SHELF_NAME, PRODUCT_SHELF_HREF]
-
 class StoreListSearchLocators:
 
     STORE_LIST              = "//ul[@id='js-search-store-list']"
@@ -46,7 +43,8 @@ class StoreListSearchLocators:
     STORE_NAME              = "//a[@class='no-underline inline-block']/div[@class='name']/text()"
     STORE_ADDRESS           = "//a[@class='no-underline inline-block']/div[@class='address']/text()"
     STORE_HREF              = "//a[@class='no-underline inline-block']/@href"
-    STORE_SELECT            = "//div[@class='inline-block']/div[@class='row']/div[@class='item-actions js-item-actions']/div[@class='btn-group btn-group-sm']/a/@href"
+    STORE_SELECT            = "//div[@class='inline-block']//div[@class='btn-group btn-group-sm']/a/@href"
+    STORE_OPEN_TIMES        = "//div[@class='inline-block']//span[@class='time']/h1/text()"
     NAVIGATION_BUTTONS      = "//ul[@class='pagination pagination-lg']"
     NAV_NEXT                = "//a[@rel='next']/@href"
     NAV_PREV                = "//a[@rel='prev']/@href"

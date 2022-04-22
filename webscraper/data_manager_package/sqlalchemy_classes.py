@@ -44,10 +44,10 @@ class StoreLocation(Base):
     id = Column(Integer, primary_key=True)
     store_id = Column(Integer, ForeignKey("stores.id"))
     formatted_address = Column(String, unique=True)
-    lat = Column(String, unique=True)
-    lon = Column(String, unique=True)
-    maps_place_id = Column(String, unique=True)
-    maps_plus_code = Column(String, unique=True)
+    lat = Column(String)
+    lon = Column(String)
+    maps_place_id = Column(String)
+    maps_plus_code = Column(String)
 
     store = relationship("Store", backref=backref("location", uselist=False))
 
@@ -70,28 +70,30 @@ class Product(Base):
 
     __tablename__ = "products"
 
-    id = Column(Integer, primary_key=True)
+    ean = Column(Integer, primary_key=True, autoincrement=False)
     name = Column(String, unique=True)
     subname = Column(String)
     quantity = Column(String)
     unit = Column(String)
+    img = Column(String)
 
     stores = relationship("StoreProduct", back_populates="product")
 
-    def __init__(self, name, subname, quantity, unit):
+    def __init__(self, name, subname, quantity, unit, img):
         self.name = name
         self.subname = subname
         self.quantity = quantity
         self.unit = unit
+        self.img = img
 
 class StoreProduct(Base):
 
     __tablename__ = "store_products"
 
     store_id    = Column(ForeignKey("stores.id"), primary_key=True)
-    product_id  = Column(ForeignKey("products.id"), primary_key=True)
+    product_ean = Column(ForeignKey("products.ean"), primary_key=True)
     price       = Column(Numeric)
-    price_quantity  = Column(String)
+    unit_price  = Column(String)
     shelf_name      = Column(String)
     shelf_href      = Column(String)
 
@@ -106,7 +108,7 @@ class DatabaseInitializer:
 
 
     def init_chains(self):
-        chain_names = ["S-Market", "Prisma", "Sale", "Alepa", "ABC"]
+        chain_names = ["s-market", "prisma", "sale", "alepa", "abc"]
         database = self.session.query(StoreChain).all()
         for chain in chain_names:
             found = False
@@ -116,7 +118,8 @@ class DatabaseInitializer:
                     break
             if not found:
                 self.session.add(StoreChain(chain))
-
+        self.session.commit()
+        '''
         s_market = self.session.query(StoreChain).filter_by(name="S-Market").all()[0]
         s_market_grani = Store(
         chain=s_market,
@@ -144,15 +147,15 @@ class DatabaseInitializer:
         subname="valio luomu",
         quantity="1 l",
         unit="/kpl",
+        img=""
         )
 
         grani_product_1 = StoreProduct(
             price=0.98,
-            price_quantity="0.98/l",
+            unit_price="0.98/l",
             shelf_name="hyllyväli 9",
             shelf_href="https://storemap.jupa.s-cloud.fi/indoor/v1/?apikey=u2fsdgvkx19gb2t7y60b9qjh4pr6bmbf7a8anb16tru%3d&s=643819774&f=1&hs=0370,0375,0380,0385,0390,0395&l=dep,sec2,zon",
         )
         grani_product_1.product = maito_product
         s_market_grani.products.append(grani_product_1)
-
-        self.session.commit()
+        '''

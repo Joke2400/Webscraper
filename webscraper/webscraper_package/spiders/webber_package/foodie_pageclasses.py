@@ -37,10 +37,18 @@ class StoreElement(NestedElement):
         super(StoreElement, self).__init__(page, selector)
         self.name           = self.get_element(xpath=SLSL.STORE_NAME)
         self.name_str       = self.name.content.strip().lower()
-        
-        self.href           = self.get_element(xpath=SLSL.STORE_HREF)
+        self.open_times     = self.get_element(xpath=SLSL.STORE_OPEN_TIMES)
         self.select         = self.get_element(xpath=SLSL.STORE_SELECT)
         self.address        = self.get_element(xpath=SLSL.STORE_ADDRESS)
+
+    def get_details(self):
+        return {
+            "chain":    self.name.content.split(" ")[0].lower(),
+            "name" :    self.name_str,
+            "open_times" : self.open_times.content,
+            "select" :  self.select.content,
+            "address" : self.address.content
+         }
 
 class StoreListPage(FoodiePage):
 
@@ -60,6 +68,7 @@ class ProductElement(NestedElement):
     def __init__(self, page, selector):
         super(ProductElement, self).__init__(page, selector)
         self.name           = self.get_element(xpath=PLSL.PRODUCT_NAME)
+        self.ean            = self.get_element(xpath=PLSL.PRODUCT_EAN)
         self.name_str       = self.name.content.strip()
         self.name_match_str = self.name_str.lower()
         
@@ -74,7 +83,10 @@ class ProductElement(NestedElement):
 
         self.unit           = self.get_element(xpath=PLSL.PRODUCT_UNIT)
         self.unit_price     = self.get_element(xpath=PLSL.PRODUCT_UNIT_PRICE)
-        self.unit_price_str = self.unit_price.content.strip()
+        if self.unit_price is not None:
+            self.unit_price_str = self.unit_price.content
+        else:
+            self.unit_price_str = ""
 
         self.img            = self.get_element(xpath=PLSL.PRODUCT_IMG)
         self.shelf_name     = self.get_element(xpath=PLSL.PRODUCT_SHELF_NAME)
@@ -82,7 +94,8 @@ class ProductElement(NestedElement):
 
     def get_details(self):
         return {
-            "name" :            self.name_str,
+            "name" :            self.name_match_str,
+            "ean" :             int(self.ean.content),
             "price" :           self.price,
             "quantity" :        self.quantity_str,
             "subname" :         self.subname.content,

@@ -7,9 +7,9 @@ def discord_start(*args):
 
 
 if __name__ == "__main__":
-    start(products=["Maito"], stores=["Prisma Olari", "S-Market Grani", "Prisma Sello"], limit=5)
+    start(products=["Pasta", "Kana", "Riisi", "Sandels"], stores=["Prisma Olari", "S-market Grani", "Prisma Sello"], limit=5)
 
 #TODO
-#Pageclasses refactoring
+#Pageclasses refactori5ng
 #Datamanager refactoring
-#Data export in webber.py refactoring
+#Data export in webber.py refactoring5

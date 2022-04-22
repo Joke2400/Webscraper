@@ -1,6 +1,7 @@
 import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
+from .sqlalchemy_classes import Product
 
 from webscraper.data.filepaths import FilePaths
 from .sqlalchemy_classes import Base, DatabaseInitializer
@@ -20,9 +21,10 @@ class DataManager:
         return None
 
     def start_session(self):
-        self.sessionmaker = sessionmaker(bind=self.database_engine)
-        self.session = self.sessionmaker()
-        print("\n[Database session started]\n")
+        if self.session is None:
+            self.sessionmaker = sessionmaker(bind=self.database_engine)
+            self.session = self.sessionmaker()
+            print("\n[Database session started]\n")
 
     def close_session(self):
         self.session.close()
@@ -44,16 +46,37 @@ class DataManager:
                 Base.metadata.create_all(bind=self.database_engine)
                 print(f"Created new database at: {FilePaths.database_path}")
                 #Initializer will be removed in final version
+                self.start_session()
                 self.initializer = DatabaseInitializer(self.session)       
 
-        except Exception("Error creating database file"):
+        except:
+            print("Error creating database file")
             self.database_engine = None
 
     def fetch_request(self, func):
         result = func(self.session)
         return result
         
-    def insert_into(self, payload):
-        obj = self.object_converter.convert_to_database(payload) #Either Store, Product or StoreLocation
-        #self.session.add(obj)
-        #self.session.commit()
+    def add_store(self, **payload):
+        store = self.object_converter.convert_store_to_database(session=self.session, payload=payload)
+        if store is not None:
+            self.session.add(store)
+            location = self.object_converter.convert_location_to_database(store=store, payload=payload)
+            self.session.add(location)
+            self.session.commit()
+
+    def add_product(self, **payload):
+        product, exists = self.object_converter.convert_product_to_database(session=self.session, payload=payload)
+        if exists:
+            product = self.session.query(Product).filter_by(name=payload["name"]).all()[0]
+            store, store_product = self.object_converter.convert_store_product_to_database(session=self.session, payload=payload)
+            store_product.product = product
+            store.products.append(store_product) 
+            self.session.commit()
+        else:
+            store, store_product = self.object_converter.convert_store_product_to_database(session=self.session, payload=payload)
+            store_product.product = product
+            store.products.append(store_product) 
+            self.session.commit()
+
+        
