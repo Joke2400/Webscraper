@@ -1,17 +1,17 @@
 import os
+from telnetlib import SGA
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from .sqlalchemy_classes import Product
+from sqlalchemy.exc import SQLAlchemyError
+from .sqlalchemy_classes import StoreChain, Store, StoreLocation, ProductCategory, Product, StoreProduct
 
 from webscraper.data.filepaths import FilePaths
 from .sqlalchemy_classes import Base, DatabaseInitializer
-from .object_converter import DatabaseObjectConverter
 
 class DataManager:
     
     def __init__(self):
         self.session = None
-        self.object_converter = DatabaseObjectConverter()
         self.database_engine = create_engine(f"sqlite:///{FilePaths.database_path}", echo=False)
         Base.metadata.create_all(bind=self.database_engine)
 
@@ -56,15 +56,58 @@ class DataManager:
     def fetch_request(self, func):
         result = func(self.session)
         return result
-        
-    def add_store(self, **payload):
-        store = self.object_converter.convert_store_to_database(session=self.session, payload=payload)
-        if store is not None:
-            self.session.add(store)
-            location = self.object_converter.convert_location_to_database(store=store, payload=payload)
-            self.session.add(location)
-            self.session.commit()
 
+    def _object_already_exists(self, target, **kwargs):
+        name = kwargs.get("name", False)
+        if isinstance(name, str):
+            name = True if len(self.session.query(target).filter_by(name=name).get()) > 0 else False
+        ean = kwargs.get("ean", False)
+        if isinstance(ean, str):
+            ean = True if len(self.session.query(target).filter_by(ean=ean).get()) > 0 else False
+        if name is True or ean is True:
+            return True
+        return False
+        
+    def db_insert(self, obj, commit=False):
+        try:    
+            self.session.add(obj)
+            if commit:
+                self.session.commit()
+            return True
+        except SQLAlchemyError:
+            #print(str(e.orig))
+            return False
+
+    def db_remove(self):
+        pass
+
+    def add_store(self, **payload):
+        if not self._object_already_exists(target=Store, name=payload["name"]):
+            chain = self.session.query(StoreChain)\
+                .filter_by(name=payload["chain"]).all()[0]
+            store = Store(
+                chain=chain,
+                name=payload["name"],
+                open_times=payload["open_times"],
+                date_added=None,
+                date_updated=None,
+                select=payload["select"])
+
+            if self.db_insert(obj=store):
+                location = StoreLocation(
+                    store=store,
+                    formatted_address=payload["address"],
+                    lat=None,
+                    lon=None,
+                    maps_place_id=None,
+                    maps_plus_code=None)
+                if not self.db_insert(obj=location, commit=True):
+                    print("[add_store]: Store location could not be added into database.")
+            else:
+                print("[add_store]: Store could not be added into database.")
+        else:
+            raise NotImplementedError("[add_store]: Store object already present in database.")
+        
     def add_product(self, **payload):
         product, exists = self.object_converter.convert_product_to_database(session=self.session, payload=payload)
         if exists:

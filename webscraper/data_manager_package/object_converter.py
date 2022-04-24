@@ -1,34 +1,6 @@
 from .sqlalchemy_classes import StoreChain, Store, StoreLocation, ProductCategory, Product, StoreProduct
 
 class DatabaseObjectConverter:
-    
-    @staticmethod
-    def convert_store_to_database(session, payload):
-        store = None
-        exists = True if len(session.query(Store).filter_by(name=payload["name"]).all()) > 0 else False
-        if not exists:
-            chain = session.query(StoreChain).filter_by(name=payload["chain"]).all()[0]
-            store = Store(
-            chain=chain,
-            name=payload["name"],
-            open_times=payload["open_times"],
-            date_added=None,
-            date_updated=None,
-            select=payload["select"]
-            )
-        return store
-
-    @staticmethod
-    def convert_location_to_database(store, payload):
-        location = StoreLocation(
-            store=store,
-            formatted_address=payload["address"],
-            lat=None,
-            lon=None,
-            maps_place_id=None,
-            maps_plus_code=None
-        )
-        return location
 
     @staticmethod
     def convert_product_to_database(session, payload):

@@ -185,7 +185,7 @@ class Webber(BaseSpider):
         if self.validate_store(selected_name=page.topmenu.name_str, 
                         store_name=store_name):
             page.print_products(limit=self.limit)
-            self.export_data(command=DBAddProduct, data=page.products, store_name=store_name)
+            #self.export_data(command=DBAddProduct, data=page.products, store_name=store_name)
         else:
             print(f"[process_store_select]: '{store_name}' is not selected on current page.")
             raise NotImplementedError("get_store_from_page() returned None")
