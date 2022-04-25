@@ -14,7 +14,7 @@ def start(products, stores, limit=25):
     process = CrawlerProcess(get_project_settings())
 
     data_manager = DataManager()
-    #data_manager.reset_database()
+    data_manager.reset_database()
     data_manager.start_session()
     
     process.crawl(Webber, 

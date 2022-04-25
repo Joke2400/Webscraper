@@ -1,5 +1,4 @@
 import os
-from telnetlib import SGA
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.exc import SQLAlchemyError
@@ -57,19 +56,27 @@ class DataManager:
         result = func(self.session)
         return result
 
-    def _object_already_exists(self, target, **kwargs):
+    def _object_already_exists(self, target, **kwargs): # <-- Needs improving
         name = kwargs.get("name", False)
-        if isinstance(name, str):
-            name = True if len(self.session.query(target).filter_by(name=name).get()) > 0 else False
+        if name is not False:
+            with self.session.no_autoflush:
+                db = self.session.query(target).filter_by(name=name).all()
+            if len(db) > 0:
+                name = True
+
         ean = kwargs.get("ean", False)
-        if isinstance(ean, str):
-            ean = True if len(self.session.query(target).filter_by(ean=ean).get()) > 0 else False
+        if ean is not False:
+            with self.session.no_autoflush:
+                db = self.session.query(target).filter_by(ean=ean).all()
+            if len(db) > 0:
+                ean = True
+
         if name is True or ean is True:
             return True
         return False
         
-    def db_insert(self, obj, commit=False):
-        try:    
+    def db_insert(self, obj=None, commit=False):
+        try: 
             self.session.add(obj)
             if commit:
                 self.session.commit()
@@ -82,44 +89,88 @@ class DataManager:
         pass
 
     def add_store(self, **payload):
-        if not self._object_already_exists(target=Store, name=payload["name"]):
-            chain = self.session.query(StoreChain)\
-                .filter_by(name=payload["chain"]).all()[0]
-            store = Store(
-                chain=chain,
-                name=payload["name"],
-                open_times=payload["open_times"],
-                date_added=None,
-                date_updated=None,
-                select=payload["select"])
-
+        if not self._object_already_exists(
+            target=Store, name=payload["name"]):
+            with self.session.no_autoflush:
+                chain = self.session.query(StoreChain)\
+                    .filter_by(name=payload["chain"]).all()[0]
+            store = self.create_store(chain_obj=chain, **payload)
+            
             if self.db_insert(obj=store):
-                location = StoreLocation(
-                    store=store,
-                    formatted_address=payload["address"],
-                    lat=None,
-                    lon=None,
-                    maps_place_id=None,
-                    maps_plus_code=None)
+                location = self.create_location(store_obj=store, **payload)                
                 if not self.db_insert(obj=location, commit=True):
-                    print("[add_store]: Store location could not be added into database.")
+                    raise NotImplementedError(
+                        "[add_store]: Store location could not be added into database.")
             else:
-                print("[add_store]: Store could not be added into database.")
+                raise NotImplementedError(
+                    "[add_store]: Store could not be added into database.")
         else:
-            raise NotImplementedError("[add_store]: Store object already present in database.")
+            print(f"Store: {payload['name'].title()} is already in database.")
         
     def add_product(self, **payload):
-        product, exists = self.object_converter.convert_product_to_database(session=self.session, payload=payload)
-        if exists:
-            product = self.session.query(Product).filter_by(name=payload["name"]).all()[0]
-            store, store_product = self.object_converter.convert_store_product_to_database(session=self.session, payload=payload)
-            store_product.product = product
-            store.products.append(store_product) 
-            self.session.commit()
-        else:
-            store, store_product = self.object_converter.convert_store_product_to_database(session=self.session, payload=payload)
-            store_product.product = product
-            store.products.append(store_product) 
-            self.session.commit()
+        with self.session.no_autoflush:
+            store = self.session.query(Store)\
+                .filter_by(name=payload["store_name"].lower()).all()[0]
+        if not self._object_already_exists(
+            target=Product, ean=payload["ean"]):
+            product = self.create_product(**payload)
+            if self.db_insert(obj=product):
+                store_product = self.create_store_product(store_obj=store, **payload)
+                try:
+                    store_product.product = product
+                    store.products.append(store_product)
 
-        
+                except SQLAlchemyError:
+                    raise NotImplementedError("[add_product]: Store product could not be added into database.")
+            else:
+                raise NotImplementedError("[add_product]: Product could not be added into database.")
+        else:
+            print(f"Product: {payload['name'].title()} is already in database.")
+            with self.session.no_autoflush:
+                product = self.session.query(Product).filter_by(ean=payload["ean"]).all()[0]
+            store_product = self.create_store_product(store_obj=store, **payload)
+            try:
+                store_product.product = product
+                store.products.append(store_product)
+            except SQLAlchemyError:
+                raise NotImplementedError("[add_product]: Store product could not be added into database.")
+    
+    def create_store(self, chain_obj, **kwargs):
+        store = Store(
+            chain=chain_obj,
+            name=kwargs["name"],
+            open_times=kwargs["open_times"],
+            date_added=None,
+            date_updated=None,
+            select=kwargs["select"])
+        return store
+
+    def create_location(self, store_obj, **kwargs):
+        location = StoreLocation(
+            store=store_obj,
+            formatted_address=kwargs["address"],
+            lat=None,
+            lon=None,
+            maps_place_id=None,
+            maps_plus_code=None)
+        return location
+
+    def create_product(self, **kwargs):
+        product = Product(
+            name=kwargs["name"],
+            subname=kwargs["subname"],
+            quantity=kwargs["quantity"],
+            unit=kwargs["unit"],
+            img=kwargs["img"])
+        product.ean = kwargs["ean"]
+        return product
+
+    def create_store_product(self, store_obj, **kwargs):
+        store_product = StoreProduct(
+            store=store_obj,
+            store_id=store_obj.id,
+            price=kwargs["price"],
+            unit_price=kwargs["unit_price"],
+            shelf_name=kwargs["shelf_name"],
+            shelf_href=kwargs["shelf_href"])
+        return store_product

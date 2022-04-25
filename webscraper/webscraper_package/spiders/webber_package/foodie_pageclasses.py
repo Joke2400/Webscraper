@@ -43,11 +43,11 @@ class StoreElement(NestedElement):
 
     def get_details(self):
         return {
-            "chain":    self.name.content.split(" ")[0].lower(),
-            "name" :    self.name_str,
-            "open_times" : self.open_times.content,
-            "select" :  self.select.content,
-            "address" : self.address.content
+            "chain":        self.name.content.split(" ")[0].lower(),
+            "name" :        self.name_str,
+            "open_times" :  self.open_times.content,
+            "select" :      self.select.content,
+            "address" :     self.address.content
          }
 
 class StoreListPage(FoodiePage):
@@ -73,20 +73,29 @@ class ProductElement(NestedElement):
         self.name_match_str = self.name_str.lower()
         
         self.quantity       = self.get_element(xpath=PLSL.PRODUCT_QUANTITY)
-        self.quantity_str   = self.quantity.content.replace(",", "")
+        if self.quantity.content is not None:
+            self.quantity_str   = self.quantity.content.replace(",", "")
+        else:
+            self.quantity_str = None
+
         self.subname        = self.get_element(xpath=PLSL.PRODUCT_SUBNAME)
         
         self.price_whole    = self.get_element(xpath=PLSL.PRODUCT_PRICE_WHOLE)
         self.price_decimal  = self.get_element(xpath=PLSL.PRODUCT_PRICE_DECIMAL)
-        self.price_str = self.price_whole.content + "." + self.price_decimal.content + "€"
-        self.price = float(self.price_str[:-1])
+        if self.price_whole.content is not None:
+            self.price_str = self.price_whole.content + "." + self.price_decimal.content + "€"
+        elif self.price_decimal.content is not None:
+            self.price_str = "." + self.price_decimal.content + "€"
+        else:
+            self.price_str = None
+        self.price = float(self.price_str[:-1]) if self.price_str is not None else None
 
         self.unit           = self.get_element(xpath=PLSL.PRODUCT_UNIT)
         self.unit_price     = self.get_element(xpath=PLSL.PRODUCT_UNIT_PRICE)
-        if self.unit_price is not None:
-            self.unit_price_str = self.unit_price.content
+        if self.unit_price.content is not None:
+            self.unit_price_str = self.unit_price.content.strip()
         else:
-            self.unit_price_str = ""
+            self.unit_price_str = None
 
         self.img            = self.get_element(xpath=PLSL.PRODUCT_IMG)
         self.shelf_name     = self.get_element(xpath=PLSL.PRODUCT_SHELF_NAME)
@@ -94,7 +103,7 @@ class ProductElement(NestedElement):
 
     def get_details(self):
         return {
-            "name" :            self.name_match_str,
+            "name" :            self.name_str,
             "ean" :             int(self.ean.content),
             "price" :           self.price,
             "quantity" :        self.quantity_str,
@@ -127,14 +136,26 @@ class ProductPage(FoodiePage):
             )
         self.products = self.product_list.get_list()
 
-    def print_products(self, limit):
+    def print_details(self, product):
+        values = product.get_simple_details()
+        print(f"\n{'':<5}Product: {values['name']}")
+        print(f"{'':<10}Price: {values['price']}")
+        print(f"{'':<10}Quantity: {values['quantity']}")
+
+    def print_details_condensed(self, product):
+        values = product.get_simple_details()
+        print(f"[Product]: {values['name'] : ^70} Price: {values['price'] : <10} Quantity: {values['quantity'] : <5}")
+
+    def print_products(self, limit, condensed=False):
         if len(self.products) == 0:
             print(f"[PRINT_PRODUCTS]: No products were found on page '{self.response.url}'.")
         else:
+            print("\n")
             for i, product in enumerate(self.products):
                 if i > limit:
                     break
-                values = product.get_simple_details()
-                print(f"\n{'':<5}Product: {values['name']}")
-                print(f"{'':<10}Price: {values['price']}")
-                print(f"{'':<10}Quantity: {values['quantity']}")
+                if condensed:
+                    self.print_details_condensed(product=product)
+                else:
+                    self.print_details(product=product)
+            print("\n")

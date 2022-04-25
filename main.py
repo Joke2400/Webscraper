@@ -7,9 +7,40 @@ def discord_start(*args):
 
 
 if __name__ == "__main__":
-    start(products=["Pasta", "Kana", "Riisi", "Sandels"], stores=["Prisma Olari", "S-market Grani", "Prisma Sello"], limit=5)
+    start(products=[
+        "Jauheliha",
+        "Maustamaton tofukuutio",
+        "Margariini",
+        "Rasvaton Maito",
+        "Kermajuusto",
+        "Ruokakerma",
+        "Ruisleipä",
+        "Broilerileike",
+        "Appelsiinimehu"
+        "Spagetti",
+        "Riisi",
+        "Tomaattimurska",
+        "Ketsuppi",
+        "Kahvi",
+        "Coca Cola",
+        "Tomaatti",
+        "Kurkku",
+        "Peruna",
+        "Porkkana",
+        "Sipuli",
+        "Kukkakaali",
+        "Paprika",
+        "Jääsalaatti",
+        "Basilika",
+        "Banaani",
+        "Appelsiini",
+        "Omena",
+        "Klementiini",
+        "Vihreä Rypäle"], 
+    stores=["Prisma Olari", "S-market Grani", "Prisma Sello"], limit=25)
 
-#TODO
-#Pageclasses refactori5ng
-#Datamanager refactoring
-#Data export in webber.py refactoring5
+    #TODO
+    #Pageclasses refactori5ng
+    #Datamanager refactoring
+    #Data export in webber.py refactoring
+    

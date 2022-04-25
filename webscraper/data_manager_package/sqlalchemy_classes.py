@@ -71,7 +71,7 @@ class Product(Base):
     __tablename__ = "products"
 
     ean = Column(Integer, primary_key=True, autoincrement=False)
-    name = Column(String, unique=True)
+    name = Column(String)
     subname = Column(String)
     quantity = Column(String)
     unit = Column(String)
@@ -94,8 +94,8 @@ class StoreProduct(Base):
     product_ean = Column(ForeignKey("products.ean"), primary_key=True)
     price       = Column(Numeric)
     unit_price  = Column(String)
-    shelf_name      = Column(String)
-    shelf_href      = Column(String)
+    shelf_name  = Column(String)
+    shelf_href  = Column(String)
 
     store = relationship("Store", back_populates="products")
     product = relationship("Product", back_populates="stores")
@@ -105,7 +105,6 @@ class DatabaseInitializer:
     def __init__(self, session):
         self.session = session
         self.init_chains()
-
 
     def init_chains(self):
         chain_names = ["s-market", "prisma", "sale", "alepa", "abc"]
@@ -119,43 +118,3 @@ class DatabaseInitializer:
             if not found:
                 self.session.add(StoreChain(chain))
         self.session.commit()
-        '''
-        s_market = self.session.query(StoreChain).filter_by(name="S-Market").all()[0]
-        s_market_grani = Store(
-        chain=s_market,
-        name="S-Market Grani",
-        open_times="Avoinna T\u00e4n\u00e4\u00e4n: 07 - 22",
-        date_added="05/10/2021 16:38:21",
-        date_updated="04/03/2022 11:07:04",
-        select="/store/select_store/6c6a1d4de1a6454f30a3a5c185e51c08",
-        )
-        self.session.add(s_market_grani)
-        
-        s_market_grani_location = StoreLocation(
-        store=s_market_grani,
-        formatted_address="Kauniaistentie 7, 02700 Kauniainen",
-        lat="60.21018264713675",
-        lon="24.72894144081173",
-        maps_place_id="ChIJjSE14xP0jUYRa76Jrj659Nc",
-        maps_plus_code="9GG66P6H+2C",
-        )
-        self.session.add(s_market_grani_location)
-
-
-        maito_product = Product(
-        name="Valio Luomu Rasvaton Maito 1 L",
-        subname="valio luomu",
-        quantity="1 l",
-        unit="/kpl",
-        img=""
-        )
-
-        grani_product_1 = StoreProduct(
-            price=0.98,
-            unit_price="0.98/l",
-            shelf_name="hyllyväli 9",
-            shelf_href="https://storemap.jupa.s-cloud.fi/indoor/v1/?apikey=u2fsdgvkx19gb2t7y60b9qjh4pr6bmbf7a8anb16tru%3d&s=643819774&f=1&hs=0370,0375,0380,0385,0390,0395&l=dep,sec2,zon",
-        )
-        grani_product_1.product = maito_product
-        s_market_grani.products.append(grani_product_1)
-        '''
