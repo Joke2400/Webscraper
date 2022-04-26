@@ -91,9 +91,8 @@ class DataManager:
     def add_store(self, **payload):
         if not self._object_already_exists(
             target=Store, name=payload["name"]):
-            with self.session.no_autoflush:
-                chain = self.session.query(StoreChain)\
-                    .filter_by(name=payload["chain"]).all()[0]
+            chain = self.session.query(StoreChain)\
+                .filter_by(name=payload["chain"]).all()[0]
             store = self.create_store(chain_obj=chain, **payload)
             
             if self.db_insert(obj=store):
@@ -108,9 +107,8 @@ class DataManager:
             print(f"Store: {payload['name'].title()} is already in database.")
         
     def add_product(self, **payload):
-        with self.session.no_autoflush:
-            store = self.session.query(Store)\
-                .filter_by(name=payload["store_name"].lower()).all()[0]
+        store = self.session.query(Store)\
+            .filter_by(name=payload["store_name"].lower()).all()[0]
         if not self._object_already_exists(
             target=Product, ean=payload["ean"]):
             product = self.create_product(**payload)
@@ -126,15 +124,16 @@ class DataManager:
                 raise NotImplementedError("[add_product]: Product could not be added into database.")
         else:
             print(f"Product: {payload['name'].title()} is already in database.")
-            with self.session.no_autoflush:
-                product = self.session.query(Product).filter_by(ean=payload["ean"]).all()[0]
-            store_product = self.create_store_product(store_obj=store, **payload)
-            try:
-                store_product.product = product
-                store.products.append(store_product)
-            except SQLAlchemyError:
-                raise NotImplementedError("[add_product]: Store product could not be added into database.")
-    
+            product = self.session.query(Product).filter_by(ean=payload["ean"]).all()[0]
+            query = self.session.query(StoreProduct).filter_by(store_id=store.id, product_ean=payload["ean"]).all()
+            if len(query) == 0:
+                store_product = self.create_store_product(store_obj=store, **payload)
+                try:
+                    store_product.product = product
+                    store.products.append(store_product)
+                except SQLAlchemyError:
+                    raise NotImplementedError("[add_product]: Store product could not be added into database.")
+        
     def create_store(self, chain_obj, **kwargs):
         store = Store(
             chain=chain_obj,

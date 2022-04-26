@@ -9,7 +9,7 @@ def discord_start(*args):
 if __name__ == "__main__":
     start(products=[
         "Jauheliha",
-        "Maustamaton tofukuutio",
+        "Tofukuutio",
         "Margariini",
         "Rasvaton Maito",
         "Kermajuusto",
@@ -37,7 +37,7 @@ if __name__ == "__main__":
         "Omena",
         "Klementiini",
         "Vihreä Rypäle"], 
-    stores=["Prisma Olari", "S-market Grani", "Prisma Sello"], limit=25)
+    stores=["Prisma Järvenpää", "S-market Karjaa"], limit=25)
 
     #TODO
     #Pageclasses refactori5ng

@@ -1,3 +1,4 @@
+from enum import unique
 from sqlalchemy import Column,Integer,String,Numeric,ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref

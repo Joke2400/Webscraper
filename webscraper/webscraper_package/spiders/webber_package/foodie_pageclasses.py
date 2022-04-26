@@ -144,7 +144,11 @@ class ProductPage(FoodiePage):
 
     def print_details_condensed(self, product):
         values = product.get_simple_details()
-        print(f"[Product]: {values['name'] : ^70} Price: {values['price'] : <10} Quantity: {values['quantity'] : <5}")
+        if values["price"] is None:  # I am a lazy piece of shit :)
+            values["price"] = ""
+        if values["quantity"] is None:  # I am a lazy piece of shit :)
+            values["quantity"] = ""
+        print(f"[Product]: {values['name'] : ^70} Price: {values['price']  : <10} Quantity: {values['quantity'] : <5}")
 
     def print_products(self, limit, condensed=False):
         if len(self.products) == 0:
