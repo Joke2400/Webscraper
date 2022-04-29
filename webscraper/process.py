@@ -13,10 +13,9 @@ def start(products, stores, limit=25):
         pass
     process = CrawlerProcess(get_project_settings())
 
-    data_manager = DataManager()
+    data_manager = DataManager(path=FilePaths.database_path)
     data_manager.reset_database()
-    data_manager.start_session()
-    
+
     process.crawl(Webber, 
             requested_products=products,
             requested_stores=stores, 
@@ -24,6 +23,8 @@ def start(products, stores, limit=25):
             data_manager=data_manager,
             requesting_old_site=True
             )
-    
+
     process.start()
+    data_manager.close_session()
+
     

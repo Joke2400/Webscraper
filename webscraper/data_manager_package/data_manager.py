@@ -1,175 +1,171 @@
 import os
+from re import S
 from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+from sqlalchemy.orm import sessionmaker, Session
 from sqlalchemy.exc import SQLAlchemyError
-from .sqlalchemy_classes import StoreChain, Store, StoreLocation, ProductCategory, Product, StoreProduct
-
 from webscraper.data.filepaths import FilePaths
-from .sqlalchemy_classes import Base, DatabaseInitializer
+from webscraper.data_manager_package.object_converter import (
+    create_store_product,
+    create_location,
+    create_product,
+    create_store
+)
+from webscraper.data_manager_package.sqlalchemy_db_classes import (
+    StoreProduct,
+    StoreChain,
+    Product,
+    Store,
+    Base
+)
+
 
 class DataManager:
-    
-    def __init__(self):
+
+    def __init__(self, path):
+        self.db_path = path
         self.session = None
-        self.database_engine = create_engine(f"sqlite:///{FilePaths.database_path}", echo=False)
-        Base.metadata.create_all(bind=self.database_engine)
+        self.temp_cache = {}
+        self.db_engine = self.start_database(path=self.db_path)
+        self.session = self.get_session()
+
+    def start_database(self, path):
+        engine = create_engine(url=f"sqlite:///{path}", echo=False)
+        Base.metadata.create_all(bind=engine)
+        self.sessionmaker = sessionmaker(bind=engine)
+        return engine
+
+    def reset_database(self):
+        print("[reset_database]: Removing and resetting database.")
+        if self.session is not None:
+            self.session.close()
+        try:
+            os.remove(FilePaths.database_path)
+        except FileNotFoundError:
+            print("[reset_database]: Could not find existing database file.")
+            self.db_engine = None
+        else:
+            self.db_engine = self.start_database(path=self.db_path)
+            self.init_chains()
+            self.session = self.get_session()
+            print(
+                f"[reset_database]: Created new database at: {self.db_path}\n")
 
     def get_session(self):
-        if self.session is not None:
-            return self.session
-        return None
-
-    def start_session(self):
-        if self.session is None:
-            self.sessionmaker = sessionmaker(bind=self.database_engine)
-            self.session = self.sessionmaker()
-            print("\n[Database session started]\n")
+        if self.session is None or not isinstance(self.session, Session):
+            session = self.sessionmaker()
+            print("\n[get_session]: New database session started.")
+            return session
+        return self.session
 
     def close_session(self):
         self.session.close()
-        print("\n[Database session ended]\n")
+        self.session = None
+        print("\n[close_session]: Current database session closed.")
 
-    def reset_database(self):
-        print("\nRemoving and resetting database because reset_database() method was called...")
-        if self.session is not None:
-            self.session.close()
-        removed = False
-        try:
-            os.remove(FilePaths.database_path)
-            removed = True
-        except FileNotFoundError:
-            print("Error when removing database, database file missing...")
-        try:
-            if removed:
-                self.database_engine = create_engine(f"sqlite:///{FilePaths.database_path}", echo=False)
-                Base.metadata.create_all(bind=self.database_engine)
-                print(f"Created new database at: {FilePaths.database_path}")
-                #Initializer will be removed in final version
-                self.start_session()
-                self.initializer = DatabaseInitializer(self.session)       
-
-        except:
-            print("Error creating database file")
-            self.database_engine = None
-
-    def fetch_request(self, func):
-        result = func(self.session)
+    def basic_query(self, table, payload, first=False):
+        result = self.session.query(table).filter_by(**payload).all()
+        if first:
+            return result[0]
         return result
 
-    def _object_already_exists(self, target, **kwargs): # <-- Needs improving
-        name = kwargs.get("name", False)
-        if name is not False:
-            with self.session.no_autoflush:
-                db = self.session.query(target).filter_by(name=name).all()
-            if len(db) > 0:
-                name = True
+    def check_object_in_db(self, table, payload):
+        result = self.basic_query(table, payload)
+        if len(result) > 1:
+            raise ValueError(
+                "[_object_was_found]: Length of result exceeded '1'.")
+        if len(result) > 0:
+            return True, result[0]
+        return False, None
 
-        ean = kwargs.get("ean", False)
-        if ean is not False:
-            with self.session.no_autoflush:
-                db = self.session.query(target).filter_by(ean=ean).all()
-            if len(db) > 0:
-                ean = True
+    def add_store(self, **kwargs):
+        check, store = self.check_object_in_db(
+            table=Store,
+            payload={"name": kwargs['name']})
 
-        if name is True or ean is True:
-            return True
+        if not check:
+            store_chain = self.basic_query(
+                table=StoreChain,
+                payload={"name": kwargs['chain']},
+                first=True)
+            store = create_store(store_chain=store_chain, **kwargs)
+            if self.database_add(obj=store):
+                self.temp_cache["store"] = store
+                return True
+            raise NotImplementedError(
+                "[add_store]: Store could not be added into database.")
+#            print(f"[add_store]: {kwargs['name'].title()}",
+#                  "is already in database.")
         return False
-        
-    def db_insert(self, obj=None, commit=False):
-        try: 
+
+    def add_location(self, **kwargs):
+        location = create_location(store=self.temp_cache["store"], **kwargs)
+        del self.temp_cache["store"]
+        if not self.database_add(obj=location):
+            raise NotImplementedError("[add_store]: Store location could not",
+                                      "be added into database.")
+
+    def add_product(self, **kwargs):
+        check, product = self.check_object_in_db(
+            table=Product,
+            payload={"name": kwargs['name']})
+
+        if not check:
+            product = create_product(**kwargs)
+            if not self.database_add(obj=product):
+                raise NotImplementedError(
+                    "[add_product]: Product could not be added into database.")
+
+#            print(
+#                f"[add_product]: {kwargs['name'].title()}",
+#                "is already in database.")
+        self.temp_cache["product"] = product
+
+    def add_store_product(self, **kwargs):
+        product = self.temp_cache["product"]
+        del self.temp_cache["product"]
+        product_check = False
+        store_check, store = self.check_object_in_db(
+            table=Store,
+            payload={"name": kwargs['store_name']})
+
+        if store_check:
+            product_check, store_product = self.check_object_in_db(
+                table=StoreProduct,
+                payload={"store_id": store.id, "product_ean": product.ean})
+        else:
+            print(
+                f"[add_store_product]: {kwargs['store_name']} was not found.",
+                f"\nStore product: {kwargs['name']} will not be added.")
+            return False
+
+        if product_check:
+            return True
+#            sid = store_product.store_id
+#            ean = store_product.product_ean
+#            print(
+#                f"[add_product]: Store product (id:{sid} ean:{ean})",
+#                "is already in database")
+#            return True
+
+        store_product = create_store_product(store=store, **kwargs)
+        store_product.product = product
+        store.products.append(store_product)
+        return True
+
+    def init_chains(self):
+        chain_names = ["s-market", "prisma", "sale", "alepa", "abc"]
+        for chain in chain_names:
+            self.session.add(StoreChain(chain))
+        self.session.commit()
+
+    def database_add(self, obj, commit=False):
+        try:
             self.session.add(obj)
             if commit:
                 self.session.commit()
             return True
         except SQLAlchemyError:
-            #print(str(e.orig))
             return False
 
-    def db_remove(self):
+    def database_remove(self):
         pass
-
-    def add_store(self, **payload):
-        if not self._object_already_exists(
-            target=Store, name=payload["name"]):
-            chain = self.session.query(StoreChain)\
-                .filter_by(name=payload["chain"]).all()[0]
-            store = self.create_store(chain_obj=chain, **payload)
-            
-            if self.db_insert(obj=store):
-                location = self.create_location(store_obj=store, **payload)                
-                if not self.db_insert(obj=location, commit=True):
-                    raise NotImplementedError(
-                        "[add_store]: Store location could not be added into database.")
-            else:
-                raise NotImplementedError(
-                    "[add_store]: Store could not be added into database.")
-        else:
-            print(f"Store: {payload['name'].title()} is already in database.")
-        
-    def add_product(self, **payload):
-        store = self.session.query(Store)\
-            .filter_by(name=payload["store_name"].lower()).all()[0]
-        if not self._object_already_exists(
-            target=Product, ean=payload["ean"]):
-            product = self.create_product(**payload)
-            if self.db_insert(obj=product):
-                store_product = self.create_store_product(store_obj=store, **payload)
-                try:
-                    store_product.product = product
-                    store.products.append(store_product)
-
-                except SQLAlchemyError:
-                    raise NotImplementedError("[add_product]: Store product could not be added into database.")
-            else:
-                raise NotImplementedError("[add_product]: Product could not be added into database.")
-        else:
-            print(f"Product: {payload['name'].title()} is already in database.")
-            product = self.session.query(Product).filter_by(ean=payload["ean"]).all()[0]
-            query = self.session.query(StoreProduct).filter_by(store_id=store.id, product_ean=payload["ean"]).all()
-            if len(query) == 0:
-                store_product = self.create_store_product(store_obj=store, **payload)
-                try:
-                    store_product.product = product
-                    store.products.append(store_product)
-                except SQLAlchemyError:
-                    raise NotImplementedError("[add_product]: Store product could not be added into database.")
-        
-    def create_store(self, chain_obj, **kwargs):
-        store = Store(
-            chain=chain_obj,
-            name=kwargs["name"],
-            open_times=kwargs["open_times"],
-            date_added=None,
-            date_updated=None,
-            select=kwargs["select"])
-        return store
-
-    def create_location(self, store_obj, **kwargs):
-        location = StoreLocation(
-            store=store_obj,
-            formatted_address=kwargs["address"],
-            lat=None,
-            lon=None,
-            maps_place_id=None,
-            maps_plus_code=None)
-        return location
-
-    def create_product(self, **kwargs):
-        product = Product(
-            name=kwargs["name"],
-            subname=kwargs["subname"],
-            quantity=kwargs["quantity"],
-            unit=kwargs["unit"],
-            img=kwargs["img"])
-        product.ean = kwargs["ean"]
-        return product
-
-    def create_store_product(self, store_obj, **kwargs):
-        store_product = StoreProduct(
-            store=store_obj,
-            store_id=store_obj.id,
-            price=kwargs["price"],
-            unit_price=kwargs["unit_price"],
-            shelf_name=kwargs["shelf_name"],
-            shelf_href=kwargs["shelf_href"])
-        return store_product

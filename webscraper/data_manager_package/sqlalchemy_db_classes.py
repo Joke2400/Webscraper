@@ -1,5 +1,4 @@
-from enum import unique
-from sqlalchemy import Column,Integer,String,Numeric,ForeignKey
+from sqlalchemy import Column, Integer, String, Numeric, ForeignKey
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship, backref
 
@@ -100,22 +99,3 @@ class StoreProduct(Base):
 
     store = relationship("Store", back_populates="products")
     product = relationship("Product", back_populates="stores")
-
-class DatabaseInitializer:
-
-    def __init__(self, session):
-        self.session = session
-        self.init_chains()
-
-    def init_chains(self):
-        chain_names = ["s-market", "prisma", "sale", "alepa", "abc"]
-        database = self.session.query(StoreChain).all()
-        for chain in chain_names:
-            found = False
-            for item in database:
-                if chain == item.name:
-                    found = True
-                    break
-            if not found:
-                self.session.add(StoreChain(chain))
-        self.session.commit()

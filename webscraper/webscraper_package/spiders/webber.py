@@ -3,17 +3,18 @@ from webscraper.utils.descriptors import (
     SpecifiedOnlyValidator,
     SpecifiedOrNoneValidator
 )
+
 from webscraper.data_manager_package.data_manager import DataManager
 from webscraper.data_manager_package.commands import (
+    StoreRequest,
     DBAddStore,
-    DBAddProduct,
-    DBStoreRequest
+    DBAddProduct
 )
 from webscraper.data.urls import FoodieURLs
 from .webber_package.foodie_pageclasses import (
-    StoreListPage,
     FoodiePage,
-    ProductPage
+    ProductPage,
+    StoreListPage
 )
 from .webber_package.spider import BaseSpider
 
@@ -79,7 +80,7 @@ class Webber(BaseSpider):
             raise NotImplementedError("self.store_unspecified is True")
 
     def db_search_store(self, store_name):
-        query_result = self.database_query(DBStoreRequest, name=store_name)
+        query_result = self.database_query(StoreRequest, name=store_name)
         if 0 < len(query_result) < 2:
             return query_result[0]
         if len(query_result) > 1:
@@ -228,5 +229,5 @@ class Webber(BaseSpider):
         for item in data:
             payload = item.get_details()
             if store_name is not None:
-                payload["store_name"] = store_name
+                payload["store_name"] = store_name.lower()
             self.database_query(command=command, **payload)
