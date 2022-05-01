@@ -93,8 +93,6 @@ class DataManager:
                 return True
             raise NotImplementedError(
                 "[add_store]: Store could not be added into database.")
-#            print(f"[add_store]: {kwargs['name'].title()}",
-#                  "is already in database.")
         return False
 
     def add_location(self, **kwargs):
@@ -114,10 +112,6 @@ class DataManager:
             if not self.database_add(obj=product):
                 raise NotImplementedError(
                     "[add_product]: Product could not be added into database.")
-
-#            print(
-#                f"[add_product]: {kwargs['name'].title()}",
-#                "is already in database.")
         self.temp_cache["product"] = product
 
     def add_store_product(self, **kwargs):
@@ -140,12 +134,6 @@ class DataManager:
 
         if product_check:
             return True
-#            sid = store_product.store_id
-#            ean = store_product.product_ean
-#            print(
-#                f"[add_product]: Store product (id:{sid} ean:{ean})",
-#                "is already in database")
-#            return True
 
         store_product = create_store_product(store=store, **kwargs)
         store_product.product = product

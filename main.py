@@ -37,7 +37,9 @@ if __name__ == "__main__":
         "Omena",
         "Klementiini",
         "Vihreä Rypäle"], 
-    stores=["Prisma Järvenpää", "S-Market Karjaa", "Prisma Olari", "Prisma Sello", "S-Market Grani"], limit=25)
+    stores=["Prisma Järvenpää", "S-Market Karjaa", "Prisma Olari", "Prisma Sello", "S-Market Grani"],
+    limit=25,
+    reset=False)
 
     #TODO
     #Pageclasses refactori5ng

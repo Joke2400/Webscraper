@@ -9,7 +9,7 @@ INFO: Overridden settings:
  'USER_AGENT': ('Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:88.0) '
                 'Gecko/20100101 Firefox/88.0',)}
 DEBUG: Using reactor: twisted.internet.selectreactor.SelectReactor
-INFO: Telnet Password: 5fa5c2a7c46664be
+INFO: Telnet Password: 286a3ef1a852c813
 INFO: Enabled extensions:
 ['scrapy.extensions.corestats.CoreStats',
  'scrapy.extensions.telnet.TelnetConsole',
@@ -37,194 +37,189 @@ INFO: Enabled item pipelines:
 INFO: Spider opened
 INFO: Crawled 0 pages (at 0 pages/min), scraped 0 items (at 0 items/min)
 INFO: Telnet console listening on 127.0.0.1:6023
-DEBUG: Attempting to acquire lock 1914266541584 on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
-DEBUG: Lock 1914266541584 acquired on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
-DEBUG: Attempting to acquire lock 1914266542928 on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
-DEBUG: Lock 1914266542928 acquired on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
-DEBUG: Attempting to release lock 1914266542928 on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
-DEBUG: Lock 1914266542928 released on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
-DEBUG: Attempting to release lock 1914266541584 on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
-DEBUG: Lock 1914266541584 released on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
-DEBUG: Crawled (200) <GET https://www.foodie.fi/stores/?query=Prisma%20J%C3%A4rvenp%C3%A4%C3%A4> (referer: None)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/stores/?query=Prisma%20Olari> (referer: None)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/stores/?query=Prisma%20Sello> (referer: None)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/stores/?query=S-Market%20Karjaa> (referer: None)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/stores/?query=S-Market%20Grani> (referer: None)
-DEBUG: Redirecting (302) to <GET https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f> from <GET https://www.foodie.fi/store/select_store/0b5e9f589fe6c0043beb89c11b66b22f>
+DEBUG: Attempting to acquire lock 1940248935344 on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
+DEBUG: Lock 1940248935344 acquired on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
+DEBUG: Attempting to acquire lock 1940248936400 on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
+DEBUG: Lock 1940248936400 acquired on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
+DEBUG: Attempting to release lock 1940248936400 on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
+DEBUG: Lock 1940248936400 released on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/urls\62bf135d1c2f3d4db4228b9ecaf507a2.tldextract.json.lock
+DEBUG: Attempting to release lock 1940248935344 on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
+DEBUG: Lock 1940248935344 released on C:\Users\Joke\Desktop\Webscraper\webscraper-env\lib\site-packages\tldextract\.suffix_cache/publicsuffix.org-tlds\de84b5ca2167d4c83e38fb162f2e8738.tldextract.json.lock
 DEBUG: Redirecting (302) to <GET https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59> from <GET https://www.foodie.fi/store/select_store/0563cf74f373b2250360e756060fdb59>
 DEBUG: Redirecting (302) to <GET https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1> from <GET https://www.foodie.fi/store/select_store/6f8a47224b108e564eb092e3316e73d1>
-DEBUG: Redirecting (302) to <GET https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f> from <GET https://www.foodie.fi/store/select_store/4644aceccccd7ab8787cdfa92eb0020f>
+DEBUG: Redirecting (302) to <GET https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f> from <GET https://www.foodie.fi/store/select_store/0b5e9f589fe6c0043beb89c11b66b22f>
 DEBUG: Redirecting (302) to <GET https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08> from <GET https://www.foodie.fi/store/select_store/6c6a1d4de1a6454f30a3a5c185e51c08>
-DEBUG: Crawled (200) <GET https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1> (referer: https://www.foodie.fi/stores/?query=Prisma%20J%C3%A4rvenp%C3%A4%C3%A4)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f> (referer: https://www.foodie.fi/stores/?query=S-Market%20Karjaa)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59> (referer: https://www.foodie.fi/stores/?query=Prisma%20Olari)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f> (referer: https://www.foodie.fi/stores/?query=Prisma%20Sello)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08> (referer: https://www.foodie.fi/stores/?query=S-Market%20Grani)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Vihre%C3%A4%20Ryp%C3%A4le> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Redirecting (302) to <GET https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f> from <GET https://www.foodie.fi/store/select_store/4644aceccccd7ab8787cdfa92eb0020f>
+DEBUG: Crawled (200) <GET https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f> (referer: None)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1> (referer: None)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59> (referer: None)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f> (referer: None)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08> (referer: None)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=AppelsiinimehuSpagetti> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kurkku> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kahvi> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaatti> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Coca%20Cola> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
 WARNING: c:\Users\Joke\Desktop\Webscraper\webscraper\data_manager_package\data_manager.py:66: SAWarning: Dialect sqlite+pysqlite does *not* support Decimal objects natively, and SQLAlchemy must convert from floating point - rounding errors and other issues may occur. Please consider storing Decimal numbers as strings or integers on this platform for lossless storage.
   result = self.session.query(table).filter_by(**payload).all()
 
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Jauheliha> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kermajuusto> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Klementiini> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tofukuutio> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruokakerma> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Omena> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Rasvaton%20Maito> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Margariini> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Appelsiini> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Basilika> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kukkakaali> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Banaani> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Paprika> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=J%C3%A4%C3%A4salaatti> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Sipuli> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ketsuppi> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaattimurska> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Broilerileike> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Riisi> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Rasvaton%20Maito> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruokakerma> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kermajuusto> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Margariini> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Vihre%C3%A4%20Ryp%C3%A4le> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tofukuutio> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Vihre%C3%A4%20Ryp%C3%A4le> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Klementiini> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Appelsiini> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Banaani> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruisleip%C3%A4> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Omena> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Appelsiini> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kukkakaali> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Sipuli> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Basilika> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=J%C3%A4%C3%A4salaatti> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Paprika> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kukkakaali> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Basilika> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Sipuli> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Peruna> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaatti> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kurkku> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Coca%20Cola> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Banaani> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Porkkana> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Peruna> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ketsuppi> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kahvi> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kurkku> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaatti> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Coca%20Cola> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaattimurska> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=AppelsiinimehuSpagetti> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Vihre%C3%A4%20Ryp%C3%A4le> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Klementiini> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Riisi> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=J%C3%A4%C3%A4salaatti> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kukkakaali> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Banaani> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Porkkana> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Appelsiini> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Paprika> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kurkku> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaatti> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Peruna> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Coca%20Cola> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kahvi> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaattimurska> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ketsuppi> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=AppelsiinimehuSpagetti> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Broilerileike> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruokakerma> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kermajuusto> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tofukuutio> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Vihre%C3%A4%20Ryp%C3%A4le> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Margariini> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruisleip%C3%A4> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Jauheliha> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Klementiini> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Omena> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Vihre%C3%A4%20Ryp%C3%A4le> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Riisi> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Klementiini> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=J%C3%A4%C3%A4salaatti> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Basilika> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Omena> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=J%C3%A4%C3%A4salaatti> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Appelsiini> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kukkakaali> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Sipuli> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Basilika> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Paprika> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaatti> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Appelsiini> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Sipuli> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kurkku> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Peruna> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Coca%20Cola> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Paprika> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Banaani> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Peruna> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kurkku> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Porkkana> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Coca%20Cola> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Rasvaton%20Maito> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ketsuppi> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=AppelsiinimehuSpagetti> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaatti> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaattimurska> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Riisi> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Broilerileike> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kermajuusto> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tofukuutio> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Rasvaton%20Maito> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kahvi> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Klementiini> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruokakerma> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Jauheliha> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Omena> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Banaani> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=AppelsiinimehuSpagetti> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruisleip%C3%A4> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=J%C3%A4%C3%A4salaatti> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Paprika> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kukkakaali> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Porkkana> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Sipuli> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Margariini> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Basilika> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Appelsiini> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ketsuppi> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kurkku> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Coca%20Cola> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Peruna> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=AppelsiinimehuSpagetti> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaatti> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaattimurska> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Broilerileike> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kukkakaali> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Broilerileike> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kahvi> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruisleip%C3%A4> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruisleip%C3%A4> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kermajuusto> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Margariini> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ketsuppi> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tofukuutio> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Rasvaton%20Maito> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruokakerma> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Jauheliha> (referer: https://www.foodie.fi/store/6c6a1d4de1a6454f30a3a5c185e51c08)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Broilerileike> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=AppelsiinimehuSpagetti> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Riisi> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kermajuusto> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Rasvaton%20Maito> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tofukuutio> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Margariini> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Jauheliha> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruokakerma> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tofukuutio> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Margariini> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruisleip%C3%A4> (referer: https://www.foodie.fi/store/4644aceccccd7ab8787cdfa92eb0020f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Rasvaton%20Maito> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Jauheliha> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Klementiini> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Vihre%C3%A4%20Ryp%C3%A4le> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Banaani> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruokakerma> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Omena> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Appelsiini> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Basilika> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=J%C3%A4%C3%A4salaatti> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Paprika> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kukkakaali> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Sipuli> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Peruna> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kurkku> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruisleip%C3%A4> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tofukuutio> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Rasvaton%20Maito> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Margariini> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Vihre%C3%A4%20Ryp%C3%A4le> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Jauheliha> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Appelsiini> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Riisi> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kahvi> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Banaani> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=J%C3%A4%C3%A4salaatti> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Basilika> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kukkakaali> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kermajuusto> (referer: https://www.foodie.fi/store/0563cf74f373b2250360e756060fdb59)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kahvi> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ketsuppi> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Porkkana> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaattimurska> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Riisi> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=AppelsiinimehuSpagetti> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Coca%20Cola> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Broilerileike> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tofukuutio> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaatti> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Porkkana> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruisleip%C3%A4> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kermajuusto> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Klementiini> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Sipuli> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Peruna> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Rasvaton%20Maito> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Coca%20Cola> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Jauheliha> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kurkku> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruokakerma> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ketsuppi> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Riisi> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaatti> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kahvi> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kurkku> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ketsuppi> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Coca%20Cola> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Omena> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tomaattimurska> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Broilerileike> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=AppelsiinimehuSpagetti> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
-DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Margariini> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Paprika> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Riisi> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Porkkana> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruokakerma> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kahvi> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Tofukuutio> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Vihre%C3%A4%20Ryp%C3%A4le> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Jauheliha> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Rasvaton%20Maito> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Margariini> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Omena> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
 DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Ruisleip%C3%A4> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Banaani> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Basilika> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=J%C3%A4%C3%A4salaatti> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kukkakaali> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Paprika> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Klementiini> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Porkkana> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Peruna> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Appelsiini> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Sipuli> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Jauheliha> (referer: https://www.foodie.fi/store/0b5e9f589fe6c0043beb89c11b66b22f)
+DEBUG: Crawled (200) <GET https://www.foodie.fi/products/search2?term=Kermajuusto> (referer: https://www.foodie.fi/store/6f8a47224b108e564eb092e3316e73d1)
 INFO: Closing spider (finished)
 INFO: Dumping Scrapy stats:
-{'downloader/request_bytes': 69557,
- 'downloader/request_count': 155,
- 'downloader/request_method_count/GET': 155,
- 'downloader/response_bytes': 7683341,
- 'downloader/response_count': 155,
- 'downloader/response_status_count/200': 150,
+{'downloader/request_bytes': 67125,
+ 'downloader/request_count': 150,
+ 'downloader/request_method_count/GET': 150,
+ 'downloader/response_bytes': 7433067,
+ 'downloader/response_count': 150,
+ 'downloader/response_status_count/200': 145,
  'downloader/response_status_count/302': 5,
- 'elapsed_time_seconds': 23.345522,
+ 'elapsed_time_seconds': 17.245507,
  'finish_reason': 'finished',
- 'finish_time': datetime.datetime(2022, 4, 29, 12, 21, 52, 21711),
- 'httpcompression/response_bytes': 34612910,
- 'httpcompression/response_count': 150,
- 'log_count/DEBUG': 164,
+ 'finish_time': datetime.datetime(2022, 4, 29, 21, 15, 33, 829261),
+ 'httpcompression/response_bytes': 33494698,
+ 'httpcompression/response_count': 145,
+ 'log_count/DEBUG': 159,
  'log_count/INFO': 10,
  'log_count/WARNING': 1,
- 'request_depth_max': 2,
- 'response_received_count': 150,
- 'scheduler/dequeued': 155,
- 'scheduler/dequeued/memory': 155,
- 'scheduler/enqueued': 155,
- 'scheduler/enqueued/memory': 155,
- 'start_time': datetime.datetime(2022, 4, 29, 12, 21, 28, 676189)}
+ 'request_depth_max': 1,
+ 'response_received_count': 145,
+ 'scheduler/dequeued': 150,
+ 'scheduler/dequeued/memory': 150,
+ 'scheduler/enqueued': 150,
+ 'scheduler/enqueued/memory': 150,
+ 'start_time': datetime.datetime(2022, 4, 29, 21, 15, 16, 583754)}
 INFO: Spider closed (finished)

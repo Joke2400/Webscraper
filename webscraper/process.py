@@ -5,7 +5,7 @@ from scrapy.utils.project import get_project_settings
 from webscraper.webscraper_package.spiders.webber import Webber
 from webscraper.data_manager_package.data_manager import DataManager
 
-def start(products, stores, limit=25):
+def start(products, stores, limit=25, reset=False):
     os.environ.setdefault('SCRAPY_SETTINGS_MODULE', FilePaths.settings_path)
     try:
         os.remove(FilePaths.log_path) #Remove scrapy log file from previous run
@@ -14,7 +14,8 @@ def start(products, stores, limit=25):
     process = CrawlerProcess(get_project_settings())
 
     data_manager = DataManager(path=FilePaths.database_path)
-    data_manager.reset_database()
+    if reset:
+        data_manager.reset_database()
 
     process.crawl(Webber, 
             requested_products=products,

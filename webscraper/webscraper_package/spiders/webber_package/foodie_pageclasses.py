@@ -56,8 +56,8 @@ class StoreListPage(FoodiePage):
         super(StoreListPage, self).__init__(response, prev_page, next_page)
         self.navigation = Navigation(page=self, xpath=SLSL.NAVIGATION_BUTTONS)
         self.store_list = ListElement(
-            page=self, 
-            xpath=SLSL.STORE_LIST, 
+            page=self,
+            xpath=SLSL.STORE_LIST,
             elements_xpath=SLSL.STORE_LIST_ELEMENTS,
             element_type=StoreElement
             )
@@ -119,8 +119,9 @@ class ProductElement(NestedElement):
 
     def get_simple_details(self):
         return {
-            "name"  : self.name_str, 
-            "price" : self.price_str, 
+            "name"  : self.name_str,
+            "price" : self.price_str,
+            "unit_price" : self.unit_price_str,
             "quantity": self.quantity.content
             }
 
@@ -148,7 +149,9 @@ class ProductPage(FoodiePage):
             values["price"] = ""
         if values["quantity"] is None:  # I am a lazy piece of shit :)
             values["quantity"] = ""
-        print(f"[Product]: {values['name'] : ^70} Price: {values['price']  : <10} Quantity: {values['quantity'] : <5}")
+        if values["unit_price"] is None:  # I am a lazy piece of shit :)
+            values["unit_price"] = ""
+        print(f"[Product]: {values['name'] : ^70} Price: {values['price']  : <10} Quantity: {values['quantity'] : <5} Price/Unit: {values['unit_price'] : <5}")
 
     def print_products(self, limit, condensed=False):
         if len(self.products) == 0:
