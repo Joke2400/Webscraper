@@ -1,4 +1,4 @@
-from webscraper.utils.descriptors import SpecifiedOnlyValidator
+from dataclasses import dataclass
 from ....data.filepaths import FilePaths
 from .foodie_pageclasses import Page
 from scrapy import Spider, Request
@@ -7,9 +7,6 @@ import datetime
 class BaseSpider(Spider):
 
     name = "Base Spider"
-
-    performed_searches  = SpecifiedOnlyValidator(list)
-    saved_pages         = SpecifiedOnlyValidator(list)
 
     def __init__(self, *args, **kwargs):
         super(BaseSpider, self).__init__(*args, **kwargs)
@@ -63,3 +60,11 @@ class BaseSpider(Spider):
         with open(FilePaths.response_path, 'w') as file:
             file.write(response.text)
 
+
+@dataclass
+class SpiderSearch:
+
+    def __init__(self, store_name, requested_products):
+        self.store_name = store_name.strip().lower()
+        self.requested_products = requested_products
+        self.store_select = None

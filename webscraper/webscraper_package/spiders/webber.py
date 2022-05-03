@@ -16,68 +16,49 @@ from .webber_package.foodie_pageclasses import (
     ProductPage,
     StoreListPage
 )
-from .webber_package.spider import BaseSpider
+from .webber_package.spider import BaseSpider, SpiderSearch
 
 
 class Webber(BaseSpider):
 
-    name = "Webber"
-    limit = SpecifiedOnlyValidator(int)
-    requested_stores = ListContentValidator(str)
-    requested_products = ListContentValidator(str)
-    store_unspecified = SpecifiedOnlyValidator(bool)
-    requesting_old_site = SpecifiedOnlyValidator(bool)
     data_manager = SpecifiedOrNoneValidator(DataManager)
+    requested_products = ListContentValidator(str)
+    requested_stores = ListContentValidator(str)
+    limit = SpecifiedOnlyValidator(int)
+    name = "Webber"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.limit = kwargs.get(
-            "limit")
-        self.requested_stores = kwargs.get(
-            "requested_stores", [])
-        self.requested_products = kwargs.get(
-            "requested_products", [])
-        self.requesting_old_site = kwargs.get(
-            "requesting_old_site", False)
-        self.data_manager = kwargs.get(
-            "data_manager")
-
-        if len(self.requested_products) < 1:
-            raise Exception(
-                "Webber needs to be provided a product for a query.")
+        self.requested_products = kwargs.get("requested_products", [])
+        if len(self.requested_products) == 0:
+            raise ValueError(
+                "Length of requested_products can not be '0'.")
+        self.requested_stores = kwargs.get("requested_stores", [])
         if len(self.requested_stores) == 0:
-            self.store_unspecified = True
-        else:
-            self.store_unspecified = False
+            raise ValueError(
+                "Length of requested_stores can not be '0'.")
+        self.data_manager = kwargs.get("data_manager")
+        self.limit = kwargs.get("limit")
+
+        self.pending_searches = []
         self.url_source = FoodieURLs
 
     def start_requests(self):
-        if not self.store_unspecified:
-            for i, name in enumerate(self.requested_stores):
-                result = self.db_search_store(store_name=name.lower())
-
-                if result is not None:
-                    result = self.search_store(
-                        callback=self.process_store_select,
-                        meta={"cookiejar": i},
-                        store_name=name,
-                        store_select=result.select)
-                    print(f"[start_requests]: Found store {name} locally...")
-                    yield result
-
-                else:
-                    result = self.search_store(
-                        callback=self.process_store_search,
-                        meta={"cookiejar": i},
-                        store_name=name)
-                    print(
-                        f"[start_requests]: Searching for store {name}",
-                        "on (foodie.fi)...")
-                    yield result
-
-        if self.store_unspecified:
-            # Call GMapsAPI -> GMaps contains user address -> makes query
-            raise NotImplementedError("self.store_unspecified is True")
+        for integer, requested_store in enumerate(self.requested_stores):
+            search = SpiderSearch(
+                store_name=requested_store,
+                requested_products=self.requested_products
+                )
+            self.pending_searches.append(search)
+            db_query = self.db_search_store(search.store_name)
+            if db_query is not None:
+                search.store_select = db_query.select
+            request = self.search_store(
+                callback=self.process_store_select,
+                meta={"cookiejar": integer},
+                search=search
+                )
+            yield request
 
     def db_search_store(self, store_name):
         query_result = self.database_query(StoreRequest, name=store_name)
@@ -88,7 +69,7 @@ class Webber(BaseSpider):
                 "get_local_store_data() yielded more than one result...")
         return None
 
-    def search_store(self, callback, meta, store_name,
+    def search_store(self, callback, meta, search,
                      store_select=None, **kwargs):
         if not isinstance(store_name, str):
             raise ValueError(
