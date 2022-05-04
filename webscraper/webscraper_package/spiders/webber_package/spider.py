@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+from typing import List, Union
 from ....data.filepaths import FilePaths
 from .foodie_pageclasses import Page
 from scrapy import Spider, Request
@@ -64,7 +65,10 @@ class BaseSpider(Spider):
 @dataclass
 class SpiderSearch:
 
-    def __init__(self, store_name, requested_products):
-        self.store_name = store_name.strip().lower()
-        self.requested_products = requested_products
-        self.store_select = None
+    store_name: str
+    requested_products: List[str]
+    store_select: Union[str, None] = None
+
+    def __str__(self):
+        return f"{self.store_name},{self.store_select}"
+

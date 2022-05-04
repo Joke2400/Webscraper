@@ -47,39 +47,30 @@ class Webber(BaseSpider):
         for integer, requested_store in enumerate(self.requested_stores):
             search = SpiderSearch(
                 store_name=requested_store,
-                requested_products=self.requested_products
-                )
+                requested_products=self.requested_products)
             self.pending_searches.append(search)
-            db_query = self.db_search_store(search.store_name)
-            if db_query is not None:
-                search.store_select = db_query.select
+            
+            query = self.db_query_store(search.store_name)
+            if query is not None:
+                search.store_select = query.select
             request = self.search_store(
                 callback=self.process_store_select,
                 meta={"cookiejar": integer},
-                search=search
-                )
+                search=search)
             yield request
 
-    def db_search_store(self, store_name):
+    def db_query_store(self, store_name):
         query_result = self.database_query(StoreRequest, name=store_name)
-        if 0 < len(query_result) < 2:
-            return query_result[0]
         if len(query_result) > 1:
             raise NotImplementedError(
                 "get_local_store_data() yielded more than one result...")
-        return None
+        return query_result[0]
 
-    def search_store(self, callback, meta, search,
-                     store_select=None, **kwargs):
-        if not isinstance(store_name, str):
-            raise ValueError(
-                "store_name parameter needs to be of type: (str).")
-        kwargs["store_name"] = store_name
+    def search_store(self, callback, meta, search, **kwargs):
 
-        if store_select is not None:
-            if isinstance(store_select, str):
-                url = self.url_source.base_url + store_select
-                tag = "store_select"
+        if search.store_select is not None:
+            url = self.url_source.base_url + store_select
+            tag = "store_select"
         else:
             url = self.url_source.store_search_url + store_name
             tag = "store_search"
