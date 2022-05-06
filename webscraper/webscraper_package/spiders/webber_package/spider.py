@@ -40,8 +40,7 @@ class BaseSpider(Spider):
                           cb_kwargs=cb_kwargs, dont_filter=True)
         return request
 
-    @staticmethod
-    def basic_response_print(callback, func=None):
+    def basic_response_print(self, callback, func):
         def wrapper(response, **kwargs):
             end_time = datetime.datetime.now()
             timedelta = end_time - kwargs.get("start_time")
@@ -50,6 +49,10 @@ class BaseSpider(Spider):
             func(response)
             return callback(response, **kwargs)
         return wrapper
+
+    def advanced_response_print(self, callback, func):
+        func = self.basic_response_print(callback=callback, func=func)
+        return func
 
     def parse(self, response, **kwargs):
         page = self.create_page(response, Page)
@@ -69,8 +72,8 @@ class SpiderSearch:
     store_select: Optional[str]
 
     def __post_init__(self):
-        self.titled_name = self.store_name.strip()
-        self.store_name = self.store_name.strip().lower()
+        self.store_display_name = self.store_name.strip()
+        self.store_name = self.store_display_name.lower()
         
     def __str__(self):
         return f"{self.store_name},{self.store_select}"

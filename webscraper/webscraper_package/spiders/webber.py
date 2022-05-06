@@ -75,16 +75,12 @@ class Webber(BaseSpider):
             url = self.url_source.store_search_url + search.store_name
             callback = self.process_store_search
         
-        @self.basic_response_print(callback=callback)
         def custom_print(response):
             print(f"[store_search]: Searched for store: {search.titled_name}',",
                   f"using '{response.url}'.")
-        request = self.scrape(search=search, url=url, callback=custom_print, meta=meta, **kwargs)
+        wrapped_callback = self.advanced_response_print(callback=callback, func=custom_print)
+        request = self.scrape(search=search, url=url, callback=wrapped_callback, meta=meta, **kwargs)
         return request
-
-    def advanced_response_print(self, callback, func):
-        wrapped_func = self.basic_response_print(func=func, callback=callback)
-        return wrapped_func
 
     def next_page(self, callback, meta, next_button, **kwargs):
         if next_button is None:

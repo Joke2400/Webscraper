@@ -7,12 +7,18 @@ class Topmenu(Element):
     
     def __init__(self, page, xpath):
         super(Topmenu, self).__init__(page, xpath)
-        self.name = self.get_element(xpath=SRPL.STORE_NAME)
-        self.name_str = self.name.content.strip().lower()
+        self.store_display_name = self.get_element(
+            xpath=SRPL.STORE_NAME).content.strip()
+        setattr(page, "store_display_name", self.store_display_name)
+        setattr(page, "store_name", self.store_display_name.lower())
+        self.store_href = self.get_element(
+            xpath=SRPL.STORE_HREF).content
+        self.store_address = self.get_element(
+            xpath=SRPL.STORE_ADDRESS).content
+        self.store_open_times = self.get_element(
+            xpath=SRPL.STORE_OPEN_TIMES).content
 
-        self.href = self.get_element(xpath=SRPL.STORE_HREF)
-        self.address = self.get_element(xpath=SRPL.STORE_ADDRESS)
-        self.open_times = self.get_element(xpath=SRPL.STORE_OPEN_TIMES)
+            
 
 class Navigation(Element):
 
@@ -30,6 +36,9 @@ class FoodiePage(Page):
     def __init__(self, response, prev_page=None, next_page=None):
         super(FoodiePage, self).__init__(response, prev_page, next_page)
         self.topmenu = Topmenu(page=self, xpath=SRPL.STORES_TOPMENU)
+        self.store_display_name = self.topmenu.store_display_name
+        self.store_name = self.topmenu.store_name
+        self.store_href = self.topmenu.store_href
 
 class StoreElement(NestedElement):
 
