@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from typing import List, Union
+from typing import Optional
 from ....data.filepaths import FilePaths
 from .foodie_pageclasses import Page
 from scrapy import Spider, Request
@@ -7,13 +7,13 @@ import datetime
 
 class BaseSpider(Spider):
 
-    name = "Base Spider"
+    name = "BaseSpider"
 
     def __init__(self, *args, **kwargs):
         super(BaseSpider, self).__init__(*args, **kwargs)
+        self.data_manager = kwargs.get("data_manager")
         self.performed_searches = []
         self.saved_pages = []
-        self.response_times = []
 
     def start_requests(self):
         if self.start_urls is not None:
@@ -31,28 +31,21 @@ class BaseSpider(Spider):
         self.saved_pages.append(page)
         return page
 
-    def calc_duration(self, start_time, end_time):
-        timedelta = end_time - start_time
-        duration = f"{timedelta.seconds}s {int(str(timedelta.microseconds)[:3])}ms"
-        return timedelta, duration
-
-    def scrape(self, url, callback, meta, tag, **kwargs):
-        wrapped_callback = self.print_response(callback=callback, tag=tag, obj_str=kwargs.get("store_name"))
+    def scrape(self, url, callback, meta, **kwargs):
         self.performed_searches.append(url)
-
         kwargs["start_time"] = datetime.datetime.now()
-        request = Request(url=url, callback=wrapped_callback, meta=meta, cb_kwargs=kwargs, dont_filter=True)
+        request = Request(url=url, callback=callback, meta=meta,
+                          cb_kwargs=kwargs, dont_filter=True)
         return request
 
-    def print_response(self, callback, tag, obj_str):
+    @staticmethod
+    def print_response(func):
         def wrapper(response, **kwargs):
             end_time = datetime.datetime.now()
-            timedelta, duration = self.calc_duration(kwargs.get("start_time"), end_time)
-            self.response_times.append(timedelta)
-
+            timedelta = end_time - kwargs.get("start_time")
+            duration = f"{timedelta.seconds}s {int(str(timedelta.microseconds)[:3])}ms"
             print(f"\n[RESPONSE]: '{response.status}' from IP: '{response.ip_address}' (Took: {duration}).")
-            print(f"[{tag}]: Searched for '{obj_str}', using '{response.url}'.")        
-            return callback(response, **kwargs)
+            return func(response, **kwargs)
         return wrapper
 
     def parse(self, response, **kwargs):
@@ -62,13 +55,19 @@ class BaseSpider(Spider):
             file.write(response.text)
 
 
-@dataclass
+@dataclass # <-- TODO: Read up on both dataclasses and type hinting
+           # Type hinting: https://peps.python.org/pep-0526/, https://mypy.readthedocs.io/en/stable/class_basics.html#instance-and-class-attributes, https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html
+            #https://docs.python.org/3/howto/annotations.html
 class SpiderSearch:
 
     store_name: str
-    requested_products: List[str]
-    store_select: Union[str, None] = None
+    requested_products: list[str]
+    store_select: Optional[str]
 
+    def __post_init__(self):
+        self.titled_name = self.store_name
+        self.store_name = self.store_name.strip().lower()
+        
     def __str__(self):
         return f"{self.store_name},{self.store_select}"
 

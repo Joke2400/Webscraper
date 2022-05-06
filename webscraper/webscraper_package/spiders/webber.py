@@ -1,3 +1,4 @@
+from multiprocessing.sharedctypes import Value
 from webscraper.utils.descriptors import (
     ListContentValidator,
     SpecifiedOnlyValidator,
@@ -21,7 +22,6 @@ from .webber_package.spider import BaseSpider, SpiderSearch
 
 class Webber(BaseSpider):
 
-    data_manager = SpecifiedOrNoneValidator(DataManager)
     requested_products = ListContentValidator(str)
     requested_stores = ListContentValidator(str)
     limit = SpecifiedOnlyValidator(int)
@@ -37,9 +37,7 @@ class Webber(BaseSpider):
         if len(self.requested_stores) == 0:
             raise ValueError(
                 "Length of requested_stores can not be '0'.")
-        self.data_manager = kwargs.get("data_manager")
         self.limit = kwargs.get("limit")
-
         self.pending_searches = []
         self.url_source = FoodieURLs
 
@@ -47,37 +45,59 @@ class Webber(BaseSpider):
         for integer, requested_store in enumerate(self.requested_stores):
             search = SpiderSearch(
                 store_name=requested_store,
-                requested_products=self.requested_products)
+                requested_products=self.requested_products,
+                store_select=None)
             self.pending_searches.append(search)
-            
-            query = self.db_query_store(search.store_name)
+
+            query = self.db_store_query(search.store_name)
             if query is not None:
                 search.store_select = query.select
-            request = self.search_store(
+            request = self.store_search(
                 callback=self.process_store_select,
                 meta={"cookiejar": integer},
                 search=search)
             yield request
 
-    def db_query_store(self, store_name):
-        query_result = self.database_query(StoreRequest, name=store_name)
-        if len(query_result) > 1:
-            raise NotImplementedError(
-                "get_local_store_data() yielded more than one result...")
-        return query_result[0]
+    def db_store_query(self, store_name):
+        query = self.database_query(StoreRequest, name=store_name)
+        if len(query) == 1:
+            return query[0]
+        if len(query) > 1:
+            raise ValueError(
+                "[db_query_store]: self.database_query",
+                "returned more than one store.")
+        return None
 
-    def search_store(self, callback, meta, search, **kwargs):
-
+    def store_search(self, callback, meta, search, **kwargs):
         if search.store_select is not None:
-            url = self.url_source.base_url + store_select
-            tag = "store_select"
+            url = self.url_source.base_url + search.store_select
         else:
-            url = self.url_source.store_search_url + store_name
-            tag = "store_search"
+            url = self.url_source.store_search_url + search.store_name
+            callback = self.process_store_search
 
-        request = self.scrape(url=url, callback=callback,
-                              meta=meta, tag=tag, **kwargs)
+        callback = self.print_store_search(search=search, callback=callback)
+        request = self.scrape(url=url, callback=callback, meta=meta, **kwargs)
         return request
+
+    def print_store_search(self, search, callback):
+        @self.print_response
+        def store_print_wrapper(response, **kwargs):
+            print(f"[store_search]: Searched for store: {search.titled_name}',",
+                  f"using '{response.url}'.")
+            return callback(response, **kwargs)
+        return store_print_wrapper
+
+    def print_product_search(self, search, callback):
+        @self.print_response
+        def product_print_wrapper(response, **kwargs):
+            print(f"Searched store: {search.store_name}",
+                  f"for product: {kwargs.get('product')}")
+            return callback(response, **kwargs)
+        return product_print_wrapper
+    
+    # @print_response
+    # def print_next_page():
+    #    pass
 
     def next_page(self, callback, meta, next_button, **kwargs):
         if next_button is None:
@@ -94,7 +114,7 @@ class Webber(BaseSpider):
                               meta=meta, tag=tag, **kwargs)
         return request
 
-    def search_products(self, callback, meta, product, **kwargs):
+    def product_search(self, callback, meta, product, **kwargs):
         if not isinstance(product, str):
             print("[search_products]: Provided product is not of type: str")
             return None
@@ -133,7 +153,7 @@ class Webber(BaseSpider):
 
         if store is not None:
             print(f"[process_store_search]: Found store '{store_name}'.")
-            request = self.search_store(
+            request = self.store_search(
                 callback=self.process_store_select,
                 meta={"cookiejar": response.meta["cookiejar"]},
                 store_select=store.select.content,
@@ -163,7 +183,7 @@ class Webber(BaseSpider):
                 f"[process_store_select]: '{store_name}'",
                 "is selected on current page.")
             for product in self.requested_products:
-                request = self.search_products(
+                request = self.product_search(
                     callback=self.process_product_search,
                     meta={"cookiejar": response.meta["cookiejar"]},
                     product=product,
