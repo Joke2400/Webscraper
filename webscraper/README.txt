@@ -1,4 +1,4 @@
-This webscraper was originally made with python versions 3.9.4 and 3.10.4
+This webscraper was originally made with python version 3.10.4
 
 Project dependencies:
     

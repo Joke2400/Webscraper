@@ -31,21 +31,24 @@ class BaseSpider(Spider):
         self.saved_pages.append(page)
         return page
 
-    def scrape(self, url, callback, meta, **kwargs):
+    def scrape(self, search, url, callback, meta):
         self.performed_searches.append(url)
-        kwargs["start_time"] = datetime.datetime.now()
+        cb_kwargs = {
+            "start_time": datetime.datetime.now(),
+            "search": search}
         request = Request(url=url, callback=callback, meta=meta,
-                          cb_kwargs=kwargs, dont_filter=True)
+                          cb_kwargs=cb_kwargs, dont_filter=True)
         return request
 
     @staticmethod
-    def print_response(func):
+    def basic_response_print(callback, func=None):
         def wrapper(response, **kwargs):
             end_time = datetime.datetime.now()
             timedelta = end_time - kwargs.get("start_time")
             duration = f"{timedelta.seconds}s {int(str(timedelta.microseconds)[:3])}ms"
             print(f"\n[RESPONSE]: '{response.status}' from IP: '{response.ip_address}' (Took: {duration}).")
-            return func(response, **kwargs)
+            func(response)
+            return callback(response, **kwargs)
         return wrapper
 
     def parse(self, response, **kwargs):
@@ -55,9 +58,10 @@ class BaseSpider(Spider):
             file.write(response.text)
 
 
-@dataclass # <-- TODO: Read up on both dataclasses and type hinting
-           # Type hinting: https://peps.python.org/pep-0526/, https://mypy.readthedocs.io/en/stable/class_basics.html#instance-and-class-attributes, https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html
-            #https://docs.python.org/3/howto/annotations.html
+# TODO: Read up on both dataclasses and type hinting
+# Type hinting: https://peps.python.org/pep-0526/, https://mypy.readthedocs.io/en/stable/class_basics.html#instance-and-class-attributes, https://mypy.readthedocs.io/en/stable/cheat_sheet_py3.html
+#https://docs.python.org/3/howto/annotations.html
+@dataclass 
 class SpiderSearch:
 
     store_name: str
@@ -65,9 +69,8 @@ class SpiderSearch:
     store_select: Optional[str]
 
     def __post_init__(self):
-        self.titled_name = self.store_name
+        self.titled_name = self.store_name.strip()
         self.store_name = self.store_name.strip().lower()
         
     def __str__(self):
         return f"{self.store_name},{self.store_select}"
-

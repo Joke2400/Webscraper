@@ -74,30 +74,17 @@ class Webber(BaseSpider):
         else:
             url = self.url_source.store_search_url + search.store_name
             callback = self.process_store_search
-
-        callback = self.print_store_search(search=search, callback=callback)
-        request = self.scrape(url=url, callback=callback, meta=meta, **kwargs)
-        return request
-
-    def print_store_search(self, search, callback):
-        @self.print_response
-        def store_print_wrapper(response, **kwargs):
+        
+        @self.basic_response_print(callback=callback)
+        def custom_print(response):
             print(f"[store_search]: Searched for store: {search.titled_name}',",
                   f"using '{response.url}'.")
-            return callback(response, **kwargs)
-        return store_print_wrapper
+        request = self.scrape(search=search, url=url, callback=custom_print, meta=meta, **kwargs)
+        return request
 
-    def print_product_search(self, search, callback):
-        @self.print_response
-        def product_print_wrapper(response, **kwargs):
-            print(f"Searched store: {search.store_name}",
-                  f"for product: {kwargs.get('product')}")
-            return callback(response, **kwargs)
-        return product_print_wrapper
-    
-    # @print_response
-    # def print_next_page():
-    #    pass
+    def advanced_response_print(self, callback, func):
+        wrapped_func = self.basic_response_print(func=func, callback=callback)
+        return wrapped_func
 
     def next_page(self, callback, meta, next_button, **kwargs):
         if next_button is None:
@@ -111,7 +98,7 @@ class Webber(BaseSpider):
         tag = "next_page"
 
         request = self.scrape(url=url, callback=callback,
-                              meta=meta, tag=tag, **kwargs)
+                              meta=meta, **kwargs)
         return request
 
     def product_search(self, callback, meta, product, **kwargs):
@@ -123,7 +110,7 @@ class Webber(BaseSpider):
         tag = "search_products"
 
         request = self.scrape(url=url, callback=callback,
-                              meta=meta, tag=tag, **kwargs)
+                              meta=meta, **kwargs)
 
         return request
 
@@ -174,7 +161,9 @@ class Webber(BaseSpider):
         return request
 
     def process_store_select(self, response, **kwargs):
-        store_name = kwargs.get("store_name")
+        search = kwargs.get("search")
+        if search is None:
+            raise ValueError("[process_store_select]: Var 'search' was of type: 'None'")
         page = self.create_page(response, FoodiePage)
 
         if self.validate_store(selected_name=page.topmenu.name_str,
