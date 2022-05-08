@@ -3,42 +3,54 @@ from .foodie_selectors import StoreListSearchLocators as SLSL
 from .foodie_selectors import ProductListSearchLocators as PLSL
 from .basic_pageclasses import Page, Element, NestedElement, ListElement
 
-class Topmenu(Element):
-    
-    def __init__(self, page, xpath):
-        super(Topmenu, self).__init__(page, xpath)
-        self.store_display_name = self.get_element(
-            xpath=SRPL.STORE_NAME).content.strip()
-        setattr(page, "store_display_name", self.store_display_name)
-        setattr(page, "store_name", self.store_display_name.lower())
-        self.store_href = self.get_element(
-            xpath=SRPL.STORE_HREF).content
-        self.store_address = self.get_element(
-            xpath=SRPL.STORE_ADDRESS).content
-        self.store_open_times = self.get_element(
-            xpath=SRPL.STORE_OPEN_TIMES).content
-
-            
-
-class Navigation(Element):
-
-    def __init__(self, page, xpath):
-        super(Navigation, self).__init__(page, xpath)
-        if self.content is not None:
-            self.next = self.get_element(xpath=SLSL.NAV_NEXT)
-            self.prev = self.get_element(xpath=SLSL.NAV_PREV)
-            self.page.next_page = self.next.content
-            if self.prev.content.split("&page")[1] != '':
-                self.page.prev_page = self.prev.content
 
 class FoodiePage(Page):
 
     def __init__(self, response, prev_page=None, next_page=None):
         super(FoodiePage, self).__init__(response, prev_page, next_page)
-        self.topmenu = Topmenu(page=self, xpath=SRPL.STORES_TOPMENU)
-        self.store_display_name = self.topmenu.store_display_name
-        self.store_name = self.topmenu.store_name
-        self.store_href = self.topmenu.store_href
+        self.extract_topmenu()
+
+    def extract_topmenu(self):
+        self.topmenu = Element(page=self, xpath=SRPL.STORES_TOPMENU)
+        self.store_display_name = self.topmenu.extract(
+            xpath=SRPL.STORE_NAME).strip()
+        self.store_name = self.store_display_name.lower()
+        
+        self.store_href = self.topmenu.extract(
+            xpath=SRPL.STORE_HREF)
+        self.store_addres = self.topmenu.extract(
+            xpath=SRPL.STORE_ADDRESS)
+        self.store_open_times = self.topmenu.extract(
+            xpath=SRPL.STORE_OPEN_TIMES)
+
+
+class Navigation(Element):
+
+    def __init__(self, page, xpath):
+        super(Navigation, self).__init__(page, xpath)
+        if self.extract() is not None:
+            self.next = self.extract(xpath=SLSL.NAV_NEXT)
+            self.prev = self.extract(xpath=SLSL.NAV_PREV)
+            self.page.next_page = self.next
+            if self.prev.split("&page")[1] != '':
+                self.page.prev_page = self.prev
+
+class StoreListPage(FoodiePage):
+
+    def __init__(self, response, prev_page=None, next_page=None):
+        super(StoreListPage, self).__init__(response, prev_page, next_page)
+        self.navigation = Element(page=self, xpath=SLSL.NAVIGATION_BUTTONS)
+        
+        
+        
+        
+        self.store_list = ListElement(
+            page=self,
+            xpath=SLSL.STORE_LIST,
+            elements_xpath=SLSL.STORE_LIST_ELEMENTS,
+            element_type=StoreElement
+            )
+        self.stores = self.store_list.get_list()
 
 class StoreElement(NestedElement):
 
@@ -59,18 +71,7 @@ class StoreElement(NestedElement):
             "address" :     self.address.content
          }
 
-class StoreListPage(FoodiePage):
 
-    def __init__(self, response, prev_page=None, next_page=None):
-        super(StoreListPage, self).__init__(response, prev_page, next_page)
-        self.navigation = Navigation(page=self, xpath=SLSL.NAVIGATION_BUTTONS)
-        self.store_list = ListElement(
-            page=self,
-            xpath=SLSL.STORE_LIST,
-            elements_xpath=SLSL.STORE_LIST_ELEMENTS,
-            element_type=StoreElement
-            )
-        self.stores = self.store_list.get_list()
 
 class ProductElement(NestedElement):
 
