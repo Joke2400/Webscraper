@@ -1,18 +1,15 @@
-from multiprocessing.sharedctypes import Value
 from webscraper.utils.descriptors import (
     ListContentValidator,
     SpecifiedOnlyValidator,
-    SpecifiedOrNoneValidator
 )
 
-from webscraper.data_manager_package.data_manager import DataManager
 from webscraper.data_manager_package.commands import (
     StoreRequest,
     DBAddStore,
     DBAddProduct
 )
 from webscraper.data.urls import FoodieURLs
-from .webber_package.foodie_pageclasses import (
+from .webber_package.foodie_pages import (
     FoodiePage,
     ProductPage,
     StoreListPage

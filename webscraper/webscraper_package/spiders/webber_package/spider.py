@@ -1,7 +1,7 @@
 from dataclasses import dataclass
 from typing import Optional
 from ....data.filepaths import FilePaths
-from .foodie_pageclasses import Page
+from .foodie_pages import Page
 from scrapy import Spider, Request
 import datetime
 
