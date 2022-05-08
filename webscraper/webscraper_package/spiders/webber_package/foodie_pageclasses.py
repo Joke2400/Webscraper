@@ -3,54 +3,17 @@ from .foodie_selectors import StoreListSearchLocators as SLSL
 from .foodie_selectors import ProductListSearchLocators as PLSL
 from .basic_pageclasses import Page, Element, NestedElement, ListElement
 
-
-class FoodiePage(Page):
-
-    def __init__(self, response, prev_page=None, next_page=None):
-        super(FoodiePage, self).__init__(response, prev_page, next_page)
-        self.extract_topmenu()
-
-    def extract_topmenu(self):
-        self.topmenu = Element(page=self, xpath=SRPL.STORES_TOPMENU)
-        self.store_display_name = self.topmenu.extract(
-            xpath=SRPL.STORE_NAME).strip()
-        self.store_name = self.store_display_name.lower()
-        
-        self.store_href = self.topmenu.extract(
-            xpath=SRPL.STORE_HREF)
-        self.store_addres = self.topmenu.extract(
-            xpath=SRPL.STORE_ADDRESS)
-        self.store_open_times = self.topmenu.extract(
-            xpath=SRPL.STORE_OPEN_TIMES)
-
-
 class Navigation(Element):
 
     def __init__(self, page, xpath):
         super(Navigation, self).__init__(page, xpath)
-        if self.extract() is not None:
+        if self.extract(source=self.selector, xpath=None) is not None:
             self.next = self.extract(xpath=SLSL.NAV_NEXT)
             self.prev = self.extract(xpath=SLSL.NAV_PREV)
-            self.page.next_page = self.next
+            self.source.next_page = self.next
             if self.prev.split("&page")[1] != '':
-                self.page.prev_page = self.prev
+                self.source.prev_page = self.prev
 
-class StoreListPage(FoodiePage):
-
-    def __init__(self, response, prev_page=None, next_page=None):
-        super(StoreListPage, self).__init__(response, prev_page, next_page)
-        self.navigation = Element(page=self, xpath=SLSL.NAVIGATION_BUTTONS)
-        
-        
-        
-        
-        self.store_list = ListElement(
-            page=self,
-            xpath=SLSL.STORE_LIST,
-            elements_xpath=SLSL.STORE_LIST_ELEMENTS,
-            element_type=StoreElement
-            )
-        self.stores = self.store_list.get_list()
 
 class StoreElement(NestedElement):
 
@@ -70,7 +33,6 @@ class StoreElement(NestedElement):
             "select" :      self.select.content,
             "address" :     self.address.content
          }
-
 
 
 class ProductElement(NestedElement):
@@ -135,12 +97,46 @@ class ProductElement(NestedElement):
             "quantity": self.quantity.content
             }
 
+
+class FoodiePage(Page):
+
+    def __init__(self, response, prev_page=None, next_page=None):
+        super(FoodiePage, self).__init__(response, prev_page, next_page)
+        self.topmenu = Element(source=self, xpath=SRPL.STORES_TOPMENU)
+        self.get_topmenu_store()
+
+    def get_topmenu_store(self):
+        self.store_display_name = self.topmenu.extract(
+            xpath=SRPL.STORE_NAME).strip()
+        self.store_name = self.store_display_name.lower()
+        
+        self.store_href = self.topmenu.extract(
+            xpath=SRPL.STORE_HREF)
+        self.store_addres = self.topmenu.extract(
+            xpath=SRPL.STORE_ADDRESS)
+        self.store_open_times = self.topmenu.extract(
+            xpath=SRPL.STORE_OPEN_TIMES)
+
+
+class StoreListPage(FoodiePage):
+
+    def __init__(self, response, prev_page=None, next_page=None):
+        super(StoreListPage, self).__init__(response, prev_page, next_page)
+        self.navigation = Element(source=self, xpath=SLSL.NAVIGATION_BUTTONS)
+        self.store_list = ListElement(
+            source=self,
+            xpath=SLSL.STORE_LIST,
+            items_xpath=SLSL.STORE_LIST_ELEMENTS,
+            element_type=StoreElement)
+        self.stores = self.store_list.get_list()
+
+
 class ProductPage(FoodiePage):
 
     def __init__(self, response, prev_page=None, next_page=None):
         super(ProductPage, self).__init__(response, prev_page, next_page)
         self.product_list = ListElement(
-            page=self, 
+            source=self, 
             xpath=SRPL.PRODUCT_LIST, 
             elements_xpath=SRPL.PRODUCT_LIST_ELEMENTS,
             element_type=ProductElement
