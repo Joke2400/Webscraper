@@ -72,8 +72,8 @@ class SpiderSearch:
     store_select: Optional[str]
 
     def __post_init__(self):
-        self.store_display_name = self.store_name.strip()
-        self.store_name = self.store_display_name.lower()
-        
+        self.display_name = self.store_name.strip()
+        self.store_name = self.display_name.lower()
+
     def __str__(self):
         return f"{self.store_name},{self.store_select}"

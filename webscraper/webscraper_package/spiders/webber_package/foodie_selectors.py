@@ -1,4 +1,4 @@
-class SearchResultsPageLocators:
+class ProductPageSelectors:
     ''' A class that contains XPATH selectors for key elements on the search results page.'''
 
     STORES_TOPMENU          =   "//div[@id='topmenu-stores']"                        
@@ -13,7 +13,7 @@ class SearchResultsPageLocators:
     PRODUCT_DETAILS         =   "//div[@class='info relative clear']"
     PRODUCT_PRICE_DETAILS   =   "//div[@class='price-and-quantity']"
 
-class ProductListSearchLocators:
+class ProductListSelectors:
     """
     A class that contains selectors for the product details, all of these are for use within the <li> element for the product 
     """
@@ -36,7 +36,7 @@ class ProductListSearchLocators:
     PRODUCT_IMG             =   "//a[@class='js-link-item']//img[@class='img-responsive']/@src"
     PRODUCT_HREF            =   "//a[@class='js-link-item']/@href"
 
-class StoreListSearchLocators:
+class StoreListSelectors:
 
     STORE_LIST              = "//ul[@id='js-search-store-list']"
     STORE_LIST_ELEMENTS     = "//li[@class='store-row relative clearfix js-store-row']"

@@ -71,19 +71,16 @@ class Webber(BaseSpider):
         else:
             url = self.url_source.store_search_url + search.store_name
             callback = self.process_store_search
-        
+
         def custom_print(response):
             print(
-                f"[store_search]: Searched for store: {search.titled_name}',",
+                f"[store_search]: Searched for store: {search.display_name}',",
                 f"using '{response.url}'.")
-        wrapped_callback = self.advanced_response_print(
+        callback = self.advanced_response_print(
             callback=callback,
             func=custom_print)
-        request = self.scrape(
-            search=search,
-            url=url,
-            callback=wrapped_callback,
-            meta=meta, **kwargs)
+        request = self.scrape(search=search, callback=callback,
+                              url=url, meta=meta, **kwargs)
         return request
 
     def next_page(self, callback, meta, next_button, **kwargs):
@@ -124,8 +121,8 @@ class Webber(BaseSpider):
 
         return store
 
-    def validate_store(self, selected_name, store_name):
-        equal = selected_name == store_name.strip().lower()
+    def validate_store(self, selected_store, store_name):
+        equal = selected_store == store_name.strip().lower()
         return equal
 
     def process_store_search(self, response, **kwargs):
@@ -162,12 +159,10 @@ class Webber(BaseSpider):
 
     def process_store_select(self, response, **kwargs):
         search = kwargs.get("search")
-        if search is None:
-            raise ValueError("[process_store_select]: Var 'search' was of type: 'None'")
         page = self.create_page(response, FoodiePage)
-
-        if self.validate_store(selected_name=page.topmenu.name_str,
-                               store_name=store_name):
+        store = page.topmenu.store_name
+        if self.validate_store(selected_store=store,
+                               store_name=search.store_name):
             print(
                 f"[process_store_select]: '{store_name}'",
                 "is selected on current page.")
